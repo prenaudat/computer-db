@@ -153,10 +153,10 @@ public enum ComputerDAO {
 			//String sql = "UPDATE computer SET name='"+name+"', introduced='"+introduced+"', discontinued='"+discontinued+"', company_id="+companyId+" WHERE id="+id+";";
 			stmt.setString(1, name);
 			stmt.setTimestamp(2, introduced);
-			System.out.println(stmt);
 			stmt.setTimestamp(3, discontinued);
 			stmt.setLong(4, companyId);
-			stmt.executeQuery();
+			stmt.setLong(5, id);
+			stmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

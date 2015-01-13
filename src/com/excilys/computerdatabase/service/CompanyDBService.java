@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.computerdatabase.dao.CompanyDAO;
-import com.excilys.computerdatabase.dao.ComputerDAO;
 import com.excilys.computerdatabase.model.Company;
 
 /**
