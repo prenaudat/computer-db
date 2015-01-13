@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Scanner; 
@@ -15,7 +16,7 @@ import com.excilys.computerdatabase.model.Company;
 
 /**
  * @author paulr_000
- *
+ *d
  */
 //Computer Database Access object.. 
 public enum CompanyDAO {
@@ -50,7 +51,6 @@ public enum CompanyDAO {
 					PASS);
 			stmt = conn.prepareStatement("select * from company where id =?");
 			stmt.setLong(1, id);
-			//String sql = "select * from company where id =" + id + ";";
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				return new Company(rs.getLong("id"), rs.getString("name"));
@@ -58,7 +58,6 @@ public enum CompanyDAO {
 				return null;// Display values
 			}
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}finally{
@@ -85,7 +84,6 @@ public enum CompanyDAO {
 			rs.next();
 			return rs.getInt("rowcount"); 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}finally{
@@ -99,7 +97,7 @@ public enum CompanyDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<Company> getCompanyList(int currentIndex, int pageSize) throws SQLException {
+	public List<Company> getCompanyList(int currentIndex, int pageSize) throws SQLException {
 		Connection conn=null;
 		PreparedStatement stmt=null;
 		try {
@@ -118,7 +116,6 @@ public enum CompanyDAO {
 			return companyList;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}finally{
@@ -143,7 +140,6 @@ public enum CompanyDAO {
 			stmt.executeUpdate();
 
 	}catch (ClassNotFoundException | SQLException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}finally{
 		close(stmt,conn);
@@ -169,7 +165,6 @@ public enum CompanyDAO {
 			stmt.executeUpdate();
 
 	}catch (ClassNotFoundException | SQLException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}finally{
 		close(stmt,conn);

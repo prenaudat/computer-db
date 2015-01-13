@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.computerdatabase.dao.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
@@ -12,19 +13,12 @@ import com.excilys.computerdatabase.model.Company;
  */
 public class CompanyDBService {
 	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public int count() throws SQLException{
-		return CompanyDAO.getInstance().count();
-	}
-	/**
 	 * @param currentCompanyPageIndex
 	 * @param pageSize
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<Company> getCompanyList(int currentCompanyPageIndex, int pageSize) throws SQLException{
+	public List<Company> getCompanyList(int currentCompanyPageIndex, int pageSize) throws SQLException{
 		return CompanyDAO.getInstance().getCompanyList(currentCompanyPageIndex, pageSize);
 	}
 }

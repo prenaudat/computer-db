@@ -5,14 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 
 /**
@@ -28,10 +29,11 @@ public enum ComputerDAO {
 	private Map<Integer, Integer> cache = new ConcurrentHashMap<>();
 	private static DateTimeFormatter getTimestampformatter = DateTimeFormatter
 			.ofPattern("yyyy-MM-dd HH:mm");
+
 	/**
 	 * @return
 	 */
-	public static ComputerDAO getInstance(){
+	public static ComputerDAO getInstance() {
 		return INSTANCE;
 	}
 
@@ -40,16 +42,15 @@ public enum ComputerDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Computer getComputerById(long id) throws SQLException {
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public Computer getComputerById(long id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.prepareStatement("select * from computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id where cpt.id=?;");
+			stmt = conn
+					.prepareStatement("SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;");
 			stmt.setLong(1, id);
-			//String sql = "select * from computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id where cpt.id="
-			//+ id + ";";
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				long resId = rs.getLong("id");
@@ -68,10 +69,10 @@ public enum ComputerDAO {
 				} else {
 					discontinued = null;
 				}
-
-				long companyId = rs.getLong("company_id");
+				Company company = new Company(rs.getLong("company_id"),
+						rs.getString("company_name"));
 				return new Computer(resId, resName, introduced, discontinued,
-						companyId);
+						company);
 			} else {
 				return null;
 			}
@@ -79,8 +80,8 @@ public enum ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}finally{
-			close(stmt,conn);
+		} finally {
+			close(stmt, conn);
 		}
 
 	}
@@ -90,16 +91,17 @@ public enum ComputerDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<Computer> getComputersByCompanyId(final long id) throws SQLException {
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public List<Computer> getComputersByCompanyId(final long id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.prepareStatement("select * from computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id where cmp.id=?;");;
+			stmt = conn
+					.prepareStatement("cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id where cmp.id=?;");
 			stmt.setLong(1, id);
 			final ResultSet rs = stmt.executeQuery();
-			ArrayList<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<Computer>();
 			long resId;
 			String resName;
 			Timestamp resIntroduced;
@@ -121,20 +123,21 @@ public enum ComputerDAO {
 				} else {
 					discontinued = null;
 				}
-				long companyId = rs.getLong("company_id");
+				Company company = new Company(rs.getLong("company_id"),
+						rs.getString("company_name"));
 				computerList.add(new Computer(resId, resName, introduced,
-						discontinued, companyId));
+						discontinued, company));
 			}
 			return computerList;
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}finally{
-			close(stmt,conn);
-
+		} finally {
+			close(stmt, conn);
 		}
+
 	}
+
 	/**
 	 * @param id
 	 * @param name
@@ -143,27 +146,25 @@ public enum ComputerDAO {
 	 * @param companyId
 	 * @throws SQLException
 	 */
-	public void updateComputer(long id, String name, Timestamp introduced, Timestamp discontinued, int companyId) throws SQLException {
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public void updateComputer(Computer computer) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;");
-			//String sql = "UPDATE computer SET name='"+name+"', introduced='"+introduced+"', discontinued='"+discontinued+"', company_id="+companyId+" WHERE id="+id+";";
-			stmt.setString(1, name);
-			stmt.setTimestamp(2, introduced);
-			stmt.setTimestamp(3, discontinued);
-			stmt.setLong(4, companyId);
-			stmt.setLong(5, id);
+			stmt = conn
+					.prepareStatement("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;");
+			stmt.setString(1, computer.getName());
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setLong(4, computer.getCompany().getId());
+			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
-			close(stmt,conn);
+		} finally {
+			close(stmt, conn);
 		}
-
 	}
 
 	/**
@@ -173,167 +174,113 @@ public enum ComputerDAO {
 	 * @param companyId
 	 * @throws SQLException
 	 */
-	public void createComputer(String name, Timestamp introduced, Timestamp discontinued, int companyId) throws SQLException {
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public void save(Computer computer) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.prepareStatement("Insert into computer(name,introduced, discontinued, company_id) VALUES (?,?,?,?);");
-			//String sql = "Insert into computer(name,introduced, discontinued, company_id) VALUES ('"+name+"', '"+introduced+"','"+discontinued+"', "+companyId+");";
-			stmt.setString(1, name);
-			stmt.setTimestamp(2, introduced);
-			stmt.setTimestamp(3, discontinued);
-			stmt.setLong(4, companyId);
+			stmt = conn
+					.prepareStatement("Insert into computer(id, name, introduced, discontinued, company_id) VALUES (?,?,?,?,?);");
+			stmt.setLong(1, computer.getId());
+			stmt.setString(2, computer.getName());
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getIntroduced()));
+			stmt.setTimestamp(4, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setLong(5, computer.getCompany().getId());
 			stmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
-			close(stmt,conn);
+		} finally {
+			close(stmt, conn);
 		}
 
 	}
+
 	/**
 	 * @param currentIndex
 	 * @param pageSize
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<Computer> getComputerList(int currentIndex, int pageSize) throws SQLException {
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public List<Computer> getComputerList(int currentIndex, int pageSize) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.prepareStatement("select * from computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;");
-			//final String sql = "select * from computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT "+currentIndex+" , "+pageSize+";";
+			stmt = conn
+					.prepareStatement("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;");
 			stmt.setInt(1, currentIndex);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
-			ArrayList<Computer> computerList = new ArrayList<Computer>();
-			long resId;
-			String resName;
-			Timestamp resIntroduced;
-			Timestamp resDiscontinued;
+			List<Computer> computerList = new ArrayList<Computer>();
+			Computer.ComputerBuilder c = new Computer.ComputerBuilder();
 			while (rs.next()) {
-				resId = rs.getLong("id");
-				resName = rs.getString("name");
-				resIntroduced = rs.getTimestamp("introduced");
-				resDiscontinued = rs.getTimestamp("discontinued");
-				LocalDateTime introduced;
-				if (resIntroduced != null) {
-					introduced = resIntroduced.toLocalDateTime();
+				c.id(rs.getLong("id")).name(rs.getString("name"));
+				if (rs.getTimestamp("introduced") != null) {
+					c.introduced(rs.getTimestamp("introduced")
+							.toLocalDateTime());
 				} else {
-					introduced = null;
+					c.introduced(null);
 				}
-				LocalDateTime discontinued;
-				if (resDiscontinued != null) {
-					discontinued = resDiscontinued.toLocalDateTime();
+				if (rs.getTimestamp("discontinued") != null) {
+					c.discontinued(rs.getTimestamp("discontinued")
+							.toLocalDateTime());
 				} else {
-					discontinued = null;
+					c.discontinued(null);
 				}
-				long companyId = rs.getLong("company_id");
-				computerList.add(new Computer(resId, resName, introduced,
-						discontinued, companyId));
+				computerList.add(c.company(
+						new Company.CompanyBuilder()
+								.id(rs.getLong("company_id"))
+								.name(rs.getString("company_name")).build())
+						.build());
 			}
 			return computerList;
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}finally{
-			close(stmt,conn);
+		} finally {
+			close(stmt, conn);
 		}
 	}
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public int count() throws SQLException{
-		Connection conn=null;
-		PreparedStatement stmt=null;
-		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER,
-					PASS);
-			stmt = conn.prepareStatement("select COUNT(id) as rowcount from computer;");
-			//			String sql = "select COUNT(id) as rowcount from computer;";
-			stmt.executeQuery();
-			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			return rs.getInt("rowcount");
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}finally{
-			close(stmt,conn);
-		}
 
-	}
 	/**
 	 * @param id
 	 * @return
 	 * @throws SQLException
 	 */
-	public int count(long id) throws SQLException{
-		Connection conn=null;
-		PreparedStatement stmt=null;
+	public void remove(long id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
 			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER,
-					PASS);
-			stmt = conn.prepareStatement("select COUNT(id) as rowcount from computer where company_id =?;");
-			stmt.setLong(1,id);
-			//String sql = "select COUNT(id) as rowcount from computer where company_id =" + id + ";";
-			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			return rs.getInt("rowcount");
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}finally{
-			close(stmt,conn);
-		}
-
-	}
-	/**
-	 * @param id
-	 * @return
-	 * @throws SQLException
-	 */
-	public void remove(long id) throws SQLException{
-		Connection conn=null;
-		PreparedStatement stmt=null;
-		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER,
-					PASS);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = conn.prepareStatement("DELETE FROM computer WHERE id=?;");
 			stmt.setLong(1, id);
-			//String sql = "DELETE FROM computer WHERE id='"+id+"';";
 			stmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
-			close(stmt,conn);
+		} finally {
+			close(stmt, conn);
 		}
 
 	}
+
 	/**
 	 * @param stmt
 	 * @param conn
 	 * @throws SQLException
 	 */
-	public void close(PreparedStatement stmt, Connection conn) throws SQLException{
-		if(stmt!=null){
-			stmt.close();
-		}
-		if(conn!=null){
-			conn.close();
+	public void close(PreparedStatement stmt, Connection conn) {
+		try {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

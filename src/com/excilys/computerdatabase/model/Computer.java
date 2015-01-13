@@ -2,22 +2,17 @@ package com.excilys.computerdatabase.model;
 
 import java.time.LocalDateTime;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * @author paulr_000
  *
  */
 public class Computer {
 	// Instance variables
-	@NotNull
 	private long id;
-	@NotNull
 	private String name;
-	@NotNull
 	private LocalDateTime introduced;
 	private LocalDateTime discontinued;
-	private long companyId;
+	private Company company;
 
 	// Behavior : getters and setter
 	/**
@@ -55,7 +50,7 @@ public class Computer {
 		return introduced;
 	}
 
-	/**
+	/**newDiscontinued
 	 * @param introduced
 	 */
 	public void setIntroduced(LocalDateTime introduced) {
@@ -79,18 +74,20 @@ public class Computer {
 	/**
 	 * @return
 	 */
-	public long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
 	/**
 	 * @param companyId
 	 */
-	public void setCompanyId(long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	/**
+	 * final String newFirstName, final String newCity, final String newState)
+	 * 
 	 * @param id
 	 * @param name
 	 * @param introduced
@@ -98,13 +95,13 @@ public class Computer {
 	 * @param companyId
 	 */
 	public Computer(long id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, long companyId) {
+			LocalDateTime discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.company = company;
 	}
 
 	@Override
@@ -112,7 +109,98 @@ public class Computer {
 		return new StringBuilder("Computer [id=").append(id).append(", name=")
 				.append(name).append(", introduced=").append(introduced)
 				.append(", discontinued=").append(discontinued)
-				.append(", companyId=").append(companyId).append("]")
-				.toString();
+				.append(", companyId=").append(company).append("]").toString();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
+		result = prime * result
+				+ ((discontinued == null) ? 0 : discontinued.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Computer other = (Computer) obj;
+		if (company == null) {
+			if (other.company != null)
+				return false;
+		} else if (!company.equals(other.company))
+			return false;
+		if (discontinued == null) {
+			if (other.discontinued != null)
+				return false;
+		} else if (!discontinued.equals(other.discontinued))
+			return false;
+		if (id != other.id)
+			return false;
+		if (introduced == null) {
+			if (other.introduced != null)
+				return false;
+		} else if (!introduced.equals(other.introduced))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	public static class ComputerBuilder {
+		private long id;
+		private String name;
+		private LocalDateTime introduced;
+		private LocalDateTime discontinued;
+		private Company company;
+
+		public ComputerBuilder() {
+			this.id = 0;
+			this.name = null;
+			this.introduced = null;
+			this.discontinued = null;
+			this.company = null;
+		}
+
+		public ComputerBuilder id(final long newId) {
+			this.id = newId;
+			return this;
+		}
+
+		public ComputerBuilder name(final String newName) {
+			this.name = newName;
+			return this;
+		}
+
+		public ComputerBuilder introduced(final LocalDateTime newIntroduced) {
+			this.introduced = newIntroduced;
+			return this;
+		}
+
+		public ComputerBuilder discontinued(final LocalDateTime newDiscontinued) {
+			this.discontinued = newDiscontinued;
+			return this;
+		}
+		public ComputerBuilder company(final Company company) {
+			this.company = new Company(company.getId(), company.getName());
+			return this;
+		}
+		public Computer build() {
+			return new Computer(id, name, introduced, discontinued, company);
+		}
+	}
+
 }
