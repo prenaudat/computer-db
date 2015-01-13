@@ -185,7 +185,6 @@ public enum ComputerDAO {
 			stmt.setTimestamp(2, introduced);
 			stmt.setTimestamp(3, discontinued);
 			stmt.setLong(4, companyId);
-			stmt.executeQuery();
 			stmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
