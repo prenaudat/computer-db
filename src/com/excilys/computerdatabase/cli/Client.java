@@ -7,11 +7,17 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.computerdatabase.dao.CompanyDAO;
-import com.excilys.computerdatabase.dao.ComputerDAO;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.service.CompanyDBService;
+import com.excilys.computerdatabase.service.ComputerDBService;
 
+/**
+ * @author paulr_000
+ *
+ */
 public class Client {
+	private ComputerDBService computerDBService;
+	private CompanyDBService companyDBService;
 	private int pageSize = 10;
 	private int currentComputerPageIndex = 0;
 	private int currentCompanyPageIndex = 0;
@@ -22,15 +28,21 @@ public class Client {
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size";
 
+	/**
+	 * @throws SQLException
+	 */
 	public void getComputerList() throws SQLException {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(ComputerDAO.getInstance().getComputerList(
+			System.out.println(computerDBService.getComputerList(
 					currentComputerPageIndex, pageSize));
 			innerLoop = getComputerListMenu();
 		}
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void getComputerById() throws SQLException {
 		Boolean innerLoop = true;
 		while (innerLoop) {
@@ -38,8 +50,7 @@ public class Client {
 			try {
 				final int id = sc.nextInt();
 				sc.nextLine();
-				System.out.println(ComputerDAO.getInstance()
-						.getComputerById(id));
+				System.out.println(computerDBService.getComputerById(id));
 				innerLoop = getComputerMenu(id);
 			} catch (InputMismatchException e) {
 				System.out.println("Wrong kind of input!");
@@ -48,11 +59,16 @@ public class Client {
 		}
 	}
 
-	public void deleteComputerById(int id) throws SQLException {
+	/**
+	 * @param id
+	 * @throws SQLException
+	 */
+	public void deleteComputer() throws SQLException {
 		Boolean idValidation = true;
+		int id=0;
 		while (idValidation) {
 			System.out
-					.println("Enter id of computer would you like to delete?");
+			.println("Enter id of computer would you like to delete?");
 			System.out.println("Id of computer to update?");
 			try {
 				id = sc.nextInt();
@@ -62,27 +78,31 @@ public class Client {
 				System.out.println("Wrong kind of input!");
 				sc.nextLine();
 			}
-		}
-		if (!(id < 0 || id > ComputerDAO.getInstance().count())) {
-		ComputerDAO.getInstance().remove(id);
-		}else{
-			System.out.println("Corresponding computer does not exist. Please enter valid ID.");
-		}
 
+			if (!(id <= 0 || id > computerDBService.count())) {
+				System.out.println("Computer has been deleted.");
+				computerDBService.remove(id);
+			}else{
+				System.out.println("Corresponding computer does not exist. Please enter valid ID.");
+			}
+		}
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void updateComputer() throws SQLException {
 		Boolean innerLoop = true;
 		while (innerLoop) {
 			System.out
-					.println("A) List computers \nB) Id of computer to update");
+			.println("A) List computers \nB) Id of computer to update");
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				Boolean displayLoop = true;
 				while (displayLoop) {
 					System.out
-							.println(ComputerDAO.getInstance().getComputerList(
-									currentComputerPageIndex, pageSize));
+					.println(computerDBService.getComputerList(
+							currentComputerPageIndex, pageSize));
 					displayLoop = getComputerListMenu();
 				}
 				break;
@@ -106,9 +126,9 @@ public class Client {
 							sc.nextLine();
 						}
 					}
-					if (!(id < 0 || id > ComputerDAO.getInstance().count())) {
+					if (!(id < 0 || id > computerDBService.count())) {
 						Boolean creationLoop = true;
-						Computer c = ComputerDAO.getInstance().getComputerById(
+						Computer c = computerDBService.getComputerById(
 								id);
 						while (creationLoop) {
 							System.out.println("Current name is : "
@@ -119,16 +139,16 @@ public class Client {
 								creationLoop = false;
 							} else {
 								System.out
-										.println("Please enter non null name");
+								.println("Please enter non null name");
 							}
 
 							creationLoop = true;
 							while (creationLoop) {
 								System.out
-										.println("Current introduction date is : "
-												+ c.getIntroduced());
+								.println("Current introduction date is : "
+										+ c.getIntroduced());
 								System.out
-										.println("New introduction year? Format : YYYY-MM-DD");
+								.println("New introduction year? Format : YYYY-MM-DD");
 								String introduced = sc.nextLine();
 								try {
 									introducedDate = Timestamp
@@ -138,16 +158,16 @@ public class Client {
 									creationLoop = false;
 								} catch (DateTimeParseException e) {
 									System.out
-											.println("Invalid date Format, please try again");
+									.println("Invalid date Format, please try again");
 								}
 							}
 							creationLoop = true;
 							while (creationLoop) {
 								System.out
-										.println("Current discontinuation date is : "
-												+ c.getDiscontinued());
+								.println("Current discontinuation date is : "
+										+ c.getDiscontinued());
 								System.out
-										.println("New discontinuation year? Format : YYYY-MM-DD");
+								.println("New discontinuation year? Format : YYYY-MM-DD");
 								String discontinued = sc.nextLine();
 								try {
 									discontinuedDate = Timestamp
@@ -157,7 +177,7 @@ public class Client {
 									creationLoop = false;
 								} catch (DateTimeParseException e) {
 									System.out
-											.println("Invalid date Format, please try again");
+									.println("Invalid date Format, please try again");
 								}
 							}
 							creationLoop = true;
@@ -165,19 +185,19 @@ public class Client {
 								System.out.println("Current CompanyId is "
 										+ c.getCompanyId());
 								System.out
-										.println("A) Show company names B) Skip");
+								.println("A) Show company names B) Skip");
 								switch (sc.nextLine().toLowerCase()) {
 								case "a":
 									getCompanyList();
 									System.out
-											.println("What is the company ID?");
+									.println("What is the company ID?");
 									try {
 										cid = sc.nextInt();
 										sc.nextLine();
 										creationLoop = false;
 									} catch (InputMismatchException e) {
 										System.out
-												.println("Wrong kind of input!");
+										.println("Wrong kind of input!");
 									}
 
 									break;
@@ -191,7 +211,7 @@ public class Client {
 							}
 
 						}
-						ComputerDAO.getInstance().updateComputer(id, name,
+						computerDBService.updateComputer(id, name,
 								introducedDate, discontinuedDate, cid);
 						innerInnerLoop = false;
 						innerLoop = false;
@@ -204,6 +224,9 @@ public class Client {
 		}
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void createComputer() throws SQLException {
 		Boolean innerLoop = true;
 		Timestamp discontinuedDate = null;
@@ -217,7 +240,7 @@ public class Client {
 			innerLoop = true;
 			while (innerLoop) {
 				System.out
-						.println("What year was this computer introduced? Format : YYYY-MM-DD");
+				.println("What year was this computer introduced? Format : YYYY-MM-DD");
 				String introduced = sc.nextLine();
 				try {
 					introducedDate = Timestamp.valueOf(LocalDate.parse(
@@ -230,7 +253,7 @@ public class Client {
 			innerLoop = true;
 			while (innerLoop) {
 				System.out
-						.println("What year was this computer discontinued? Format : YYYY-MM-DD");
+				.println("What year was this computer discontinued? Format : YYYY-MM-DD");
 				String introduced = sc.nextLine();
 				try {
 					discontinuedDate = Timestamp.valueOf(LocalDate.parse(
@@ -266,17 +289,20 @@ public class Client {
 					break;
 				}
 			}
-			ComputerDAO.getInstance().createComputer(name, introducedDate,
-					discontinuedDate, cid);
+			computerDBService.createComputer(name, introducedDate,discontinuedDate, cid);
 		}
 	}
 
+	/**
+	 * @param index
+	 * @return
+	 */
 	private Boolean getComputerMenu(int index) {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
 		while (innerLoop) {
 			System.out
-					.println("A) Return to previous menu \nB) New detailed computer view \nC) Edit");
+			.println("A) Return to previous menu \nB) New detailed computer view \nC) Edit");
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				innerLoop = false;
@@ -298,6 +324,10 @@ public class Client {
 		return outerLoop;
 	}
 
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
 	private Boolean getComputerListMenu() throws SQLException {
 		Boolean innerLoop = true;
 		boolean outerLoop = true;
@@ -337,23 +367,37 @@ public class Client {
 		return outerLoop;
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void getComputerCount() throws SQLException {
-		System.out.println(ComputerDAO.getInstance().count());
+		System.out.println(computerDBService.count());
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void getCompanyCount() throws SQLException {
-		System.out.println(CompanyDAO.getInstance().count());
+		System.out.println(companyDBService.count());
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void getCompanyList() throws SQLException {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(CompanyDAO.getInstance().getCompanyList(
+			System.out.println(companyDBService.getCompanyList(
 					currentCompanyPageIndex, pageSize));
 			innerLoop = getCompanyListMenu(currentCompanyPageIndex);
 		}
 	}
 
+	/**
+	 * @param index
+	 * @return
+	 * @throws SQLException
+	 */
 	private Boolean getCompanyListMenu(int index) throws SQLException {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
@@ -391,6 +435,9 @@ public class Client {
 		return outerLoop;
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void changePageSize() throws SQLException {
 		boolean innerLoop = true;
 		while (innerLoop) {
@@ -411,6 +458,10 @@ public class Client {
 		}
 	}
 
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
 	public Boolean getPageSizeMenu() throws SQLException {
 		boolean innerLoop = true;
 		boolean upperLoop = false;
@@ -435,8 +486,10 @@ public class Client {
 	}
 
 	public void init() throws SQLException {
-		computerCount = ComputerDAO.getInstance().count();
-		companyCount = CompanyDAO.getInstance().count();
+		computerDBService = new ComputerDBService();
+		companyDBService= new CompanyDBService();
+		computerCount = computerDBService.count();
+		companyCount = companyDBService.count();
 		System.out.println("Welcome to Computer-DB. There are currently "
 				+ computerCount + " computers and " + companyCount
 				+ " companies");
@@ -445,6 +498,9 @@ public class Client {
 		mainMenu();
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public void mainMenu() throws SQLException {
 		while (loop) {
 			System.out.println(MAIN_MENU);
@@ -465,7 +521,7 @@ public class Client {
 				updateComputer();
 				break;
 			case "f":
-				System.out.println("you entered A");
+				deleteComputer();
 				break;
 			case "g":
 				changePageSize();
@@ -480,10 +536,17 @@ public class Client {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void fail() {
 		System.out.println(FAIL);
 	}
 
+	/**
+	 * @param args
+	 * @throws SQLException
+	 */
 	public static void main(String[] args) throws SQLException {
 		Client x = new Client();
 		x.init();

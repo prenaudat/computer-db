@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 
 import com.sun.istack.internal.NotNull;
 
+/**
+ * @author paulr_000
+ *
+ */
 public class Computer {
 	// Instance variables
 	@NotNull
@@ -16,46 +20,83 @@ public class Computer {
 	private long companyId;
 
 	// Behavior : getters and setter
+	/**
+	 * @return
+	 */
 	public long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 */
 	public LocalDateTime getIntroduced() {
 		return introduced;
 	}
 
+	/**
+	 * @param introduced
+	 */
 	public void setIntroduced(LocalDateTime introduced) {
 		this.introduced = introduced;
 	}
 
+	/**
+	 * @return
+	 */
 	public LocalDateTime getDiscontinued() {
 		return discontinued;
 	}
 
+	/**
+	 * @param discontinued
+	 */
 	public void setDiscontinued(LocalDateTime discontinued) {
 		this.discontinued = discontinued;
 	}
 
+	/**
+	 * @return
+	 */
 	public long getCompanyId() {
 		return companyId;
 	}
 
+	/**
+	 * @param companyId
+	 */
 	public void setCompanyId(long companyId) {
 		this.companyId = companyId;
 	}
 
+	/**
+	 * @param id
+	 * @param name
+	 * @param introduced
+	 * @param discontinued
+	 * @param companyId
+	 */
 	public Computer(long id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, long companyId) {
 		super();
