@@ -227,6 +227,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Creation loop for a computer. Loops back every step
 	public void createComputer() throws SQLException {
 		Boolean innerLoop = true;
 		Timestamp discontinuedDate = null;
@@ -294,9 +295,10 @@ public class Client {
 	}
 
 	/**
-	 * @param index
+	 * @param index : returns computer with corresponding index in database
 	 * @return
 	 */
+	//Gets menu when displaying a computer. User can choose either return to previous menu or visualize a new computer
 	private Boolean getComputerMenu(int index) {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
@@ -325,9 +327,10 @@ public class Client {
 	}
 
 	/**
-	 * @return
+	 * @return Boolean to whether or not to exit outer loop
 	 * @throws SQLException
 	 */
+	//Displays menu when showing computer List. User can change pages or return to previous menu
 	private Boolean getComputerListMenu() throws SQLException {
 		Boolean innerLoop = true;
 		boolean outerLoop = true;
@@ -370,6 +373,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Get count of computers in DB
 	public void getComputerCount() throws SQLException {
 		System.out.println(computerDBService.count());
 	}
@@ -377,6 +381,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Display of companies in DB
 	public void getCompanyCount() throws SQLException {
 		System.out.println(companyDBService.count());
 	}
@@ -384,6 +389,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Returns list of companies
 	public void getCompanyList() throws SQLException {
 		Boolean innerLoop = true;
 		while (innerLoop) {
@@ -398,6 +404,7 @@ public class Client {
 	 * @return
 	 * @throws SQLException
 	 */
+	//Returns menu of company List. User can either return to previous menu or change page.
 	private Boolean getCompanyListMenu(int index) throws SQLException {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
@@ -438,6 +445,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Change page size. Requires int
 	public void changePageSize() throws SQLException {
 		boolean innerLoop = true;
 		while (innerLoop) {
@@ -462,6 +470,7 @@ public class Client {
 	 * @return
 	 * @throws SQLException
 	 */
+	//Returns menu after changing size
 	public Boolean getPageSizeMenu() throws SQLException {
 		boolean innerLoop = true;
 		boolean upperLoop = false;
@@ -485,6 +494,7 @@ public class Client {
 		return upperLoop;
 	}
 
+	//instantiates dbservices, associated counters and . Displays greeting message and 
 	public void init() throws SQLException {
 		computerDBService = new ComputerDBService();
 		companyDBService= new CompanyDBService();
@@ -501,6 +511,7 @@ public class Client {
 	/**
 	 * @throws SQLException
 	 */
+	//Main menu loop. Displays options. No quit option, be cause lets be honest, who would ever want to leave this?
 	public void mainMenu() throws SQLException {
 		while (loop) {
 			System.out.println(MAIN_MENU);
@@ -539,6 +550,7 @@ public class Client {
 	/**
 	 * 
 	 */
+	//TLDR;
 	public void fail() {
 		System.out.println(FAIL);
 	}
@@ -547,6 +559,7 @@ public class Client {
 	 * @param args
 	 * @throws SQLException
 	 */
+	//This is where it runs 
 	public static void main(String[] args) throws SQLException {
 		Client x = new Client();
 		x.init();

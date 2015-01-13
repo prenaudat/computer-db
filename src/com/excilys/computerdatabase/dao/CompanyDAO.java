@@ -17,7 +17,9 @@ import com.excilys.computerdatabase.model.Company;
  * @author paulr_000
  *
  */
+//Computer Database Access object.. 
 public enum CompanyDAO {
+	//Singleton pattern
 	INSTANCE;
 	/**
 	 * @return
@@ -25,7 +27,7 @@ public enum CompanyDAO {
 	public static CompanyDAO getInstance() {
 		return INSTANCE;
 	}
-
+	//connection params
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String DB_URL = "jdbc:mysql://localhost/computer-database-db";
 	private static final String USER = "admincdb";
@@ -36,6 +38,8 @@ public enum CompanyDAO {
 	 * @param id
 	 * @return
 	 * @throws SQLException
+	 *
+	 *Return one company
 	 */
 	public Company getCompanyById(long id) throws SQLException {
 		Connection conn=null;
@@ -68,6 +72,7 @@ public enum CompanyDAO {
 	 * @return
 	 * @throws SQLException
 	 */
+	
 	public int count() throws SQLException{
 		Connection conn=null;
 		PreparedStatement stmt=null;
