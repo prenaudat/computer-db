@@ -21,6 +21,10 @@ public enum CompanyDAO {
 	// Singleton pattern
 	INSTANCE;
 	static final Logger LOG = LoggerFactory.getLogger(CompanyDAO.class);
+	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
+	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
+	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
+	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 
 	/**
 	 * @return
@@ -29,26 +33,15 @@ public enum CompanyDAO {
 		return INSTANCE;
 	}
 
-	// connection params
-	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost/computer-database-db";
-	private static final String USER = "admincdb";
-	private static final String PASS = "qwerty1234";
-	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
-	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
-	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
-	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 	/**
 	 * @param id
-	 * @return
-	 *             Return one company
+	 * @return Return one company
 	 */
 	public Company get(long id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionManager.getInstance().getConnection();
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -57,11 +50,11 @@ public enum CompanyDAO {
 			} else {
 				return null;// Display values
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		} finally {
-			close(stmt, conn);
+			ConnectionManager.close(stmt, conn);
 		}
 
 	}
@@ -75,8 +68,7 @@ public enum CompanyDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = ConnectionManager.getInstance().getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
 			stmt.setInt(1, currentIndex);
 			stmt.setInt(2, pageSize);
@@ -88,11 +80,11 @@ public enum CompanyDAO {
 			}
 			return companyList;
 
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		} finally {
-			close(stmt, conn);
+			ConnectionManager.close(stmt, conn);
 		}
 
 	}
@@ -104,18 +96,15 @@ public enum CompanyDAO {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn
-					.prepareStatement(INSERT_STMT);
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(INSERT_STMT);
 			stmt.setString(1, name);
 			stmt.executeUpdate();
 
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			close(stmt, conn);
-
+			ConnectionManager.close(stmt, conn);
 		}
 	}
 
@@ -126,33 +115,17 @@ public enum CompanyDAO {
 	public void update(long id, String name) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-
 		try {
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn
-					.prepareStatement(UPDATE_STMT);
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, name);
 			stmt.setLong(2, id);
 			stmt.executeUpdate();
 
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(stmt, conn);
-		}
-	}
-
-	public void close(PreparedStatement stmt, Connection conn) {
-		try {
-			if (stmt != null) {
-				stmt.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(stmt, conn);
 		}
 	}
 

@@ -52,6 +52,7 @@ public class Client {
 			LOG.info("Id queried :" + id);
 			detailedLoop = !Validator.isValidNumber(id);
 			if (!detailedLoop) {
+				System.out.println(computerDBService.get(Integer.parseInt(id)));
 				detailedLoop = getComputerMenu(Integer.parseInt(id));
 			}
 		}
@@ -382,7 +383,6 @@ public class Client {
 	}
 
 	public static void main(final String[] args) {
-		//
 		Client x = new Client();
 		x.init();
 	}
