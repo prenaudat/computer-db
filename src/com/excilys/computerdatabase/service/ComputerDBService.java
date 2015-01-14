@@ -16,9 +16,9 @@ public class ComputerDBService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getComputerList(final int currentComputerPageIndex,
+	public List<Computer> getList(final int currentComputerPageIndex,
 			final int pageSize) {
-		return ComputerDAO.getInstance().getComputerList(
+		return ComputerDAO.getInstance().getList(
 				currentComputerPageIndex, pageSize);
 	}
 
@@ -27,8 +27,8 @@ public class ComputerDBService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Computer getComputerById(final long id) {
-		return ComputerDAO.getInstance().getComputerById(id);
+	public Computer get(final long id) {
+		return ComputerDAO.getInstance().get(id);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ComputerDBService {
 	 * @param cid
 	 * @throws SQLException
 	 */
-	public void updateComputer(final Computer computer) {
+	public void update(final Computer computer) {
 		ComputerDAO.getInstance().updateComputer(computer);
 	}
 

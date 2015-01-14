@@ -18,7 +18,7 @@ public class CompanyDBService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Company> getCompanyList(int currentCompanyPageIndex, int pageSize) throws SQLException{
-		return CompanyDAO.getInstance().getCompanyList(currentCompanyPageIndex, pageSize);
+	public List<Company> getList(int currentCompanyPageIndex, int pageSize){
+		return CompanyDAO.getInstance().getList(currentCompanyPageIndex, pageSize);
 	}
 }

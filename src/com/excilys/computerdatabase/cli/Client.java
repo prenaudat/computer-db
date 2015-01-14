@@ -1,17 +1,17 @@
 package com.excilys.computerdatabase.cli;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.service.CompanyDBService;
 import com.excilys.computerdatabase.service.ComputerDBService;
+import com.excilys.computerdatabase.validator.Validator;
 
 /**
  * @author paulr_000
@@ -23,276 +23,179 @@ public class Client {
 	private int pageSize = 10;
 	private int currentComputerPageIndex = 0;
 	private int currentCompanyPageIndex = 0;
-	private int computerCount;
-	private int companyCount;
 	private Boolean loop;
 	private Scanner sc;
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size";
+	static final Logger LOG = LoggerFactory.getLogger(Client.class);
 
 	/**
-	 * @throws SQLException
+	 * 
 	 */
-	public void getComputerList() throws SQLException {
+	public void getComputerList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(computerDBService.getComputerList(
+			System.out.println(computerDBService.getList(
 					currentComputerPageIndex, pageSize));
 			innerLoop = getComputerListMenu();
 		}
 	}
 
 	/**
-	 * @throws SQLException
+	 * 
 	 */
-	public void getComputerById() throws SQLException {
-		Boolean innerLoop = true;
-		while (innerLoop) {
+	public void getComputerById() {
+		Boolean detailedLoop = true;
+		while (detailedLoop) {
 			System.out.println("Id of computer to visualize?");
-			try {
-				final int id = sc.nextInt();
-				sc.nextLine();
-				System.out.println(computerDBService.getComputerById(id));
-				innerLoop = getComputerMenu(id);
-			} catch (InputMismatchException e) {
-				System.out.println("Wrong kind of input!");
-				sc.nextLine();
+			final String id = sc.nextLine();
+			LOG.info("Id queried :" + id);
+			detailedLoop = !Validator.isValidNumber(id);
+			if (!detailedLoop) {
+				detailedLoop = getComputerMenu(Integer.parseInt(id));
 			}
 		}
 	}
 
 	/**
-	 * @param id
-	 * @throws SQLException
+	 * 
 	 */
-	public void deleteComputer() throws SQLException {
-		Boolean idValidation = true;
-		int id = 0;
-		while (idValidation) {
+	public void deleteComputer() {
+		Boolean deleteLoop = true;
+		String id = "";
+		while (deleteLoop) {
 			System.out
 					.println("Enter id of computer would you like to delete?");
-			System.out.println("Id of computer to update?");
-			try {
-				id = sc.nextInt();
-				sc.nextLine();
-				idValidation = false;
-			} catch (InputMismatchException e) {
-				System.out.println("Wrong kind of input!");
-				sc.nextLine();
-			}
-			computerDBService.remove(id);
+			id = sc.nextLine();
+			deleteLoop = !Validator.isValidNumber(id);
 		}
+		computerDBService.remove(Long.parseLong(id));
 	}
 
 	/**
-	 * @throws SQLException
+	 * 
 	 */
-	public void updateComputer() throws SQLException {
-		Boolean innerLoop = true;
-		while (innerLoop) {
-			System.out
-					.println("A) List computers \nB) Id of computer to update");
-			switch (sc.nextLine().toLowerCase()) {
-			case "a":
-				Boolean displayLoop = true;
-				while (displayLoop) {
-					System.out.println(computerDBService.getComputerList(
-							currentComputerPageIndex, pageSize));
-					displayLoop = getComputerListMenu();
-				}
-				break;
-			case "b":
-				Boolean innerInnerLoop = true;
-				while (innerInnerLoop) {
-					Boolean idValidation = true;
-					int id = 0;
-					String name = null;
-					LocalDateTime introducedDate = null;
-					LocalDateTime discontinuedDate = null;
-					int cid = 0;
-					while (idValidation) {
-						System.out.println("Id of computer to update?");
-						try {
-							id = sc.nextInt();
-							sc.nextLine();
-							idValidation = false;
-						} catch (InputMismatchException e) {
-							System.out.println("Wrong kind of input!");
-							sc.nextLine();
-						}
-					}
-					Boolean creationLoop = true;
-					Computer c = computerDBService.getComputerById(id);
-					while (creationLoop) {
-						System.out.println("Current name is : " + c.getName());
-						System.out.println("New name?");
-						name = sc.nextLine();
-						if (name.length() > 0) {
-							creationLoop = false;
-						} else {
-							System.out.println("Please enter non null name");
-						}
-
-						creationLoop = true;
-						while (creationLoop) {
-							System.out
-									.println("Current introduction date is : "
-											+ c.getIntroduced());
-							System.out
-									.println("New introduction year? Format : YYYY-MM-DD");
-							String introduced = sc.nextLine();
-							try {
-								introducedDate = Timestamp.valueOf(
-										LocalDate.parse(introduced)
-												.atStartOfDay())
-										.toLocalDateTime();
-								creationLoop = false;
-							} catch (DateTimeParseException e) {
-								System.out
-										.println("Invalid date Format, please try again");
-							}
-						}
-						creationLoop = true;
-						while (creationLoop) {
-							System.out
-									.println("Current discontinuation date is : "
-											+ c.getDiscontinued());
-							System.out
-									.println("New discontinuation year? Format : YYYY-MM-DD");
-							String discontinued = sc.nextLine();
-							try {
-								discontinuedDate = Timestamp.valueOf(
-										LocalDate.parse(discontinued)
-												.atStartOfDay())
-										.toLocalDateTime();
-								creationLoop = false;
-							} catch (DateTimeParseException e) {
-								System.out
-										.println("Invalid date Format, please try again");
-							}
-						}
-						creationLoop = true;
-						while (creationLoop) {
-							System.out.println("Current CompanyId is "
-									+ c.getCompany().getId());
-							System.out.println("A) Show company names B) Skip");
-							switch (sc.nextLine().toLowerCase()) {
-							case "a":
-								getCompanyList();
-								System.out.println("What is the company ID?");
-								try {
-									cid = sc.nextInt();
-									sc.nextLine();
-									creationLoop = false;
-								} catch (InputMismatchException e) {
-									System.out.println("Wrong kind of input!");
-								}
-
-								break;
-							case "b":
-								creationLoop = false;
-								break;
-							default:
-								fail();
-								break;
-							}
-						}
-
-					}
-					computerDBService
-							.updateComputer(new Computer.ComputerBuilder()
-									.id(id)
-									.name(name)
-									.introduced(introducedDate)
-									.discontinued(discontinuedDate)
-									.company(
-											new Company.CompanyBuilder()
-													.id(cid).build()).build());
-					innerInnerLoop = false;
-					innerLoop = false;
-				}
-				break;
+	public void updateComputer() {
+		System.out.println("A) List computers \nB) Id of computer to update");
+		switch (sc.nextLine().toLowerCase()) {
+		case "a":
+			Boolean displayLoop = true;
+			while (displayLoop) {
+				System.out.println(computerDBService.getList(
+						currentComputerPageIndex, pageSize));
+				displayLoop = getComputerListMenu();
 			}
+			break;
+		case "b":
+			Boolean idValidation = true;
+			String input = "";
+			while (idValidation) {
+				System.out.println("Id of computer to update?");
+				input = sc.nextLine();
+				idValidation = !Validator.isValidNumber(input);
+			}
+			Boolean nameLoop = true;
+			Computer c = computerDBService.get(Long.parseLong(input));
+			while (nameLoop) {
+				System.out.println("Current name is : " + c.getName());
+				System.out.println("New name?");
+				String name = sc.nextLine();
+				nameLoop = !Validator.isValidString(name);
+				if (!nameLoop) {
+					c.setName(name);
+				}
+			}
+			Boolean introducedLoop = true;
+			while (introducedLoop) {
+				System.out.println("Current introduction date is : "
+						+ c.getIntroduced());
+				System.out
+						.println("New introduction year? Format : YYYY-MM-DD");
+				String introduced = sc.nextLine();
+				introducedLoop = !Validator.isValidDate(introduced);
+				if (!introducedLoop) {
+					c.setIntroduced(Timestamp.valueOf(
+							LocalDate.parse(introduced).atStartOfDay())
+							.toLocalDateTime());
+				}
+			}
+			Boolean discontinuedLoop = true;
+			while (discontinuedLoop) {
+				System.out.println("Current introduction date is : "
+						+ c.getIntroduced());
+				System.out
+						.println("New introduction year? Format : YYYY-MM-DD");
+				String discontinued = sc.nextLine();
+				discontinuedLoop = !Validator.isValidDate(discontinued);
+				if (!discontinuedLoop) {
+					c.setDiscontinued(Timestamp.valueOf(
+							LocalDate.parse(discontinued).atStartOfDay())
+							.toLocalDateTime());
+				}
+			}
+			Boolean companyLoop = true;
+			while (companyLoop) {
+				System.out.println("new company ID?");
+				String id = sc.nextLine();
+				companyLoop = !Validator.isValidNumber(id);
+				if (!companyLoop) {
+					c.setCompany(new Company.CompanyBuilder().id(
+							Long.parseLong(id)).build());
+				}
+			}
+			computerDBService.update(c);
+
 		}
+
 	}
 
-	/**
-	 * @throws SQLException
-	 */
 	// Creation loop for a computer. Loops back every step
-	public void createComputer() throws SQLException {
-		Boolean innerLoop = true;
-		LocalDateTime discontinuedDate = null;
-		LocalDateTime introducedDate = null;
-		while (innerLoop) {
-			System.out.println("What is the name of the computer?");
+	public void createComputer() {
+		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+		Boolean nameLoop = true;
+		while (nameLoop) {
+			System.out.println("New name?");
 			String name = sc.nextLine();
-			if (name.length() > 0) {
-				innerLoop = false;
+			nameLoop = !Validator.isValidString(name);
+			if (!nameLoop) {
+				c.name(name);
 			}
-			innerLoop = true;
-			while (innerLoop) {
-				System.out
-						.println("What year was this computer introduced? Format : YYYY-MM-DD");
-				String introduced = sc.nextLine();
-				try {
-					introducedDate = LocalDateTime.parse(introduced);
-					innerLoop = false;
-				} catch (DateTimeParseException e) {
-					System.out.println("Invalid date Format, please try again");
-				}
-			}
-			innerLoop = true;
-			while (innerLoop) {
-				System.out
-						.println("What year was this computer discontinued? Format : YYYY-MM-DD");
-				String introduced = sc.nextLine();
-				try {
-					discontinuedDate = LocalDateTime.parse(introduced);
-					innerLoop = false;
-				} catch (DateTimeParseException e) {
-					System.out.println("Invalid date Format, please try again");
-				}
-			}
-			innerLoop = true;
-			int cid = 0;
-			while (innerLoop) {
-				System.out.println("What is the company id?");
-				System.out.println("A) Show company names B) Skip");
-				switch (sc.nextLine().toLowerCase()) {
-				case "a":
-					getCompanyList();
-					System.out.println("What is the company ID?");
-					try {
-						cid = sc.nextInt();
-						sc.nextLine();
-						innerLoop = false;
-					} catch (InputMismatchException e) {
-						System.out.println("Wrong kind of input!");
-					}
-
-					break;
-				case "b":
-					innerLoop = false;
-					break;
-				default:
-					fail();
-					break;
-				}
-			}
-			computerDBService.save(new Computer.ComputerBuilder()
-					.name(name).introduced(introducedDate)
-					.discontinued(discontinuedDate)
-					.company(new Company.CompanyBuilder().id(cid).build())
-					.build());
 		}
+		Boolean introducedLoop = true;
+		while (introducedLoop) {
+			System.out.println("Introduction year? Format : YYYY-MM-DD");
+			String introduced = sc.nextLine();
+			introducedLoop = !Validator.isValidDate(introduced);
+			if (!introducedLoop) {
+				c.introduced(Timestamp.valueOf(
+						LocalDate.parse(introduced).atStartOfDay())
+						.toLocalDateTime());
+			}
+		}
+		Boolean discontinuedLoop = true;
+		while (discontinuedLoop) {
+			System.out.println("Discontinuation year? Format : YYYY-MM-DD");
+			String discontinued = sc.nextLine();
+			discontinuedLoop = !Validator.isValidDate(discontinued);
+			if (!discontinuedLoop) {
+				c.discontinued(Timestamp.valueOf(
+						LocalDate.parse(discontinued).atStartOfDay())
+						.toLocalDateTime());
+			}
+		}
+		Boolean companyLoop = true;
+		while (companyLoop) {
+			System.out.println("Company ID?");
+			String id = sc.nextLine();
+			companyLoop = !Validator.isValidNumber(id);
+			if (!companyLoop) {
+				c.company(new Company.CompanyBuilder().id(Long.parseLong(id))
+						.build());
+			}
+		}
+		computerDBService.save(c.build());
 	}
 
-	/**
-	 * @param index
-	 *            : returns computer with corresponding index in database
-	 * @return
-	 */
 	// Gets menu when displaying a computer. User can choose either return to
 	// previous menu or visualize a new computer
 	private Boolean getComputerMenu(int index) {
@@ -322,13 +225,9 @@ public class Client {
 		return outerLoop;
 	}
 
-	/**
-	 * @return Boolean to whether or not to exit outer loop
-	 * @throws SQLException
-	 */
 	// Displays menu when showing computer List. User can change pages or return
 	// to previous menu
-	private Boolean getComputerListMenu() throws SQLException {
+	private Boolean getComputerListMenu() {
 		Boolean innerLoop = true;
 		boolean outerLoop = true;
 		while (innerLoop) {
@@ -367,27 +266,19 @@ public class Client {
 		return outerLoop;
 	}
 
-	/**
-	 * @throws SQLException
-	 */
 	// Returns list of companies
-	public void getCompanyList() throws SQLException {
+	public void getCompanyList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(companyDBService.getCompanyList(
+			System.out.println(companyDBService.getList(
 					currentCompanyPageIndex, pageSize));
 			innerLoop = getCompanyListMenu(currentCompanyPageIndex);
 		}
 	}
 
-	/**
-	 * @param index
-	 * @return
-	 * @throws SQLException
-	 */
 	// Returns menu of company List. User can either return to previous menu or
 	// change page.
-	private Boolean getCompanyListMenu(int index) throws SQLException {
+	private Boolean getCompanyListMenu(int index) {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
 		while (innerLoop) {
@@ -424,61 +315,23 @@ public class Client {
 		return outerLoop;
 	}
 
-	/**
-	 * @throws SQLException
-	 */
 	// Change page size. Requires int
-	public void changePageSize() throws SQLException {
-		boolean innerLoop = true;
-		while (innerLoop) {
+	public void changePageSize() {
+		boolean pageSizeLoop = true;
+		while (pageSizeLoop) {
 			System.out.println("Current page size is " + pageSize
 					+ ".\nChange page size to :");
-			try {
-				pageSize = sc.nextInt();
-				sc.nextLine();
-				System.out.println("Page size successfully changed to "
-						+ pageSize);
-				innerLoop = getPageSizeMenu();
-
-			} catch (InputMismatchException e) {
-				System.out.println("Wrong kind of input!");
-				sc.nextLine();
-				getPageSizeMenu();
+			String input = sc.nextLine();
+			pageSizeLoop = !Validator.isValidNumber(input);
+			if (!pageSizeLoop) {
+				pageSize = Integer.parseInt(input);
+				System.out.printf("Page size changed to %d \n", pageSize);
 			}
 		}
 	}
 
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	// Returns menu after changing size
-	public Boolean getPageSizeMenu() throws SQLException {
-		boolean innerLoop = true;
-		boolean upperLoop = false;
-		while (innerLoop) {
-			System.out.println("A) Return to previous menu");
-			System.out.println("B) Change page size");
-			switch (sc.nextLine().toLowerCase()) {
-			case "a":
-				innerLoop = false;
-				upperLoop = true;
-				break;
-			case "b":
-				innerLoop = false;
-				upperLoop = true;
-				break;
-			default:
-				innerLoop = true;
-				upperLoop = false;
-			}
-		}
-		return upperLoop;
-	}
-
-	// instantiates dbservices, associated counters and . Displays greeting
-	// message and
-	public void init() throws SQLException {
+	// instantiates DBservices, associated counters and
+	public void init() {
 		computerDBService = new ComputerDBService();
 		companyDBService = new CompanyDBService();
 		sc = new Scanner(System.in);
@@ -486,12 +339,9 @@ public class Client {
 		mainMenu();
 	}
 
-	/**
-	 * @throws SQLException
-	 */
 	// Main menu loop. Displays options. No quit option, be cause lets be
 	// honest, who would ever want to leave this?
-	public void mainMenu() throws SQLException {
+	public void mainMenu() {
 		while (loop) {
 			System.out.println(MAIN_MENU);
 			switch (sc.nextLine().toLowerCase()) {
@@ -526,24 +376,13 @@ public class Client {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	// TLDR;
 	public void fail() {
 		System.out.println(FAIL);
 	}
 
-	public void validateId(int id) {
-
-	}
-
-	/**
-	 * @param args
-	 * @throws SQLException
-	 */
-	// This is where it runs
-	public static void main(String[] args) throws SQLException {
+	public static void main(final String[] args) {
+		//
 		Client x = new Client();
 		x.init();
 	}

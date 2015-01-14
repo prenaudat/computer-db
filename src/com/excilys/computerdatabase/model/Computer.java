@@ -50,7 +50,9 @@ public class Computer {
 		return introduced;
 	}
 
-	/**newDiscontinued
+	/**
+	 * newDiscontinued
+	 * 
 	 * @param introduced
 	 */
 	public void setIntroduced(LocalDateTime introduced) {
@@ -108,8 +110,8 @@ public class Computer {
 	public String toString() {
 		return new StringBuilder("Computer [id=").append(id).append(", name=")
 				.append(name).append(", introduced=").append(introduced)
-				.append(", discontinued=").append(discontinued)
-				.append(", companyId=").append(company).append("]").toString();
+				.append(", discontinued=").append(discontinued).append(company)
+				.append("]").toString();
 	}
 
 	@Override
@@ -194,10 +196,12 @@ public class Computer {
 			this.discontinued = newDiscontinued;
 			return this;
 		}
+
 		public ComputerBuilder company(final Company company) {
 			this.company = new Company(company.getId(), company.getName());
 			return this;
 		}
+
 		public Computer build() {
 			return new Computer(id, name, introduced, discontinued, company);
 		}
