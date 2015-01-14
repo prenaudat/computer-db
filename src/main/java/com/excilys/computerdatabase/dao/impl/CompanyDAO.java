@@ -1,15 +1,12 @@
 package com.excilys.computerdatabase.dao.impl;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
@@ -44,7 +41,7 @@ public enum CompanyDAO implements CompanyDAOInterface{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = ConnectionManager.getInstance().getConnection();
+			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -71,7 +68,7 @@ public enum CompanyDAO implements CompanyDAOInterface{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = ConnectionManager.getInstance().getConnection();
+			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
 			stmt.setInt(1, currentIndex);
 			stmt.setInt(2, pageSize);
@@ -98,7 +95,7 @@ public enum CompanyDAO implements CompanyDAOInterface{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = ConnectionManager.getInstance().getConnection();
+			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT);
 			stmt.setString(1, name);
 			stmt.executeUpdate();
@@ -119,7 +116,7 @@ public enum CompanyDAO implements CompanyDAOInterface{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = ConnectionManager.getInstance().getConnection();
+			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, name);
 			stmt.setLong(2, id);

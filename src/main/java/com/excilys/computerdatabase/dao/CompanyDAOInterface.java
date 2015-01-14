@@ -10,7 +10,4 @@ public interface CompanyDAOInterface {
 	public List<Company> getList(int currentIndex, int pageSize);
 	public void save(String name);
 	public void update(long id, String name);
-
-
-
 }
