@@ -1,7 +1,6 @@
-package com.excilys.computerdatabase.dao;
+package com.excilys.computerdatabase.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,22 +10,26 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerdatabase.dao.CompanyDAOInterface;
+import com.excilys.computerdatabase.dao.ConnectionManager;
+import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Company;
 
 /**
  * @author paulr_000 d
  */
 // Computer Database Access object..
-public enum CompanyDAO {
+public enum CompanyDAO implements CompanyDAOInterface{
 	// Singleton pattern
 	INSTANCE;
-	static final Logger LOG = LoggerFactory.getLogger(CompanyDAO.class);
 	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
 	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
-
+	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 	/**
+	 * Get instance of CompanyDAO
 	 * @return
 	 */
 	public static CompanyDAO getInstance() {
@@ -51,10 +54,10 @@ public enum CompanyDAO {
 				return null;// Display values
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			logger.warn("Error selecting Company  id=[ %d=",id);
+			throw new PersistenceException();
 		} finally {
-			ConnectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn);
 		}
 
 	}
@@ -79,12 +82,11 @@ public enum CompanyDAO {
 						.getString("name")));
 			}
 			return companyList;
-
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			logger.warn("Couldn't select list of companies: %d-%d",currentIndex,pageSize);
+			throw new PersistenceException();
 		} finally {
-			ConnectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn);
 		}
 
 	}
@@ -102,9 +104,10 @@ public enum CompanyDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn("Couldn't save company: %s",name);
+			throw new PersistenceException();
 		} finally {
-			ConnectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn);
 		}
 	}
 
@@ -123,9 +126,10 @@ public enum CompanyDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn("Couldn't update company with id=%d",id);
+			throw new PersistenceException();
 		} finally {
-			ConnectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn);
 		}
 	}
 

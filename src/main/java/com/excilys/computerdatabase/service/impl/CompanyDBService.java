@@ -1,10 +1,10 @@
-package com.excilys.computerdatabase.service;
+package com.excilys.computerdatabase.service.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.computerdatabase.dao.CompanyDAO;
+import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
 
 /**

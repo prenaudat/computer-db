@@ -9,27 +9,31 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.service.CompanyDBService;
-import com.excilys.computerdatabase.service.ComputerDBService;
+import com.excilys.computerdatabase.service.impl.CompanyDBService;
+import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
 
 /**
- * @author paulr_000
+ * @author excilys
  *
  */
 public class Client {
+	//Database Services
 	private ComputerDBService computerDBService;
 	private CompanyDBService companyDBService;
-	private int pageSize = 10;
+	//Page index for Company and Computer Directory
 	private int currentComputerPageIndex = 0;
 	private int currentCompanyPageIndex = 0;
+	private int pageSize = 10;
 	private Boolean loop;
 	private Scanner sc;
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size";
+	//Logger for this class
 	static final Logger LOG = LoggerFactory.getLogger(Client.class);
 
 	/**
+	 * Display page of Computers and calls Computer Menu
 	 * 
 	 */
 	public void getComputerList() {
@@ -42,6 +46,7 @@ public class Client {
 	}
 
 	/**
+	 * Display a computer identified by ID if it is valid.
 	 * 
 	 */
 	public void getComputerById() {
@@ -59,6 +64,7 @@ public class Client {
 	}
 
 	/**
+	 * Query ID of computer to be deleted. If valid, delete computer.
 	 * 
 	 */
 	public void deleteComputer() {
@@ -74,6 +80,7 @@ public class Client {
 	}
 
 	/**
+	 * Update a computer identified by its ID. Loop back every step if invalid.
 	 * 
 	 */
 	public void updateComputer() {
@@ -150,7 +157,11 @@ public class Client {
 
 	}
 
-	// Creation loop for a computer. Loops back every step
+	
+	/**
+	 *Create computer
+	 * 
+	 */
 	public void createComputer() {
 		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
 		Boolean nameLoop = true;
@@ -197,8 +208,12 @@ public class Client {
 		computerDBService.save(c.build());
 	}
 
-	// Gets menu when displaying a computer. User can choose either return to
-	// previous menu or visualize a new computer
+
+	/**
+	 * Displays menu after a computer is displayed
+	 * @param index
+	 * @return
+	 */
 	private Boolean getComputerMenu(int index) {
 		Boolean innerLoop = true;
 		Boolean outerLoop = false;
@@ -226,8 +241,11 @@ public class Client {
 		return outerLoop;
 	}
 
-	// Displays menu when showing computer List. User can change pages or return
-	// to previous menu
+ 
+	/**
+	 * Displays menu after displaying computer List. User can change pages or return to previous menu
+	 * @return
+	 */
 	private Boolean getComputerListMenu() {
 		Boolean innerLoop = true;
 		boolean outerLoop = true;
@@ -267,7 +285,11 @@ public class Client {
 		return outerLoop;
 	}
 
-	// Returns list of companies
+	
+	/**
+	 * Returns list of companies
+	 * 
+	 */
 	public void getCompanyList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
@@ -316,7 +338,10 @@ public class Client {
 		return outerLoop;
 	}
 
-	// Change page size. Requires int
+	
+	/**
+	 * Display page size and modify.
+	 */
 	public void changePageSize() {
 		boolean pageSizeLoop = true;
 		while (pageSizeLoop) {
@@ -331,7 +356,10 @@ public class Client {
 		}
 	}
 
-	// instantiates DBservices, associated counters and
+	
+	/**
+	 *Instantiate DBservices, associated counters 
+	 */
 	public void init() {
 		computerDBService = new ComputerDBService();
 		companyDBService = new CompanyDBService();
@@ -340,8 +368,10 @@ public class Client {
 		mainMenu();
 	}
 
-	// Main menu loop. Displays options. No quit option, be cause lets be
-	// honest, who would ever want to leave this?
+
+	/**
+	 * Display main menu loop 
+	 */
 	public void mainMenu() {
 		while (loop) {
 			System.out.println(MAIN_MENU);
@@ -377,14 +407,20 @@ public class Client {
 		}
 	}
 
-	// TLDR;
+	/**
+	 * Display failure message
+	 */
 	public void fail() {
 		System.out.println(FAIL);
 	}
 
+	/**
+	 * Execution start point: Instantiate Client and start it. 
+	 * @param args  
+	 */
 	public static void main(final String[] args) {
-		Client x = new Client();
-		x.init();
+		Client client = new Client();
+		client.init();
 		
 	}
 
