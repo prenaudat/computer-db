@@ -48,7 +48,7 @@ public class ComputerDBService implements ComputerDBServiceInterface{
 	 * @throws SQLException
 	 */
 	public void update(final Computer computer) {
-		ComputerDAO.getInstance().updateComputer(computer);
+		ComputerDAO.getInstance().update(computer);
 	}
 
 	public void save(final Computer computer) {
