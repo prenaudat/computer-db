@@ -24,7 +24,7 @@ public interface ComputerDAOInterface {
 	/**
 	 * @param computer
 	 */
-	public void save(final Computer computer);
+	public int save(final Computer computer);
 	
 	/**
 	 * @param currentIndex

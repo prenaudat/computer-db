@@ -1,21 +1,17 @@
-package com.excilys.computerdatabase.dao;
+package test.excilys.computerdatabase.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import test.excilys.computerdatabase.dao.ConnectionManagerTest;
-
 import com.excilys.computerdatabase.cli.Client;
 import com.excilys.computerdatabase.exception.PersistenceException;
 /**
  * @author excilys
  *Singleton Connection Manager to give and close connections.
  */
-public enum ConnectionManager {
+public enum ConnectionManagerTest {
 	INSTANCE;
 	/**
 	 *JDBC Driver Class name 
@@ -24,11 +20,11 @@ public enum ConnectionManager {
 	/**
 	 * Database URL 
 	 */
-	private static final String DB_URL = "jdbc:mysql://localhost/computer-database-db?zeroDateTimeBehavior=convertToNull";
+	private static final String DB_URL = "jdbc:mysql://localhost/computer-database-db-test?zeroDateTimeBehavior=convertToNull";
 	/**
 	 *Database id 
 	 */
-	private static final String USER = "admincdb";
+	private static final String USER = "admincdb-test";
 	/**
 	 * Database Password
 	 */
@@ -38,7 +34,7 @@ public enum ConnectionManager {
 	/**
 	 * Load JDBC driver and create new ConnectionManager
 	 */
-	private ConnectionManager(){
+	private ConnectionManagerTest(){
 		try{
 		Class.forName(JDBC_DRIVER);
 		} catch(ClassNotFoundException e){
@@ -49,7 +45,7 @@ public enum ConnectionManager {
 	 * Access instance of ConnectionManager
 	 *@return Instance of ConnectionManager
 	 */
-	public static ConnectionManager getInstance() {
+	public static ConnectionManagerTest getInstance() {
 		return 	INSTANCE;
 	}
 	/**

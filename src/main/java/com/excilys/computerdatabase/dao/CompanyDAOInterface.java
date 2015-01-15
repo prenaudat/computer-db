@@ -8,6 +8,6 @@ import com.excilys.computerdatabase.model.Computer;
 public interface CompanyDAOInterface {
 	public Company get(long id);
 	public List<Company> getList(int currentIndex, int pageSize);
-	public void save(String name);
+	public int save(String name);
 	public void update(long id, String name);
 }

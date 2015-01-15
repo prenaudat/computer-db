@@ -1,8 +1,9 @@
-package com.excilys.computerdatabase.service;
+package test.excilys.computerdatabase.service;
 
 import java.util.List;
 
 import com.excilys.computerdatabase.model.Company;
+import com.excilys.computerdatabase.service.CompanyDBServiceInterface;
 
 public class CompanyDBServiceMock implements CompanyDBServiceInterface{
 

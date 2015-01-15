@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.service;
+package test.excilys.computerdatabase.service;
 
 import static org.junit.Assert.fail;
 

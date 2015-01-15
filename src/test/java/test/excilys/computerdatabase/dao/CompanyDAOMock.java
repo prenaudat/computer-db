@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.dao.impl;
+package test.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,42 +8,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
-import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Company;
 
-/**
- * @author paulr_000 d
- */
-// Computer Database Access object..
-public enum CompanyDAO implements CompanyDAOInterface {
-	// Singleton pattern
-	INSTANCE;
+@RunWith(MockitoJUnitRunner.class)
+public class CompanyDAOMock implements CompanyDAOInterface {
 	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
 	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
-	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-	private ConnectionManager connectionManager = ConnectionManager
+	ConnectionManagerTest connectionManager = ConnectionManagerTest
 			.getInstance();
 
-	/**
-	 * Get instance of CompanyDAO
-	 * 
-	 * @return
-	 */
-	public static CompanyDAO getInstance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * @param id
-	 * @return Return one company
-	 */
+	@Override
 	public Company get(long id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -58,12 +39,10 @@ public enum CompanyDAO implements CompanyDAOInterface {
 				return null;// Display values
 			}
 		} catch (SQLException e) {
-			logger.warn("Error selecting Company  id=[ %d=", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
 		}
-
 	}
 
 	/**
@@ -87,8 +66,6 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			}
 			return companyList;
 		} catch (SQLException e) {
-			logger.warn("Couldn't select list of companies: %d-%d",
-					currentIndex, pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -104,14 +81,14 @@ public enum CompanyDAO implements CompanyDAOInterface {
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(INSERT_STMT,
+					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, name);
 			stmt.executeUpdate();
-			ResultSet rs= stmt.getGeneratedKeys();
+			ResultSet rs = stmt.getGeneratedKeys();
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			logger.warn("Couldn't save company: %s", name);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -133,11 +110,9 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.warn("Couldn't update company with id=%d", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
 		}
 	}
-
 }
