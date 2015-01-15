@@ -22,13 +22,13 @@ public class CompanyDBService implements CompanyDBServiceInterface {
 	public List<Company> getList(int currentCompanyPageIndex, int pageSize){
 		return CompanyDAO.getInstance().getList(currentCompanyPageIndex, pageSize);
 	}
-	public Company get(int id) {
+	public Company get(long id) {
 		return CompanyDAO.getInstance().get(id);
 	}
 	public void save(String name) {
 		CompanyDAO.getInstance().save(name);
 	}
-	public void update(int id,String name) {
+	public void update(long id,String name) {
 		CompanyDAO.getInstance().update(id,name);
 	}
 }

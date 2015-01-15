@@ -10,7 +10,7 @@ import com.excilys.computerdatabase.model.Company;
  */
 public interface CompanyDBServiceInterface {
 	public List<Company> getList(int currentCompanyPageIndex, int pageSize);
-	public Company get(int id);
+	public Company get(long id);
 	public void save(String name);
-	public void update(int id,String name);
+	public void update(long id,String name);
 }

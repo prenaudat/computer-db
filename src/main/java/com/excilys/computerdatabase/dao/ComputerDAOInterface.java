@@ -19,7 +19,7 @@ public interface ComputerDAOInterface {
 	/**
 	 * @param computer
 	 */
-	public void updateComputer(final Computer computer);
+	public void update(final Computer computer);
 	
 	/**
 	 * @param computer

@@ -44,7 +44,7 @@ public class ComputerDAOMock {
 					cb.introduced(null);	
 				}
 				if (resDiscontinued != null) {
-					cb.discontinued(resIntroduced.toLocalDateTime());
+					cb.discontinued(resDiscontinued.toLocalDateTime());
 				} else {
 					cb.discontinued(null);
 				}
@@ -60,7 +60,7 @@ public class ComputerDAOMock {
 		}
 	}
 	
-	public void updateComputer(final Computer computer) {
+	public void update(final Computer computer) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {

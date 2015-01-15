@@ -1,24 +1,60 @@
 package test.excilys.computerdatabase.service;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.excilys.computerdatabase.model.Computer;
+
+import test.excilys.computerdatabase.dao.ComputerDAOMock;
+
+/**
+ * Test class for Junit. tests get, List, save, update and delete services.
+ * 
+ * @author excilys
+ *
+ */
 public class ComputerDBServiceTest {
+	private ComputerDBServiceMock computerDBService;
+	private ComputerDAOMock computerDAO;
 
 	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
+	public void setup() {
+		computerDAO = mock(ComputerDAOMock.class);
+		computerDBService = new ComputerDBServiceMock(computerDAO);
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testGet() {
+		computerDBService.get(10);
+		verify(computerDAO).get(10);
+	}
+
+	@Test
+	public void testList() {
+		computerDBService.getList(0, 10);
+		verify(computerDAO).getList(0, 10);
+	}
+
+	@Test
+	public void testSave() {
+		computerDBService.save(new Computer.ComputerBuilder().build());
+		verify(computerDAO).save(new Computer.ComputerBuilder().build());
+	}
+
+	@Test
+	public void testUpdate() {
+		computerDBService.update(new Computer.ComputerBuilder().build());
+		verify(computerDAO).update(new Computer.ComputerBuilder().build());
+	}
+
+	@Test
+	public void testRemove() {
+		computerDBService.remove(0);
+		verify(computerDAO).remove(0);
 	}
 
 }
