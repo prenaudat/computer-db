@@ -33,7 +33,7 @@ public enum ConnectionManager {
 	 * Database Password
 	 */
 	private static final String PASS = "qwerty1234";
-	static Logger logger = LoggerFactory.getLogger(ConnectionManagerTest.class);
+	static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
 
 	/**
 	 * Load JDBC driver and create new ConnectionManager
