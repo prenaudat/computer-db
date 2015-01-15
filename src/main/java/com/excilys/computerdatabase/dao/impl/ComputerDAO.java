@@ -28,7 +28,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	//Static Queries and Updates to be prepared
 	private static final String SINGLE_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;";
 	private static final String LIST_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id AS company_id, cmp.name AS company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;";
-	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?,?);";
+	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
 	//Logger for this class
@@ -124,16 +124,16 @@ public enum ComputerDAO implements ComputerDAOInterface {
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
-			stmt.setLong(1, computer.getId());
-			stmt.setString(2, computer.getName());
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getIntroduced()));
-			stmt.setTimestamp(4, Timestamp.valueOf(computer.getDiscontinued()));
-			stmt.setLong(5, computer.getCompany().getId());
+			stmt.setString(1, computer.getName());
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setLong(4, computer.getCompany().getId());
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
+			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			logger.warn("Error updating id="+computer.getId());
+			logger.warn("Error saving computer"+computer);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
