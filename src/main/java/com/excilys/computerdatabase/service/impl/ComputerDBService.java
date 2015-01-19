@@ -1,6 +1,8 @@
 package com.excilys.computerdatabase.service.impl;
+
 import java.sql.SQLException;
 import java.util.List;
+
 import com.excilys.computerdatabase.dao.impl.ComputerDAO;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
@@ -9,17 +11,15 @@ import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
  * @author paulr_000
  *
  */
-public class ComputerDBService implements ComputerDBServiceInterface{
+public class ComputerDBService implements ComputerDBServiceInterface {
 	/**
 	 * @param currentComputerPageIndex
 	 * @param pageSize
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getList(final int currentComputerPageIndex,
-			final int pageSize) {
-		return ComputerDAO.getInstance().getList(
-				currentComputerPageIndex, pageSize);
+	public List<Computer> getPage(int pageNumber) {
+		return ComputerDAO.getInstance().getPage(pageNumber);
 	}
 
 	/**

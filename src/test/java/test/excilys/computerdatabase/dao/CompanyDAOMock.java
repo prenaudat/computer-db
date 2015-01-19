@@ -21,6 +21,7 @@ public class CompanyDAOMock implements CompanyDAOInterface {
 	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
+	private int pageSize=10;
 	ConnectionManagerTest connectionManager = ConnectionManagerTest
 			.getInstance();
 
@@ -50,13 +51,13 @@ public class CompanyDAOMock implements CompanyDAOInterface {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<Company> getList(int currentIndex, int pageSize) {
+	public List<Company> getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
-			stmt.setInt(1, currentIndex);
+			stmt.setInt(1, pageNumber*pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
 			ArrayList<Company> companyList = new ArrayList<Company>();

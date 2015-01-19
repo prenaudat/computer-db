@@ -27,6 +27,8 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
+	private static final String QUERY_ALL = "SELECT * FROM company;";
+	private static final int pageSize = 10;
 	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private ConnectionManager connectionManager = ConnectionManager
 			.getInstance();
@@ -71,13 +73,13 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<Company> getList(int currentIndex, int pageSize) {
+	public List<Company> getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
-			stmt.setInt(1, currentIndex);
+			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
 			ArrayList<Company> companyList = new ArrayList<Company>();
@@ -87,8 +89,8 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			}
 			return companyList;
 		} catch (SQLException e) {
-			logger.warn("Couldn't select list of companies: %d-%d",
-					currentIndex, pageSize);
+			logger.warn("Couldn't select list of companies: %d-%d", pageNumber
+					* pageSize, (pageNumber + 1) * pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -104,10 +106,11 @@ public enum CompanyDAO implements CompanyDAOInterface {
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(INSERT_STMT,
+					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, name);
 			stmt.executeUpdate();
-			ResultSet rs= stmt.getGeneratedKeys();
+			ResultSet rs = stmt.getGeneratedKeys();
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
@@ -134,6 +137,26 @@ public enum CompanyDAO implements CompanyDAOInterface {
 
 		} catch (SQLException e) {
 			logger.warn("Couldn't update company with id=%d", id);
+			throw new PersistenceException();
+		} finally {
+			connectionManager.close(stmt, conn);
+		}
+	}
+
+	public List<Company> getAll() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = connectionManager.getConnection();
+			stmt = conn.prepareStatement(QUERY_ALL);
+			ResultSet rs = stmt.executeQuery();
+			List<Company> list = new ArrayList<Company>();
+			while (rs.next()) {
+				list.add(new Company(rs.getLong("id"), rs.getString("name")));
+			}
+			return list;
+		} catch (SQLException e) {
+			logger.warn("Error getting all Companies");
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);

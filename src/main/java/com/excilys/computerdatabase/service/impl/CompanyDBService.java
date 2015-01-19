@@ -1,7 +1,6 @@
 package com.excilys.computerdatabase.service.impl;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.dao.impl.CompanyDAO;
@@ -19,16 +18,23 @@ public class CompanyDBService implements CompanyDBServiceInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Company> getList(int currentCompanyPageIndex, int pageSize){
-		return CompanyDAO.getInstance().getList(currentCompanyPageIndex, pageSize);
+	public List<Company> getPage(int pageNumber) {
+		return CompanyDAO.getInstance().getPage(pageNumber);
 	}
+
 	public Company get(long id) {
 		return CompanyDAO.getInstance().get(id);
 	}
+
 	public void save(String name) {
 		CompanyDAO.getInstance().save(name);
 	}
-	public void update(long id,String name) {
-		CompanyDAO.getInstance().update(id,name);
+
+	public void update(long id, String name) {
+		CompanyDAO.getInstance().update(id, name);
+	}
+
+	public List<Company> getAll() {
+		return CompanyDAO.getInstance().getAll();
 	}
 }

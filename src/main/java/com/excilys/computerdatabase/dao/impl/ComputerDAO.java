@@ -31,6 +31,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
+	private static int pageSize=10;
 	//Logger for this class
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	/**
@@ -61,12 +62,12 @@ public enum ComputerDAO implements ComputerDAOInterface {
 				Timestamp resIntroduced = rs.getTimestamp("introduced");
 				Timestamp resDiscontinued = rs.getTimestamp("discontinued");
 				if (resIntroduced != null) {
-					cb.introduced(resIntroduced.toLocalDateTime());
+					cb.introduced(resIntroduced.toLocalDateTime().toLocalDate());
 				} else {
 					cb.introduced(null);	
 				}
 				if (resDiscontinued != null) {
-					cb.discontinued(resDiscontinued.toLocalDateTime());
+					cb.discontinued(resDiscontinued.toLocalDateTime().toLocalDate());
 				} else {
 					cb.discontinued(null);
 				}
@@ -98,8 +99,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
@@ -125,9 +126,12 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			if(computer.getDiscontinued()!=null){
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
+			}
 			stmt.setLong(4, computer.getCompany().getId());
+			System.out.println(stmt);
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
 			rs.next();
@@ -146,13 +150,13 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getList(final int currentIndex, final int pageSize) {
+	public List<Computer> getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
-			stmt.setInt(1, currentIndex);
+			stmt.setInt(1, pageNumber*pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
@@ -162,13 +166,13 @@ public enum ComputerDAO implements ComputerDAOInterface {
 				if (rs.getTimestamp("introduced") != null
 						){
 					c.introduced(rs.getTimestamp("introduced")
-							.toLocalDateTime());
+							.toLocalDateTime().toLocalDate());
 				} else {
 					c.introduced(null);
 				}
 				if (rs.getTimestamp("discontinued") != null) {
 					c.discontinued(rs.getTimestamp("discontinued")
-							.toLocalDateTime());
+							.toLocalDateTime().toLocalDate());
 				} else {
 					c.discontinued(null);
 				}
@@ -180,7 +184,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			}
 			return computerList;
 		} catch (SQLException e) {
-			logger.warn("Error retrieving ids=[ %d-%d  ]",currentIndex,currentIndex+pageSize);
+			logger.warn("Error retrieving ids=[ %d-%d  ]",pageNumber*pageSize, (pageNumber+1)*pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);

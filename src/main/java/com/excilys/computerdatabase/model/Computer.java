@@ -1,5 +1,6 @@
 package com.excilys.computerdatabase.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -10,8 +11,8 @@ public class Computer {
 	// Instance variables
 	private long id;
 	private String name;
-	private LocalDateTime introduced;
-	private LocalDateTime discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;
 
 	// Behavior : getters and setter
@@ -46,7 +47,7 @@ public class Computer {
 	/**
 	 * @return
 	 */
-	public LocalDateTime getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
@@ -55,21 +56,21 @@ public class Computer {
 	 * 
 	 * @param introduced
 	 */
-	public void setIntroduced(LocalDateTime introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
 	/**
 	 * @return
 	 */
-	public LocalDateTime getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
 	/**
 	 * @param discontinued
 	 */
-	public void setDiscontinued(LocalDateTime discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
@@ -96,8 +97,8 @@ public class Computer {
 	 * @param discontinued
 	 * @param companyId
 	 */
-	public Computer(long id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company company) {
+	public Computer(long id, String name, LocalDate introduced,
+			LocalDate discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -165,8 +166,8 @@ public class Computer {
 	public static class ComputerBuilder {
 		private long id;
 		private String name;
-		private LocalDateTime introduced;
-		private LocalDateTime discontinued;
+		private LocalDate introduced;
+		private LocalDate discontinued;
 		private Company company;
 
 		public ComputerBuilder() {
@@ -187,12 +188,12 @@ public class Computer {
 			return this;
 		}
 
-		public ComputerBuilder introduced(final LocalDateTime newIntroduced) {
+		public ComputerBuilder introduced(final LocalDate newIntroduced) {
 			this.introduced = newIntroduced;
 			return this;
 		}
 
-		public ComputerBuilder discontinued(final LocalDateTime newDiscontinued) {
+		public ComputerBuilder discontinued(final LocalDate newDiscontinued) {
 			this.discontinued = newDiscontinued;
 			return this;
 		}
