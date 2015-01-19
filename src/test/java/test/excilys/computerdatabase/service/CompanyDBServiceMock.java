@@ -18,8 +18,8 @@ public class CompanyDBServiceMock implements CompanyDBServiceInterface {
 	}
 
 	@Override
-	public List<Company> getList(int currentCompanyPageIndex, int pageSize) {
-		return companyDAO.getList(currentCompanyPageIndex, pageSize);
+	public List<Company> getPage(int pageNumber) {
+		return companyDAO.getPage(pageNumber);
 	}
 
 	@Override

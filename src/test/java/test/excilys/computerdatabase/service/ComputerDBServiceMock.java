@@ -16,8 +16,8 @@ public class ComputerDBServiceMock implements ComputerDBServiceInterface{
 	}
 
 	@Override
-	public List<Computer> getList(int currentComputerPageIndex, int pageSize) {
-		return computerDAO.getList(currentComputerPageIndex, pageSize);
+	public List<Computer> getPage(int pageNumber) {
+		return computerDAO.getPage(pageNumber);
 	}
 
 	@Override

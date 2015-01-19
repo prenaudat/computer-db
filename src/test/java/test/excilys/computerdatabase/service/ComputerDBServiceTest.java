@@ -35,8 +35,8 @@ public class ComputerDBServiceTest {
 
 	@Test
 	public void testList() {
-		computerDBService.getList(0, 10);
-		verify(computerDAO).getList(0, 10);
+		computerDBService.getPage(1);
+		verify(computerDAO).getPage(1);
 	}
 
 	@Test

@@ -28,8 +28,8 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testList() {
-		List<Computer> c1 = mockComputerDAO.getList(1, 2);
-		List<Computer> c2 = mockComputerDAO.getList(1, 2);
+		List<Computer> c1 = mockComputerDAO.getPage(1);
+		List<Computer> c2 = mockComputerDAO.getPage(1);
 		assertEquals(c1, c2);
 	}
 

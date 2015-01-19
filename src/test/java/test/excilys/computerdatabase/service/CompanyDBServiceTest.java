@@ -38,7 +38,7 @@ public class CompanyDBServiceTest {
 	}
 	@Test
 	public void testList() {
-		 when(companyDAO.getList(1,2)).thenReturn(Arrays.asList(new Company.CompanyBuilder().id(1).name("Apple inc.").build(),new Company.CompanyBuilder().id(2).name("Thinking Machines").build())); 
+		 when(companyDAO.getPage(1)).thenReturn(Arrays.asList(new Company.CompanyBuilder().id(1).name("Apple inc.").build(),new Company.CompanyBuilder().id(2).name("Thinking Machines").build())); 
 		 companyDBService.get(1);
 		 verify(companyDAO).get(1);
 	}

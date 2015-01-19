@@ -24,6 +24,7 @@ public class ComputerDAOMock {
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
+	private static int pageSize = 10;
 	public Computer get(final long id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -113,13 +114,13 @@ public class ComputerDAOMock {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getList(final int currentIndex, final int pageSize) {
+	public List<Computer> getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
-			stmt.setInt(1, currentIndex);
+			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
