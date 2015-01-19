@@ -39,10 +39,10 @@ public class ComputerDAOTest {
 				.name("Test")
 				.discontinued(
 						Timestamp.valueOf("2001-12-11 00:00:00")
-								.toLocalDateTime())
+								.toLocalDateTime().toLocalDate())
 				.introduced(
 						Timestamp.valueOf("2000-12-11 00:00:00")
-								.toLocalDateTime())
+								.toLocalDateTime().toLocalDate())
 				.company(
 						new Company.CompanyBuilder().id(1).name("test").build())
 				.build();
@@ -60,10 +60,10 @@ public class ComputerDAOTest {
 				.name("Test")
 				.discontinued(
 						Timestamp.valueOf("2001-12-11 00:00:00")
-								.toLocalDateTime())
+								.toLocalDateTime().toLocalDate())
 				.introduced(
 						Timestamp.valueOf("2000-12-11 00:00:00")
-								.toLocalDateTime())
+								.toLocalDateTime().toLocalDate())
 				.company(
 						new Company.CompanyBuilder().id(1).name("test").build())
 				.build();

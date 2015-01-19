@@ -22,8 +22,8 @@ public class CompanyDAOTest {
 		assertEquals(c1, c2);
 	}
 	@Test public void testList(){
-		List<Company> c1 = mockCompanyDAO.getList(1,2);
-		List<Company> c2 = mockCompanyDAO.getList(1,2);
+		List<Company> c1 = mockCompanyDAO.getPage(1);
+		List<Company> c2 = mockCompanyDAO.getPage(1);
 		assertEquals(c1, c2);
 	}
 	@Test public void save(){

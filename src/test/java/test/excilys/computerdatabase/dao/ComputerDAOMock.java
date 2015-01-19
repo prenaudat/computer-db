@@ -39,12 +39,12 @@ public class ComputerDAOMock {
 				Timestamp resIntroduced = rs.getTimestamp("introduced");
 				Timestamp resDiscontinued = rs.getTimestamp("discontinued");
 				if (resIntroduced != null) {
-					cb.introduced(resIntroduced.toLocalDateTime());
+					cb.introduced(resIntroduced.toLocalDateTime().toLocalDate());
 				} else {
 					cb.introduced(null);	
 				}
 				if (resDiscontinued != null) {
-					cb.discontinued(resDiscontinued.toLocalDateTime());
+					cb.discontinued(resDiscontinued.toLocalDateTime().toLocalDate());
 				} else {
 					cb.discontinued(null);
 				}
@@ -67,8 +67,8 @@ public class ComputerDAOMock {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
@@ -93,8 +93,8 @@ public class ComputerDAOMock {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -129,13 +129,13 @@ public class ComputerDAOMock {
 				if (rs.getTimestamp("introduced") != null
 						){
 					c.introduced(rs.getTimestamp("introduced")
-							.toLocalDateTime());
+							.toLocalDateTime().toLocalDate());
 				} else {
 					c.introduced(null);
 				}
 				if (rs.getTimestamp("discontinued") != null) {
 					c.discontinued(rs.getTimestamp("discontinued")
-							.toLocalDateTime());
+							.toLocalDateTime().toLocalDate());
 				} else {
 					c.discontinued(null);
 				}
