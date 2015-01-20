@@ -1,15 +1,14 @@
 package com.excilys.computerdatabase.service;
 
-import java.util.List;
-
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 
 /**
  * @author excilys
  *
  */
 public interface ComputerDBServiceInterface {
-	public List<Computer> getPage(int pageNumber);
+	public Page getPage(int pageNumber);
 
 	public Computer get(final long id);
 
@@ -18,4 +17,6 @@ public interface ComputerDBServiceInterface {
 	public void update(final Computer computer);
 
 	public void save(final Computer computer);
+	
+	public int getCount();
 }

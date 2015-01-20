@@ -3,10 +3,6 @@ package com.excilys.computerdatabase.cli;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Scanner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.service.impl.CompanyDBService;
@@ -22,6 +18,7 @@ public class Client {
 	private ComputerDBService computerDBService;
 	private CompanyDBService companyDBService;
 	//Page index for Company and Computer Directory
+	private int pageNumber=0;
 	private int currentComputerPageIndex = 0;
 	private int currentCompanyPageIndex = 0;
 	private int pageSize = 10;
@@ -30,7 +27,6 @@ public class Client {
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size";
 	//Logger for this class
-	static final Logger LOG = LoggerFactory.getLogger(Client.class);
 
 	/**
 	 * Display page of Computers and calls Computer Menu
@@ -39,8 +35,8 @@ public class Client {
 	public void getComputerList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(computerDBService.getList(
-					currentComputerPageIndex, pageSize));
+			System.out.println(computerDBService.getPage(
+					pageNumber));
 			innerLoop = getComputerListMenu();
 		}
 	}
@@ -54,7 +50,6 @@ public class Client {
 		while (detailedLoop) {
 			System.out.println("Id of computer to visualize?");
 			final String id = sc.nextLine();
-			LOG.info("Id queried :" + id);
 			detailedLoop = !Validator.isValidNumber(id);
 			if (!detailedLoop) {
 				System.out.println(computerDBService.get(Integer.parseInt(id)));
@@ -89,8 +84,8 @@ public class Client {
 		case "a":
 			Boolean displayLoop = true;
 			while (displayLoop) {
-				System.out.println(computerDBService.getList(
-						currentComputerPageIndex, pageSize));
+				System.out.println(computerDBService.getPage(
+						pageNumber));
 				displayLoop = getComputerListMenu();
 			}
 			break;
@@ -122,9 +117,7 @@ public class Client {
 				String introduced = sc.nextLine();
 				introducedLoop = !Validator.isValidDate(introduced);
 				if (!introducedLoop) {
-					c.setIntroduced(Timestamp.valueOf(
-							LocalDate.parse(introduced).atStartOfDay())
-							.toLocalDateTime());
+					c.setIntroduced(LocalDate.parse(introduced));
 				}
 			}
 			Boolean discontinuedLoop = true;
@@ -136,9 +129,7 @@ public class Client {
 				String discontinued = sc.nextLine();
 				discontinuedLoop = !Validator.isValidDate(discontinued);
 				if (!discontinuedLoop) {
-					c.setDiscontinued(Timestamp.valueOf(
-							LocalDate.parse(discontinued).atStartOfDay())
-							.toLocalDateTime());
+					c.setDiscontinued(LocalDate.parse(discontinued));
 				}
 			}
 			Boolean companyLoop = true;
@@ -179,9 +170,7 @@ public class Client {
 			String introduced = sc.nextLine();
 			introducedLoop = !Validator.isValidDate(introduced);
 			if (!introducedLoop) {
-				c.introduced(Timestamp.valueOf(
-						LocalDate.parse(introduced).atStartOfDay())
-						.toLocalDateTime());
+				c.introduced(LocalDate.parse(introduced));
 			}
 		}
 		Boolean discontinuedLoop = true;
@@ -190,9 +179,7 @@ public class Client {
 			String discontinued = sc.nextLine();
 			discontinuedLoop = !Validator.isValidDate(discontinued);
 			if (!discontinuedLoop) {
-				c.discontinued(Timestamp.valueOf(
-						LocalDate.parse(discontinued).atStartOfDay())
-						.toLocalDateTime());
+				c.discontinued(LocalDate.parse(discontinued));
 			}
 		}
 		Boolean companyLoop = true;
@@ -293,8 +280,8 @@ public class Client {
 	public void getCompanyList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(companyDBService.getList(
-					currentCompanyPageIndex, pageSize));
+			System.out.println(companyDBService.getPage(
+					pageNumber));
 			innerLoop = getCompanyListMenu(currentCompanyPageIndex);
 		}
 	}

@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.dao;
 import java.util.List;
 
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 
 /**
  * @author excilys Interface for ComputerDAO
@@ -30,7 +31,7 @@ public interface ComputerDAOInterface {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<Computer> getPage(int pagenNumber);
+	public Page getPage(int pagenNumber);
 
 	/**
 	 * @param id

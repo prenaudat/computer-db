@@ -3,13 +3,13 @@ package test.excilys.computerdatabase.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 
 public class ComputerDAOTest {
 	ComputerDAOMock mockComputerDAO;
@@ -28,9 +28,9 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testList() {
-		List<Computer> c1 = mockComputerDAO.getPage(1);
-		List<Computer> c2 = mockComputerDAO.getPage(1);
-		assertEquals(c1, c2);
+		Page c1 = mockComputerDAO.getPage(1);
+		Page c2 = mockComputerDAO.getPage(1);
+		assertEquals(c1.getList(), c2.getList());
 	}
 
 	@Test

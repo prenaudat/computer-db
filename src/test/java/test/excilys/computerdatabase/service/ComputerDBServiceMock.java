@@ -3,6 +3,7 @@ package test.excilys.computerdatabase.service;
 import java.util.List;
 
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
 
 import test.excilys.computerdatabase.dao.CompanyDAOMock;
@@ -16,7 +17,7 @@ public class ComputerDBServiceMock implements ComputerDBServiceInterface{
 	}
 
 	@Override
-	public List<Computer> getPage(int pageNumber) {
+	public Page getPage(int pageNumber) {
 		return computerDAO.getPage(pageNumber);
 	}
 
@@ -38,5 +39,10 @@ public class ComputerDBServiceMock implements ComputerDBServiceInterface{
 	@Override
 	public void save(Computer computer) {
 		computerDAO.save(computer);
+	}
+
+	@Override
+	public int getCount() {
+		return computerDAO.getCount();
 	}
 }

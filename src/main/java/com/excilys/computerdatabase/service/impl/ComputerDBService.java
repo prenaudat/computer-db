@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.excilys.computerdatabase.dao.impl.ComputerDAO;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
 
 /**
@@ -18,7 +19,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getPage(int pageNumber) {
+	public Page getPage(int pageNumber) {
 		return ComputerDAO.getInstance().getPage(pageNumber);
 	}
 
@@ -53,5 +54,10 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 
 	public void save(final Computer computer) {
 		ComputerDAO.getInstance().save(computer);
+	}
+
+	@Override
+	public int getCount() {
+		return ComputerDAO.getInstance().getCount();
 	}
 }

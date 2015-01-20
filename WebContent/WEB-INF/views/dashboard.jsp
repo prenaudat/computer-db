@@ -17,11 +17,12 @@
 		<div class="container">
 			<a class="navbar-brand" href="home"> Application - Computer
 				Database </a>
-		</div>id
+		</div>
+		id
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">121 Computers found</h1>
+			<h1 id="homeTitle">${page.count} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<nameform id="searchForm" action="#" method="GET"
@@ -66,7 +67,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${computers}" var="computer">
+					<c:forEach items="${page.list}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
@@ -85,16 +86,37 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+				<c:if test="${page.pageNumber>0}">
+					<li><a href="home?page=${page.pageNumber-1}" aria-label="Previous"> <span
+							aria-hidden="true">&laquo;</span>
+
+					</a></li>
+				</c:if>
+				<c:if test="${page.pageNumber>2}">
+								<li><a href="home?page=${page.pageNumber-2}">${page.pageNumber-2}</a></li>
+				
+				</c:if>
+				<c:if test="${page.pageNumber>1}">
+								<li><a href="home?page=${page.pageNumber-1}">${page.pageNumber-1}</a></li>
+				
+				</c:if>
+
+
+				<li><a href="home?page=${page.pageNumber}">${page.pageNumber}</a></li>
+				
+				<c:if test="${page.pageNumber<page.pageCount-1}">
+								<li><a href="home?page=${page.pageNumber+1}">${page.pageNumber+1}</a></li>
+				
+				</c:if>
+				<c:if test="${page.pageNumber<page.pageCount-2}">
+								<li><a href="home?page=${page.pageNumber+2}">${page.pageNumber+2}</a></li>
+				
+				</c:if>
+				<c:if test="${page.pageNumber<page.pageCount}">
+					<li><a href="home?page=${page.pageNumber+1}" aria-label="Next"> <span
+							aria-hidden="true">&raquo;</span>
+					</a></li>
+				</c:if>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
@@ -103,9 +125,9 @@
 				<button type="button" class="btn btn-default">100</button>
 			</div>
 	</footer>
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/dashboard.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/dashboard.js"></script>
 
 </body>
 </html>

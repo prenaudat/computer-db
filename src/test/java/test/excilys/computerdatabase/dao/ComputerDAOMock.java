@@ -12,10 +12,10 @@ import java.util.List;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDAOMock {
 	ConnectionManagerTest connectionManager = ConnectionManagerTest.getInstance();
@@ -24,6 +24,8 @@ public class ComputerDAOMock {
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
+	private static final String COUNT_STMT = "SELECT COUNT(id) FROM computer;";
+
 	private static int pageSize = 10;
 	public Computer get(final long id) {
 		Connection conn = null;
@@ -114,12 +116,13 @@ public class ComputerDAOMock {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Computer> getPage(int pageNumber) {
+	public Page getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(LIST_QUERY_STMT);
+			stmt = conn.prepareStatement(LIST_QUERY_STMT,
+					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
@@ -127,8 +130,7 @@ public class ComputerDAOMock {
 			Computer.ComputerBuilder c = new Computer.ComputerBuilder();
 			while (rs.next()) {
 				c.id(rs.getLong("id")).name(rs.getString("name"));
-				if (rs.getTimestamp("introduced") != null
-						){
+				if (rs.getTimestamp("introduced") != null) {
 					c.introduced(rs.getTimestamp("introduced")
 							.toLocalDateTime().toLocalDate());
 				} else {
@@ -146,7 +148,12 @@ public class ComputerDAOMock {
 								.name(rs.getString("company_name")).build())
 						.build());
 			}
-			return computerList;
+			Page page = new Page();
+			page.setPageNumber(pageNumber);
+			page.setList(computerList);
+			page.setCount(getCount());
+			page.setPageCount((int)Math.ceil(page.getCount()/pageSize));
+			return page;
 		} catch (SQLException e) {
 			throw new PersistenceException();
 		} finally {
@@ -167,6 +174,25 @@ public class ComputerDAOMock {
 				stmt = conn.prepareStatement(DELETE_STMT);
 				stmt.setLong(1, id);
 				stmt.executeUpdate();
+			} catch (SQLException e) {
+				throw new PersistenceException();
+			} finally {
+				connectionManager.close(stmt, conn);
+			}
+		}
+		public int getCount() {
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			try {
+				conn = connectionManager.getConnection();
+				stmt = conn.prepareStatement(COUNT_STMT);
+				ResultSet rs = stmt.executeQuery();
+				if (rs.next()) {
+					int numberOfRows = rs.getInt(1);
+					return numberOfRows;
+				} else {
+					return 0;
+				}
 			} catch (SQLException e) {
 				throw new PersistenceException();
 			} finally {

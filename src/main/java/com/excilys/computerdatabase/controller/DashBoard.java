@@ -19,13 +19,19 @@ public class DashBoard extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		computerDBService = new ComputerDBService();
-		int pageNumber=0;
+		int pageNumber = 0;
+		int pageSize = 10;
 		resp.setContentType("text/html");
-		String pageParam=req.getParameter("page");
-		if(Validator.isValidNumber(pageParam)){
-			pageNumber=Integer.parseInt(pageParam);
+		String pageParam = req.getParameter("page");
+		if (Validator.isValidNumber(pageParam)) {
+			pageNumber = Integer.parseInt(pageParam);
 		}
-		req.setAttribute("computers", computerDBService.getPage(pageNumber));
+		if (pageNumber > Math.ceil((int) computerDBService.getCount()
+				/ pageSize)) {
+			req.setAttribute("page", computerDBService.getPage(0));
+		} else {
+			req.setAttribute("page", computerDBService.getPage(pageNumber));
+		}
 		req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(req,
 				resp);
 	}

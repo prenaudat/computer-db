@@ -40,7 +40,7 @@ public class EditComputer extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		computerDBService = new ComputerDBService();
 		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
 		if(Validator.isValidNumber(req.getParameter("id"))){
@@ -49,16 +49,17 @@ public class EditComputer extends HttpServlet {
 		if(Validator.isValidString(req.getParameter("name"))){
 			c.name(req.getParameter("name"));
 		}
-		if(Validator.isValidDate(req.getParameter("introduced"))){
+		if(Validator.isValidDate(req.getParameter("introduced")) || req.getParameter("introduced")==null){
 				c.introduced(LocalDate.parse(req.getParameter("introduced")));
 		}
-		if(Validator.isValidDate(req.getParameter("discontinued"))){
+		if(Validator.isValidDate(req.getParameter("discontinued"))|| req.getParameter("discontinued")==null){
 				c.discontinued(LocalDate.parse(req.getParameter("discontinued")));
 		}
-		if(Validator.isValidNumber(req.getParameter("company_id"))){
+		if(Validator.isValidNumber(req.getParameter("company_id")) || req.getParameter("introduced")==null){
 			c.company(new Company.CompanyBuilder().id(Long.parseLong(req.getParameter("company_id"))).build());
 		}
 		computerDBService.update(c.build());
+		resp.sendRedirect("home");
 		
 			}
 }

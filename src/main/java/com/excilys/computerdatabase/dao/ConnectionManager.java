@@ -3,8 +3,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import com.excilys.computerdatabase.exception.PersistenceException;
 /**
  * @author excilys
@@ -28,7 +28,7 @@ public enum ConnectionManager {
 	 * Database Password
 	 */
 	private static final String PASS = "qwerty1234";
-	static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
+//	static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
 
 	/**
 	 * Load JDBC driver and create new ConnectionManager
@@ -55,7 +55,7 @@ public enum ConnectionManager {
 		try{
 			return DriverManager.getConnection(DB_URL, USER, PASS);
 		} catch(SQLException e){
-			logger.warn("Failed to connect to database");
+//			logger.warn("Failed to connect to database");
 			throw new PersistenceException("Failed to connect to database");
 		}
 	}
@@ -73,7 +73,7 @@ public enum ConnectionManager {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			logger.warn("Can't close connection");
+//			logger.warn("Can't close connection");
 			throw new PersistenceException("Failed to load " + JDBC_DRIVER);
 		}
 	}
