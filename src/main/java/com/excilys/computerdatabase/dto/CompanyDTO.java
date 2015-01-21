@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.model;
+package com.excilys.computerdatabase.dto;
 
 /**
  * @author excilys

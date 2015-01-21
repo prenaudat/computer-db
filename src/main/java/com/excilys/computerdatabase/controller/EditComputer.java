@@ -15,6 +15,11 @@ import com.excilys.computerdatabase.service.impl.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
 
+/**
+ * Edit computer controller. Maps /editComputer url
+ * @author excilys
+ *
+ */
 @WebServlet("/editComputer")
 public class EditComputer extends HttpServlet {
 	ComputerDBService computerDBService;
@@ -42,7 +47,7 @@ public class EditComputer extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		computerDBService = new ComputerDBService();
-		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+		Computer.Builder c = new Computer.Builder();
 		if(Validator.isValidNumber(req.getParameter("id"))){
 			c.id(Long.parseLong(req.getParameter("id")));
 		}

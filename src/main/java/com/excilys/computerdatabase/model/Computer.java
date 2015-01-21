@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
+ * Computer Object Class
  * @author paulr_000
  *
  */
@@ -17,85 +18,83 @@ public class Computer {
 
 	// Behavior : getters and setter
 	/**
-	 * @return
+	 * @return Id of computer
 	 */
 	public long getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
+	 * @param id Id to be set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return
+	 * @return Name of computer
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param name
+	 * @param name Name to be set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return
+	 * @return Introduction date
 	 */
 	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	/**
-	 * newDiscontinued
-	 * 
-	 * @param introduced
+	/** 
+	 * @param introduced set Introduction date
 	 */
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
 	/**
-	 * @return
+	 * @return Discontinuation dates
 	 */
 	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
 	/**
-	 * @param discontinued
+	 * @param discontinued Set discontinuation date
 	 */
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
 	/**
-	 * @return
+	 * @return Company corresponding to Computer
 	 */
 	public Company getCompany() {
 		return company;
 	}
 
 	/**
-	 * @param companyId
+	 * @param company Company to be set for computer
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
 	}
 
 	/**
-	 * final String newFirstName, final String newCity, final String newState)
+	 * Constructor from all fields
 	 * 
-	 * @param id
-	 * @param name
-	 * @param introduced
-	 * @param discontinued
-	 * @param companyId
+	 * @param id id of computer
+	 * @param name name of computer
+	 * @param introduced introducation date of computer
+	 * @param discontinued discontinuation date of computer
+	 * @param companyId ID for company of computer
 	 */
 	public Computer(long id, String name, LocalDate introduced,
 			LocalDate discontinued, Company company) {
@@ -107,6 +106,9 @@ public class Computer {
 		this.company = company;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return new StringBuilder("Computer [id=").append(id).append(", name=")
@@ -115,6 +117,9 @@ public class Computer {
 				.append("]").toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,6 +134,9 @@ public class Computer {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -163,14 +171,19 @@ public class Computer {
 		return true;
 	}
 
-	public static class ComputerBuilder {
+	/**
+	 * Nested Builder class
+	 * @author excilys
+	 *
+	 */
+	public static class Builder {
 		private long id;
 		private String name;
 		private LocalDate introduced;
 		private LocalDate discontinued;
 		private Company company;
 
-		public ComputerBuilder() {
+		public Builder() {
 			this.id = 0;
 			this.name = null;
 			this.introduced = null;
@@ -178,27 +191,27 @@ public class Computer {
 			this.company = null;
 		}
 
-		public ComputerBuilder id(final long newId) {
+		public Builder id(final long newId) {
 			this.id = newId;
 			return this;
 		}
 
-		public ComputerBuilder name(final String newName) {
+		public Builder name(final String newName) {
 			this.name = newName;
 			return this;
 		}
 
-		public ComputerBuilder introduced(final LocalDate newIntroduced) {
+		public Builder introduced(final LocalDate newIntroduced) {
 			this.introduced = newIntroduced;
 			return this;
 		}
 
-		public ComputerBuilder discontinued(final LocalDate newDiscontinued) {
+		public Builder discontinued(final LocalDate newDiscontinued) {
 			this.discontinued = newDiscontinued;
 			return this;
 		}
 
-		public ComputerBuilder company(final Company company) {
+		public Builder company(final Company company) {
 			this.company = new Company(company.getId(), company.getName());
 			return this;
 		}

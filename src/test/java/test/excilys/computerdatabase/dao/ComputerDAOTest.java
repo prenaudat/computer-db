@@ -35,7 +35,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void save() {
-		Computer c = new Computer.ComputerBuilder()
+		Computer c = new Computer.Builder()
 				.name("Test")
 				.discontinued(
 						Timestamp.valueOf("2001-12-11 00:00:00")
@@ -56,7 +56,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void remove() {
-		Computer c = new Computer.ComputerBuilder()
+		Computer c = new Computer.Builder()
 				.name("Test")
 				.discontinued(
 						Timestamp.valueOf("2001-12-11 00:00:00")
@@ -71,6 +71,6 @@ public class ComputerDAOTest {
 		mockComputerDAO.remove(i1);
 		assertEquals(
 				mockComputerDAO.get(i1),
-				new Computer.ComputerBuilder().build());
+				new Computer.Builder().build());
 	}
 }

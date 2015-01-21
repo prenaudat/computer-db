@@ -9,6 +9,11 @@ import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.row.RowMapper;
 import com.excilys.computerdatabase.model.Company;
 
+/**
+ * Map a Company from a row
+ * @author excilys
+ *
+ */
 public class CompanyMapper implements RowMapper<Company> {
 
 	/*

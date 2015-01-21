@@ -41,14 +41,14 @@ public class ComputerDBServiceTest {
 
 	@Test
 	public void testSave() {
-		computerDBService.save(new Computer.ComputerBuilder().build());
-		verify(computerDAO).save(new Computer.ComputerBuilder().build());
+		computerDBService.save(new Computer.Builder().build());
+		verify(computerDAO).save(new Computer.Builder().build());
 	}
 
 	@Test
 	public void testUpdate() {
-		computerDBService.update(new Computer.ComputerBuilder().build());
-		verify(computerDAO).update(new Computer.ComputerBuilder().build());
+		computerDBService.update(new Computer.Builder().build());
+		verify(computerDAO).update(new Computer.Builder().build());
 	}
 
 	@Test

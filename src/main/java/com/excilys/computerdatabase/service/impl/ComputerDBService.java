@@ -13,6 +13,7 @@ import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
  *
  */
 public class ComputerDBService implements ComputerDBServiceInterface {
+	ComputerDAO computerDAO = ComputerDAO.getInstance();
 	/**
 	 * @param currentComputerPageIndex
 	 * @param pageSize
@@ -20,7 +21,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @throws SQLException
 	 */
 	public Page getPage(int pageNumber) {
-		return ComputerDAO.getInstance().getPage(pageNumber);
+		return computerDAO.getPage(pageNumber);
 	}
 
 	/**
@@ -29,7 +30,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @throws SQLException
 	 */
 	public Computer get(final long id) {
-		return ComputerDAO.getInstance().get(id);
+		return computerDAO.get(id);
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @throws SQLException
 	 */
 	public void remove(final long id) {
-		ComputerDAO.getInstance().remove(id);
+		computerDAO.remove(id);
 	}
 
 	/**
@@ -49,15 +50,15 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @throws SQLException
 	 */
 	public void update(final Computer computer) {
-		ComputerDAO.getInstance().update(computer);
+		computerDAO.update(computer);
 	}
 
 	public void save(final Computer computer) {
-		ComputerDAO.getInstance().save(computer);
+		computerDAO.save(computer);
 	}
 
 	@Override
 	public int getCount() {
-		return ComputerDAO.getInstance().getCount();
+		return computerDAO.getCount();
 	}
 }

@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.model;
 
 /**
+ * Company Model
  * @author paulr_000
  *
  */
@@ -12,21 +13,21 @@ public class Company {
 
 	// Behavior : getters and setter
 	/**
-	 * @return
+	 * @return return ID of company
 	 */
 	public long getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
+	 * @param id ID to be set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return
+	 * @return the name
 	 */
 	public String getName() {
 		return name;
@@ -41,8 +42,8 @@ public class Company {
 
 	// Constructor from
 	/**
-	 * @param id
-	 * @param name
+	 * @param id Id of comapany
+	 * @param name Name of company
 	 */
 	public Company(long id, String name) {
 		super();
@@ -56,6 +57,9 @@ public class Company {
 				.append(name).append("]").toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -65,6 +69,9 @@ public class Company {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj)
@@ -84,6 +91,11 @@ public class Company {
 		return true;
 	}
 
+	/**
+	 * Nested Builder class 
+	 * @author excilys
+	 *
+	 */
 	public static class CompanyBuilder {
 		private long id;
 		private String name;

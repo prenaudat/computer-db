@@ -6,7 +6,6 @@
 <html>
 <head>
 <title>Computer Database</title>
-<%		getServletContext().getResource("/WEB-INF/classes/WEB-INF/views/css/main.css"); %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -23,8 +22,8 @@
 		</div>
 	</header>
 	<section id="main">
-		<div class="container">-1
-			<h1 id="homeTitle">${page.count} Computersfound</h1>
+		<div class="container">
+			<h1 id="homeTitle">${page.count}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<nameform id="searchForm" action="#" method="GET"
@@ -87,8 +86,10 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
-
-	<custom:pagination></custom:pagination>
-
+	
+	<custom:pagination target="${page.target}" query="${page.query}"
+		pageCount="${page.pageCount}" orderBy="${page.orderBy}"
+		sort="${page.sort}" pageNumber="${page.pageNumber}"></custom:pagination>
+		
 </body>
 </html>

@@ -1,8 +1,8 @@
 package com.excilys.computerdatabase.mapper.dto.impl;
 
+import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.DTOMapper;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.model.ComputerDTO;
 
 /**
  * Map between Computer and ComputerDTO

@@ -15,10 +15,15 @@ import com.excilys.computerdatabase.service.impl.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
 
+/**
+ * Manage /addComputer Display and persist computer for adding
+ * @author excilys
+ *
+ */
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
-	ComputerDBService computerDBService;
-	CompanyDBService companyDBService;
+	ComputerDBService computerDBService = new ComputerDBService();
+	CompanyDBService companyDBService = new CompanyDBService();
 	/**
 	 * 
 	 */
@@ -33,8 +38,6 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		computerDBService = new ComputerDBService();
-		companyDBService = new CompanyDBService();
 		resp.setContentType("text/html");
 
 		req.setAttribute("companies", companyDBService.getAll());
@@ -51,8 +54,8 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		computerDBService = new ComputerDBService();
-		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+		//Call computerDBService
+		Computer.Builder c = new Computer.Builder();
 		if (Validator.isValidString(req.getParameter("name"))) {
 			c.name(req.getParameter("name"));
 		}

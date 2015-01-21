@@ -10,6 +10,11 @@ import com.excilys.computerdatabase.mapper.row.RowMapper;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 
+/**
+ * Map a computer from a Row
+ * @author excilys
+ *
+ */
 public class ComputerMapper implements RowMapper<Computer> {
 
 	/* (non-Javadoc)
@@ -17,7 +22,7 @@ public class ComputerMapper implements RowMapper<Computer> {
 	 */
 	@Override
 	public Computer mapRow(ResultSet rs) {
-		Computer.ComputerBuilder cb = new Computer.ComputerBuilder();
+		Computer.Builder cb = new Computer.Builder();
 		try{
 		if (rs.next()) {
 			cb.id(rs.getLong("id"));
@@ -50,7 +55,7 @@ public class ComputerMapper implements RowMapper<Computer> {
 	@Override
 	public List<Computer> mapRowList(ResultSet rs) {
 		List<Computer> computerList = new ArrayList<Computer>();
-		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+		Computer.Builder c = new Computer.Builder();
 		try{
 		while (rs.next()) {
 			c.id(rs.getLong("id")).name(rs.getString("name"));

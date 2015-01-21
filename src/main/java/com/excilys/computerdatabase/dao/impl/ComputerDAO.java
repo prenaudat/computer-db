@@ -6,14 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
-import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
 
@@ -35,13 +33,14 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(id) FROM computer;";
 	ComputerMapper computerMapper = new ComputerMapper();
 	private static int pageSize = 10;
+
 	// Logger for this class
-//	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	// private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	/**
 	 * Return instance of Singleton ComputerDAO
 	 * 
-	 * @return
+	 * @return returns instance of ComputerDAO
 	 */
 	public static ComputerDAO getInstance() {
 		try {
@@ -56,24 +55,25 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * Retrieve a single computer identified by its unique ID
 	 * 
 	 * @param id
-	 * @return
-	 * @throws SQLException
+	 *            ID of computer to get
+	 * @return Computer corresponding to ID
 	 */
 	public Computer get(final long id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			return computerMapper.mapRow(rs);
 
 		} catch (SQLException e) {
-//			logger.warn("Error selecting id=" + id);
+			// logger.warn("Error selecting id=" + id);
 			throw new PersistenceException();
 		} finally {
-			connectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn, rs);
 		}
 	}
 
@@ -81,11 +81,15 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * Update an existing computer
 	 * 
 	 * @param id
+	 *            Id of computer to update
 	 * @param name
+	 *            new name for computer
 	 * @param introduced
+	 *            new introduction date for computer
 	 * @param discontinued
+	 *            new discontinuation date for computer
 	 * @param companyId
-	 * @throws SQLException
+	 *            new company ID for computer
 	 */
 	public void update(final Computer computer) {
 		Connection conn = null;
@@ -106,7 +110,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-//			logger.warn("Error updating id=" + computer.getId());
+			// logger.warn("Error updating id=" + computer.getId());
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -117,14 +121,18 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * Insert a new computer into the database
 	 * 
 	 * @param name
+	 *            Name for new computer
 	 * @param introduced
+	 *            Introduction date for new Computer
 	 * @param discontinued
+	 *            Discontinuation deate for new computer
 	 * @param companyId
-	 * @throws SQLException
+	 *            Company ID for new COmputer
 	 */
 	public int save(final Computer computer) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT,
@@ -138,35 +146,36 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			}
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.executeUpdate();
-			ResultSet rs = stmt.getGeneratedKeys();
+			rs = stmt.getGeneratedKeys();
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-//			logger.warn("Error saving computer" + computer);
+			// logger.warn("Error saving computer" + computer);
 			throw new PersistenceException();
 		} finally {
-			connectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn, rs);
 		}
 	}
 
 	/**
 	 * Retrieve a list of computers corresponding to the selection
 	 * 
-	 * @param currentIndex
-	 * @param pageSize
-	 * @return
+	 * @param pageNumber
+	 *            index of Page to return
+	 * @return Page of computers
 	 * @throws SQLException
 	 */
 	public Page getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
-			final ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			List<Computer> computerList = computerMapper.mapRowList(rs);
 			Page page = new Page();
 			page.setPageNumber(pageNumber);
@@ -175,19 +184,18 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
 			return page;
 		} catch (SQLException e) {
-//			logger.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
-//					* pageSize, (pageNumber + 1) * pageSize);
+			// logger.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
+			// * pageSize, (pageNumber + 1) * pageSize);
 			throw new PersistenceException();
 		} finally {
-			connectionManager.close(stmt, conn);
+			connectionManager.close(stmt, conn, rs);
 		}
 	}
 
 	/**
 	 * Delete a computer from database
 	 * 
-	 * @param id
-	 * @return
+	 * @param id ID of computer to delete
 	 * @throws SQLException
 	 */
 	public void remove(final long id) {
@@ -199,13 +207,17 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt.setLong(1, id);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-//			logger.warn("Error removing id=[ %d=", id);
+			// logger.warn("Error removing id=[ %d=", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
 		}
 	}
 
+	/**
+	 * Get count of Computers 
+	 * @return number of computers
+	 */
 	public int getCount() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -220,7 +232,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 				return 0;
 			}
 		} catch (SQLException e) {
-//			logger.warn("Error counting rows");
+			// logger.warn("Error counting rows");
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);

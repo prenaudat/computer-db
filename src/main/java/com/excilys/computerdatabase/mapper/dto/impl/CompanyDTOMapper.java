@@ -1,10 +1,10 @@
 package com.excilys.computerdatabase.mapper.dto.impl;
 
+import com.excilys.computerdatabase.dto.CompanyDTO;
+import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.DTOMapper;
 import com.excilys.computerdatabase.model.Company;
-import com.excilys.computerdatabase.model.CompanyDTO;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.model.ComputerDTO;
 
 /**
  * Map between Company and CompanyDTO

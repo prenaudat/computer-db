@@ -154,7 +154,7 @@ public class Client {
 	 * 
 	 */
 	public void createComputer() {
-		Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+		Computer.Builder c = new Computer.Builder();
 		Boolean nameLoop = true;
 		while (nameLoop) {
 			System.out.println("New name?");

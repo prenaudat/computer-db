@@ -12,6 +12,7 @@ import com.excilys.computerdatabase.service.CompanyDBServiceInterface;
  *
  */
 public class CompanyDBService implements CompanyDBServiceInterface {
+	CompanyDAO companyDAO = CompanyDAO.getInstance();
 	/**
 	 * @param currentCompanyPageIndex
 	 * @param pageSize
@@ -19,22 +20,22 @@ public class CompanyDBService implements CompanyDBServiceInterface {
 	 * @throws SQLException
 	 */
 	public List<Company> getPage(int pageNumber) {
-		return CompanyDAO.getInstance().getPage(pageNumber);
+		return companyDAO.getPage(pageNumber);
 	}
 
 	public Company get(long id) {
-		return CompanyDAO.getInstance().get(id);
+		return companyDAO.get(id);
 	}
 
 	public void save(String name) {
-		CompanyDAO.getInstance().save(name);
+		companyDAO.save(name);
 	}
 
 	public void update(long id, String name) {
-		CompanyDAO.getInstance().update(id, name);
+		companyDAO.update(id, name);
 	}
 
 	public List<Company> getAll() {
-		return CompanyDAO.getInstance().getAll();
+		return companyDAO.getAll();
 	}
 }

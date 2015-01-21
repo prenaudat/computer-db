@@ -35,7 +35,7 @@ public class ComputerDAOMock {
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			Computer.ComputerBuilder cb = new Computer.ComputerBuilder();
+			Computer.Builder cb = new Computer.Builder();
 			if (rs.next()) {
 				cb.id(rs.getLong("id"));
 				cb.name(rs.getString("name"));
@@ -127,7 +127,7 @@ public class ComputerDAOMock {
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
-			Computer.ComputerBuilder c = new Computer.ComputerBuilder();
+			Computer.Builder c = new Computer.Builder();
 			while (rs.next()) {
 				c.id(rs.getLong("id")).name(rs.getString("name"));
 				if (rs.getTimestamp("introduced") != null) {
