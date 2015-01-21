@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.mapper;
+package com.excilys.computerdatabase.mapper.row;
 
 import java.sql.ResultSet;
 import java.util.List;

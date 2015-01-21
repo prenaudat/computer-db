@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.mapper.impl;
+package com.excilys.computerdatabase.mapper.row.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.computerdatabase.mapper.RowMapper;
+import com.excilys.computerdatabase.mapper.row.RowMapper;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 

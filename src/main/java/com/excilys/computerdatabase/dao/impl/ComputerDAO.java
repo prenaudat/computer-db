@@ -12,7 +12,7 @@ import java.util.List;
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
-import com.excilys.computerdatabase.mapper.impl.ComputerMapper;
+import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;

@@ -11,7 +11,7 @@ import java.util.List;
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
-import com.excilys.computerdatabase.mapper.impl.CompanyMapper;
+import com.excilys.computerdatabase.mapper.row.impl.CompanyMapper;
 import com.excilys.computerdatabase.model.Company;
 
 /**
