@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
+import com.excilys.computerdatabase.mapper.impl.CompanyMapper;
 import com.excilys.computerdatabase.model.Company;
 
 /**
@@ -30,6 +30,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 //	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private ConnectionManager connectionManager = ConnectionManager
 			.getInstance();
+	private CompanyMapper companyMapper = new CompanyMapper();
 	/**
 	 * Get instance of CompanyDAO
 	 * 
@@ -51,11 +52,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				return new Company(rs.getLong("id"), rs.getString("name"));
-			} else {
-				return null;// Display values
-			}
+			return companyMapper.mapRow(rs);
 		} catch (SQLException e) {
 //			logger.warn("Error selecting Company  id=[ %d=", id);
 			throw new PersistenceException();
@@ -79,12 +76,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
-			ArrayList<Company> companyList = new ArrayList<Company>();
-			while (rs.next()) {
-				companyList.add(new Company(rs.getLong("id"), rs
-						.getString("name")));
-			}
-			return companyList;
+			return companyMapper.mapRowList(rs);
 		} catch (SQLException e) {
 //			logger.warn("Couldn't select list of companies: %d-%d", pageNumber
 //					* pageSize, (pageNumber + 1) * pageSize);

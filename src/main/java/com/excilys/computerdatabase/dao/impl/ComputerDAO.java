@@ -8,9 +8,11 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
+import com.excilys.computerdatabase.mapper.impl.ComputerMapper;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
@@ -31,7 +33,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
 	private static final String COUNT_STMT = "SELECT COUNT(id) FROM computer;";
-
+	ComputerMapper computerMapper = new ComputerMapper();
 	private static int pageSize = 10;
 	// Logger for this class
 //	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
@@ -65,27 +67,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			Computer.ComputerBuilder cb = new Computer.ComputerBuilder();
-			if (rs.next()) {
-				cb.id(rs.getLong("id"));
-				cb.name(rs.getString("name"));
-				Timestamp resIntroduced = rs.getTimestamp("introduced");
-				Timestamp resDiscontinued = rs.getTimestamp("discontinued");
-				if (resIntroduced != null) {
-					cb.introduced(resIntroduced.toLocalDateTime().toLocalDate());
-				} else {
-					cb.introduced(null);
-				}
-				if (resDiscontinued != null) {
-					cb.discontinued(resDiscontinued.toLocalDateTime()
-							.toLocalDate());
-				} else {
-					cb.discontinued(null);
-				}
-				cb.company(new Company(rs.getLong("company_id"), rs
-						.getString("company_name")));
-			}
-			return cb.build();
+			return computerMapper.mapRow(rs);
 
 		} catch (SQLException e) {
 //			logger.warn("Error selecting id=" + id);
@@ -185,28 +167,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
 			final ResultSet rs = stmt.executeQuery();
-			List<Computer> computerList = new ArrayList<Computer>();
-			Computer.ComputerBuilder c = new Computer.ComputerBuilder();
-			while (rs.next()) {
-				c.id(rs.getLong("id")).name(rs.getString("name"));
-				if (rs.getTimestamp("introduced") != null) {
-					c.introduced(rs.getTimestamp("introduced")
-							.toLocalDateTime().toLocalDate());
-				} else {
-					c.introduced(null);
-				}
-				if (rs.getTimestamp("discontinued") != null) {
-					c.discontinued(rs.getTimestamp("discontinued")
-							.toLocalDateTime().toLocalDate());
-				} else {
-					c.discontinued(null);
-				}
-				computerList.add(c.company(
-						new Company.CompanyBuilder()
-								.id(rs.getLong("company_id"))
-								.name(rs.getString("company_name")).build())
-						.build());
-			}
+			List<Computer> computerList = computerMapper.mapRowList(rs);
 			Page page = new Page();
 			page.setPageNumber(pageNumber);
 			page.setList(computerList);

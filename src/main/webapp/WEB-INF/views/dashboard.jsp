@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="custom" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Computer Database</title>
+<%		getServletContext().getResource("/WEB-INF/classes/WEB-INF/views/css/main.css"); %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -14,15 +16,15 @@
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
+
 		<div class="container">
 			<a class="navbar-brand" href="home"> Application - Computer
 				Database </a>
 		</div>
-		id
 	</header>
 	<section id="main">
-		<div class="container">
-			<h1 id="homeTitle">${page.count} Computers found</h1>
+		<div class="container">-1
+			<h1 id="homeTitle">${page.count} Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<nameform id="searchForm" action="#" method="GET"
@@ -82,52 +84,11 @@
 			</table>
 		</div>
 	</section>
-
-	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
-			<ul class="pagination">
-				<c:if test="${page.pageNumber>0}">
-					<li><a href="home?page=${page.pageNumber-1}" aria-label="Previous"> <span
-							aria-hidden="true">&laquo;</span>
-
-					</a></li>
-				</c:if>
-				<c:if test="${page.pageNumber>2}">
-								<li><a href="home?page=${page.pageNumber-2}">${page.pageNumber-2}</a></li>
-				
-				</c:if>
-				<c:if test="${page.pageNumber>1}">
-								<li><a href="home?page=${page.pageNumber-1}">${page.pageNumber-1}</a></li>
-				
-				</c:if>
-
-
-				<li><a href="home?page=${page.pageNumber}">${page.pageNumber}</a></li>
-				
-				<c:if test="${page.pageNumber<page.pageCount-1}">
-								<li><a href="home?page=${page.pageNumber+1}">${page.pageNumber+1}</a></li>
-				
-				</c:if>
-				<c:if test="${page.pageNumber<page.pageCount-2}">
-								<li><a href="home?page=${page.pageNumber+2}">${page.pageNumber+2}</a></li>
-				
-				</c:if>
-				<c:if test="${page.pageNumber<page.pageCount}">
-					<li><a href="home?page=${page.pageNumber+1}" aria-label="Next"> <span
-							aria-hidden="true">&raquo;</span>
-					</a></li>
-				</c:if>
-			</ul>
-
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
-			</div>
-	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
+
+	<custom:pagination></custom:pagination>
 
 </body>
 </html>

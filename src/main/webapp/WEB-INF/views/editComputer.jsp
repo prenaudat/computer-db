@@ -14,8 +14,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href="home"> Application -
-			Computer Database </a>
+		<a class="navbar-brand" href="home"> Application - Computer
+			Database </a>
 	</div>
 	</header>
 	<section id="main">
@@ -30,7 +30,6 @@
 						<div class="form-group">
 							<input type="hidden" name="id" value="${computer.id}" />
 						</div>
-
 						<div class="form-group">
 							<label for="computerName">Computer name</label> <input
 								type="text" class="form-control" id="name" name="name"

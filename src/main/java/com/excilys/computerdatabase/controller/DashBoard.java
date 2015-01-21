@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
 
+/**
+ * @author excilys
+ * Servlet redirects home to Dashboard after populating JSP with computer List
+ */
 @WebServlet("/home")
 public class DashBoard extends HttpServlet {
 	ComputerDBService computerDBService;
