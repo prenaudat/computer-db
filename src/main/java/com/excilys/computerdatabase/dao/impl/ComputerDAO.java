@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
@@ -30,7 +31,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 	private static final String UPDATE_STMT = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
-	private static final String COUNT_STMT = "SELECT COUNT(id) FROM computer;";
+	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
+	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	ComputerMapper computerMapper = new ComputerMapper();
 	private static int pageSize = 10;
 
@@ -180,7 +182,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			Page page = new Page();
 			page.setPageNumber(pageNumber);
 			page.setList(computerList);
-			page.setCount(getCount());
+			page.setCount(getCount(page.getQuery()));
 			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
 			return page;
 		} catch (SQLException e) {
@@ -218,12 +220,15 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * Get count of Computers 
 	 * @return number of computers
 	 */
-	public int getCount() {
+	public int getCount(String query) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();//
-			stmt = conn.prepareStatement(COUNT_STMT);
+			conn = connectionManager.getConnection();
+			stmt = conn.prepareStatement(COUNT_STMT, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, "%"+query+"%");
+			stmt.setString(2, "%"+query+"%");
+			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int numberOfRows = rs.getInt(1);
@@ -231,6 +236,32 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			} else {
 				return 0;
 			}
+		} catch (SQLException e) {
+			// logger.warn("Error counting rows");
+			throw new PersistenceException();
+		} finally {
+			connectionManager.close(stmt, conn);
+		}
+	}
+
+	public Page getPage(Page page){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = connectionManager.getConnection();
+			String query= PAGE_QUERY + "ORDER BY "+page.getOrderBy().toString()+" " + page.getSort().toString() + " LIMIT ? , ?;";
+			System.out.println(query);
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, "%"+page.getQuery()+"%");
+			stmt.setString(2, "%"+page.getQuery());
+			stmt.setInt(3, page.getPageNumber()*page.getSize());
+			stmt.setInt(4, page.getSize());
+			System.out.println(stmt);
+			ResultSet rs = stmt.executeQuery();
+			page.setList(computerMapper.mapRowList(rs));
+			page.setCount(getCount(page.getQuery()));
+			page.setPageCount(page.getCount()/page.getSize());
+			return page;
 		} catch (SQLException e) {
 			// logger.warn("Error counting rows");
 			throw new PersistenceException();

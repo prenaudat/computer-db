@@ -23,14 +23,16 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.count}Computersfound</h1>
+			<h1 id="homeTitle">${page.count} Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<nameform id="searchForm" action="#" method="GET"
-						class="form-inline"> <input type="search"
-						id="searchbox" name="search" class="form-control"
-						placeholder="Search name" /> <input type="submit"
-						id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+					<form id="searchForm"
+						action="home?page=0&order=${orderBy}&sort=${sort}&size=${size}"
+						method="GET" class="form-inline">
+						<input type="search" id="searchbox" name="query"
+							class="form-control" placeholder="Search name" /> <input
+							type="submit" id="searchsubmit" value="Filter by name"
+							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
@@ -58,12 +60,34 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
+
+						<th><c:choose>
+								<c:when
+									test="${page.orderBy == 'NAME'}">
+									<c:if test="${page.sort == 'ASC'}">
+										<a
+											href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=DESC&size=${page.size}">
+											Computer name</a>
+									</c:if>
+									<c:if test="${page.sort == 'DESC'}'">
+										<a
+											href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
+											Computer name</a>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
+										Computer name</a>
+								</c:otherwise>
+							</c:choose></th>
+
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><a
+							href="home?${page.target}&page=0&query=${page.query}&order=COMPANY&sort=ASC&size=${page.size}">Company</a></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -86,10 +110,11 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/dashboard.js"></script>
-	
+
 	<custom:pagination target="${page.target}" query="${page.query}"
 		pageCount="${page.pageCount}" orderBy="${page.orderBy}"
-		sort="${page.sort}" pageNumber="${page.pageNumber}"></custom:pagination>
-		
+		sort="${page.sort}" pageNumber="${page.pageNumber}"
+		size="${page.size}"></custom:pagination>
+
 </body>
 </html>

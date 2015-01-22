@@ -52,4 +52,14 @@ public interface ComputerDAOInterface {
 	 */
 	public void remove(final long id);
 
+	/**
+	 * @param query
+	 */
+	public int getCount(String query);
+
+	/**
+	 * @param page
+	 * @return
+	 */
+	public Page getPage(Page page);
 }

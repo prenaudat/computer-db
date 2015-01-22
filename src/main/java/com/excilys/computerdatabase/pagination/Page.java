@@ -170,7 +170,7 @@ public class Page {
 		list = new ArrayList<Computer>();
 		sort = Sort.ASC;
 		count = 0;
-		target = "";
+		target = "home";
 	}
 
 	/***

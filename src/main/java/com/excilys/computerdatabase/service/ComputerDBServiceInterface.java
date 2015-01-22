@@ -18,5 +18,5 @@ public interface ComputerDBServiceInterface {
 
 	public void save(final Computer computer);
 	
-	public int getCount();
+	public int getCount(String query);
 }

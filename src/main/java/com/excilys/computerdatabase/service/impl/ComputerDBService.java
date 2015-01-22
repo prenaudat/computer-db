@@ -57,8 +57,20 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 		computerDAO.save(computer);
 	}
 
+	/**
+	 * @param query
+	 * @return
+	 */
 	@Override
-	public int getCount() {
-		return computerDAO.getCount();
+	public int getCount(String query) {
+		return computerDAO.getCount(query);
+	}
+
+	/**
+	 * @param page
+	 * @return
+	 */
+	public Page getPage(Page page) {
+		return computerDAO.getPage(page);
 	}
 }
