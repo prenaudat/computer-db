@@ -55,9 +55,9 @@ public class ComputerMapper implements RowMapper<Computer> {
 	@Override
 	public List<Computer> mapRowList(ResultSet rs) {
 		List<Computer> computerList = new ArrayList<Computer>();
-		Computer.Builder c = new Computer.Builder();
 		try{
 		while (rs.next()) {
+			Computer.Builder c = new Computer.Builder();
 			c.id(rs.getLong("id")).name(rs.getString("name"));
 			if (rs.getTimestamp("introduced") != null) {
 				c.introduced(rs.getTimestamp("introduced")

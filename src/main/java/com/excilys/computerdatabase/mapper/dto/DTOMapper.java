@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.mapper.dto;
 
+import java.util.List;
+
 /**
  * Maps class X to class Y
  * @author excilys
@@ -22,4 +24,20 @@ public interface DTOMapper<X, Y> {
 	 * @return X object
 	 */
 	Y mapFromDTO(X x);
+	
+	/**
+	 * Map a list of Objects into DTOS
+	 * @param y list of objects
+	 * @return list of DTOs
+	 */
+	List<X> mapToDTO(List<Y> y);
+
+	/**
+	 * Map list of DTOs to Objects
+	 * @param x List of DTOs
+	 * @return List of Objects
+	 */
+	List<Y> mapFromDTO(List<X> x);
+
+
 }

@@ -23,7 +23,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.count} Computersfound</h1>
+			<h1 id="homeTitle">${page.count} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -62,22 +62,21 @@
 						</span></th>
 
 						<th><c:choose>
-								<c:when
-									test="${page.orderBy == 'NAME'}">
+								<c:when test="${page.orderBy == 'NAME'}">
 									<c:if test="${page.sort == 'ASC'}">
 										<a
-											href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=DESC&size=${page.size}">
+											href="${page.target}?page=0&query=${page.query}&order=NAME&sort=DESC&size=${page.size}">
 											Computer name</a>
 									</c:if>
-									<c:if test="${page.sort == 'DESC'}'">
+									<c:if test="${page.sort == 'DESC'}">
 										<a
-											href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
+											href="${page.target}?page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
 											Computer name</a>
 									</c:if>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="home?${page.target}&page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
+										href="${page.target}?page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
 										Computer name</a>
 								</c:otherwise>
 							</c:choose></th>
@@ -86,9 +85,25 @@
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
 						<!-- Table header for Company -->
-						<th><a
-							href="home?${page.target}&page=0&query=${page.query}&order=COMPANY&sort=ASC&size=${page.size}">Company</a></th>
-					</tr>
+						<th><c:choose>
+								<c:when test="${page.orderBy == 'COMPANY_NAME'}">
+									<c:if test="${page.sort == 'ASC'}">
+										<a
+											href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=DESC&size=${page.size}">
+											Company name</a>
+									</c:if>
+									<c:if test="${page.sort == 'DESC'}">
+										<a
+											href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=ASC&size=${page.size}">
+											Company name</a>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=ASC&size=${page.size}">
+										Company name</a>
+								</c:otherwise>
+							</c:choose></th>
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">

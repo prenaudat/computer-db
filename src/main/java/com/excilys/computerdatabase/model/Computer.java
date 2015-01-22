@@ -3,6 +3,8 @@ package com.excilys.computerdatabase.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.excilys.computerdatabase.validator.Validator;
+
 /**
  * Computer Object Class
  * @author paulr_000
@@ -42,7 +44,11 @@ public class Computer {
 	 * @param name Name to be set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		if(Validator.isValidString(name)){
+			this.name = name;
+		}else{
+			this.name="";
+		}
 	}
 
 	/**
@@ -117,6 +123,15 @@ public class Computer {
 				.append("]").toString();
 	}
 
+	public Computer() {
+		super();
+		this.id = 0;
+		this.name = "";
+		this.introduced = null;
+		this.discontinued = null;
+		this.company = new Company();		
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -177,47 +192,44 @@ public class Computer {
 	 *
 	 */
 	public static class Builder {
-		private long id;
-		private String name;
-		private LocalDate introduced;
-		private LocalDate discontinued;
-		private Company company;
-
+		private Computer computer = new Computer();
+		
 		public Builder() {
-			this.id = 0;
-			this.name = null;
-			this.introduced = null;
-			this.discontinued = null;
-			this.company = null;
+			computer.id = 0;
+			computer.name = "";
+			computer.introduced = null;
+			computer.discontinued = null;
+			computer.company = new Company();
 		}
 
 		public Builder id(final long newId) {
-			this.id = newId;
+			computer.setId(newId);
 			return this;
 		}
 
 		public Builder name(final String newName) {
-			this.name = newName;
+			this.computer.setName(newName);
 			return this;
 		}
 
 		public Builder introduced(final LocalDate newIntroduced) {
-			this.introduced = newIntroduced;
+			this.computer.setIntroduced(newIntroduced);
 			return this;
 		}
 
 		public Builder discontinued(final LocalDate newDiscontinued) {
-			this.discontinued = newDiscontinued;
+			this.computer.setDiscontinued(newDiscontinued);
 			return this;
 		}
 
 		public Builder company(final Company company) {
-			this.company = new Company(company.getId(), company.getName());
+			this.computer.company.setId(company.getId());
+			this.computer.company.setName(company.getName());
 			return this;
 		}
 
 		public Computer build() {
-			return new Computer(id, name, introduced, discontinued, company);
+			return computer;
 		}
 	}
 

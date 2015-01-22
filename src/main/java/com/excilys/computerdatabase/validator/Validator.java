@@ -42,7 +42,7 @@ public class Validator {
 	}
 
 	public static Boolean isValidString(final String input) {
-		if (input.length() > 0 && input != null) {
+		if(input != null && input.trim().length()>0){
 			return true;
 		} else {
 			return false;
@@ -50,17 +50,14 @@ public class Validator {
 	}
 
 	public static int validateInt(final String input) {
-		if (input != null) {
-			if (input.matches(NUMBER_REGEX) && input.length() > 0) {
-				return Integer.parseInt(input);
-			} else {
-				throw new PersistenceException();
+		if (input != null && input.matches(NUMBER_REGEX) && input.length() > 0) {
+			return Integer.parseInt(input);
 			}
-		} else {
+		else {
 			throw new PersistenceException();
 		}
 	}
-	public static String validateSring(final String input) {
+	public static String validateString(final String input) {
 		if (input != null) {
 			if(input.length()>0){
 				return input;

@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.mapper.dto.impl;
 
+import java.util.List;
+
 import com.excilys.computerdatabase.dto.CompanyDTO;
 import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.DTOMapper;
@@ -28,6 +30,18 @@ public class CompanyDTOMapper implements DTOMapper<CompanyDTO, Company> {
 	public Company mapFromDTO(CompanyDTO c) {
 		return new Company(c.getId(),c.getName());
 
+	}
+
+	@Override
+	public List<CompanyDTO> mapToDTO(List<Company> y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Company> mapFromDTO(List<CompanyDTO> x) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

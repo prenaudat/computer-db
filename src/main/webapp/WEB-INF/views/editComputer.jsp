@@ -73,5 +73,16 @@
 		</div>
 	</div>
 	</section>
+	<script>
+	$('#btn-submit').click(function() {
+		  if($('#name').value.length < 0){
+		    alert('Please choose longer name !');
+		    return false;
+		  } else {
+		    $('#btn-submit').after('<span class="error">Form Accepted.</span>');
+		    return false;
+		  }
+		});
+	</script>
 </body>
 </html>

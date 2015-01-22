@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.model.Computer;
 
 /**
@@ -19,7 +20,7 @@ public class Page {
 	// introduced company or discontinued) and ordered(asc or desc)
 	private int size;
 	private int pageNumber;
-	private List<Computer> list;
+	private List<ComputerDTO> list;
 	private OrderBy orderBy;
 	private Sort sort;
 	private int count;
@@ -94,7 +95,7 @@ public class Page {
 	/**
 	 * @return List of computers corresponding to criteria
 	 */
-	public List<Computer> getList() {
+	public List<ComputerDTO> getList() {
 		return list;
 	}
 
@@ -114,7 +115,7 @@ public class Page {
 	/**
 	 * @param list set Computer List of page
 	 */
-	public void setList(List<Computer> list) {
+	public void setList(List<ComputerDTO> list) {
 		this.list = list;
 	}
 
@@ -167,7 +168,7 @@ public class Page {
 		size = 10;
 		pageNumber = 0;
 		orderBy = OrderBy.ID;
-		list = new ArrayList<Computer>();
+		list = new ArrayList<ComputerDTO>();
 		sort = Sort.ASC;
 		count = 0;
 		target = "home";
@@ -184,7 +185,7 @@ public class Page {
 	 * @param pageCount
 	 * @param String query
 	 */
-	public Page(int size, int pageNumber, List<Computer> list, OrderBy orderBy,
+	public Page(int size, int pageNumber, List<ComputerDTO> list, OrderBy orderBy,
 			Sort sort, int count, int pageCount, String query, String target) {
 		super();
 		this.size = size;
@@ -205,7 +206,7 @@ public class Page {
 	public static class Builder {
 		private int size;
 		private int pageNumber;
-		private List<Computer> list;
+		private List<ComputerDTO> list;
 		private OrderBy orderBy;
 		private Sort sort;
 		private int count;
@@ -223,7 +224,7 @@ public class Page {
 			return this;
 		}
 
-		public Builder list(List<Computer> list) {
+		public Builder list(List<ComputerDTO> list) {
 			this.list = list;
 			return this;
 		}

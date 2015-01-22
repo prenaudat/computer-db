@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.model;
 
 /**
  * Company Model
+ * 
  * @author paulr_000
  *
  */
@@ -20,7 +21,8 @@ public class Company {
 	}
 
 	/**
-	 * @param id ID to be set
+	 * @param id
+	 *            ID to be set
 	 */
 	public void setId(long id) {
 		this.id = id;
@@ -42,8 +44,10 @@ public class Company {
 
 	// Constructor from
 	/**
-	 * @param id Id of comapany
-	 * @param name Name of company
+	 * @param id
+	 *            Id of comapany
+	 * @param name
+	 *            Name of company
 	 */
 	public Company(long id, String name) {
 		super();
@@ -57,7 +61,9 @@ public class Company {
 				.append(name).append("]").toString();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -69,7 +75,9 @@ public class Company {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -91,32 +99,37 @@ public class Company {
 		return true;
 	}
 
+	public Company() {
+		this.id = 0;
+		this.name = "";
+	}
+
 	/**
-	 * Nested Builder class 
+	 * Nested Builder class
+	 * 
 	 * @author excilys
 	 *
 	 */
 	public static class CompanyBuilder {
-		private long id;
-		private String name;
+		private Company company = new Company();
 
 		public CompanyBuilder() {
-			this.id = 0;
-			this.name = null;
+			company.setId(0);
+			company.name = null;
 		}
 
 		public CompanyBuilder id(final long id) {
-			this.id = id;
+			company.id = id;
 			return this;
 		}
 
 		public CompanyBuilder name(final String name) {
-			this.name = name;
+			company.name = name;
 			return this;
 		}
 
 		public Company build() {
-			return new Company(this.id, this.name);
+			return company;
 		}
 
 	}

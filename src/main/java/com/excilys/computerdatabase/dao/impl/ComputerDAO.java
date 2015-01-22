@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
@@ -34,6 +34,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	ComputerMapper computerMapper = new ComputerMapper();
+	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	private static int pageSize = 10;
 
 	// Logger for this class
@@ -127,7 +128,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @param introduced
 	 *            Introduction date for new Computer
 	 * @param discontinued
-	 *            Discontinuation deate for new computer
+	 *            Discontinuation date for new computer
 	 * @param companyId
 	 *            Company ID for new COmputer
 	 */
@@ -141,6 +142,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
 			stmt.setTimestamp(2,
+
 					Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
 			if (computer.getDiscontinued() != null) {
 				stmt.setTimestamp(3, Timestamp.valueOf(computer
@@ -180,8 +182,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			rs = stmt.executeQuery();
 			List<Computer> computerList = computerMapper.mapRowList(rs);
 			Page page = new Page();
+			page.setList(computerDTOMapper.mapToDTO(computerList));
 			page.setPageNumber(pageNumber);
-			page.setList(computerList);
 			page.setCount(getCount(page.getQuery()));
 			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
 			return page;
@@ -228,7 +230,6 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt = conn.prepareStatement(COUNT_STMT, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, "%"+query+"%");
 			stmt.setString(2, "%"+query+"%");
-			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int numberOfRows = rs.getInt(1);
@@ -250,15 +251,14 @@ public enum ComputerDAO implements ComputerDAOInterface {
 		try {
 			conn = connectionManager.getConnection();
 			String query= PAGE_QUERY + "ORDER BY "+page.getOrderBy().toString()+" " + page.getSort().toString() + " LIMIT ? , ?;";
-			System.out.println(query);
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "%"+page.getQuery()+"%");
-			stmt.setString(2, "%"+page.getQuery());
+			stmt.setString(2, "%"+page.getQuery()+"%");
 			stmt.setInt(3, page.getPageNumber()*page.getSize());
 			stmt.setInt(4, page.getSize());
-			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
-			page.setList(computerMapper.mapRowList(rs));
+			List<Computer> computerList = computerMapper.mapRowList(rs);
+			page.setList(computerDTOMapper.mapToDTO(computerList));
 			page.setCount(getCount(page.getQuery()));
 			page.setPageCount(page.getCount()/page.getSize());
 			return page;

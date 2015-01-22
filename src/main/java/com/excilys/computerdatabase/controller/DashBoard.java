@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
@@ -20,6 +21,7 @@ import com.excilys.computerdatabase.validator.Validator;
 @WebServlet("/home")
 public class DashBoard extends HttpServlet {
 	ComputerDBService computerDBService = new ComputerDBService();
+	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	private static final long serialVersionUID = 1L;
 
 	/* (non-Javadoc)
@@ -42,9 +44,6 @@ public class DashBoard extends HttpServlet {
 	 */
 	private Page initPage(HttpServletRequest req){
 		Map<String, String[]> paramList = req.getParameterMap();
-		for(String[] x : paramList.values()){
-			System.out.println(x[0]);
-		}
 		Page page =	Validator.validateParameterList(paramList);
 		page.setTarget("home"); //because we are currently on home page
 		return page;
