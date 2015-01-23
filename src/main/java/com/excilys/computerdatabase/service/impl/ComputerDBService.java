@@ -1,9 +1,11 @@
 package com.excilys.computerdatabase.service.impl;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
+import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.dao.impl.ComputerDAO;
+import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
@@ -14,6 +16,8 @@ import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
  */
 public class ComputerDBService implements ComputerDBServiceInterface {
 	ComputerDAO computerDAO = ComputerDAO.getInstance();
+	ConnectionManager connectionmanager = ConnectionManager.getInstance();
+
 	/**
 	 * @param currentComputerPageIndex
 	 * @param pageSize
@@ -72,5 +76,22 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 */
 	public Page getPage(Page page) {
 		return computerDAO.getPage(page);
+	}
+
+	public void deleteByCompany(long id) {
+		Connection conn = connectionmanager.getConnection();
+		System.out.println("deleting company "+id);
+		try {
+			conn.setAutoCommit(false);
+			computerDAO.removeByCompany(id, conn);
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

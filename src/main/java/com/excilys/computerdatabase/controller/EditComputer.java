@@ -20,7 +20,7 @@ import com.excilys.computerdatabase.validator.Validator;
  * @author excilys
  *
  */
-@WebServlet("/editComputer")
+@WebServlet("/computers/edit")
 public class EditComputer extends HttpServlet {
 	ComputerDBService computerDBService;
 	CompanyDBService companyDBService;
@@ -64,7 +64,7 @@ public class EditComputer extends HttpServlet {
 			c.company(new Company.CompanyBuilder().id(Long.parseLong(req.getParameter("company_id"))).build());
 		}
 		computerDBService.update(c.build());
-		resp.sendRedirect("home");
+		resp.sendRedirect("computers");
 		
 			}
 }

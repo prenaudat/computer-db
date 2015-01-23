@@ -28,7 +28,6 @@ public class Validator {
 		if (input.length() == 10 && input.matches(DATE_REGEX)) {
 			return true;
 		} else {
-			System.out.println("invalid date");
 			return false;
 		}
 	}

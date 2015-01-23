@@ -17,13 +17,13 @@
 	<header class="navbar navbar-inverse navbar-fixed-top">
 
 		<div class="container">
-			<a class="navbar-brand" href="home"> Application - Computer
-				Database </a>
+			<a class="navbar-brand" href="#" onclick='location.reload(true)'>
+				Application - Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.count} Computers found</h1>
+			<h1 id="homeTitle">${page.count}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -36,14 +36,14 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
+					<a class="btn btn-success" id="addComputer" href="computers/add">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="#" method="POST" action="delete">
 			<input type="hidden" name="selection" value="">
 		</form>
 		<div class="container" style="margin-top: 10px;">
@@ -64,20 +64,21 @@
 						<th><c:choose>
 								<c:when test="${page.orderBy == 'NAME'}">
 									<c:if test="${page.sort == 'ASC'}">
-										<a
-											href="${page.target}?page=0&query=${page.query}&order=NAME&sort=DESC&size=${page.size}">
-											Computer name</a>
+										<custom:url target="${page.target}" pageNumber="0"
+											query="${page.query}" orderBy="NAME" sort="DESC"
+											size="${page.size}" value="Computer name"></custom:url>
 									</c:if>
 									<c:if test="${page.sort == 'DESC'}">
-										<a
-											href="${page.target}?page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
-											Computer name</a>
+										<custom:url target="${page.target}" pageNumber="0"
+											query="${page.query}" orderBy="NAME" sort="ASC"
+											size="${page.size}" value="Computer name"></custom:url>
+
 									</c:if>
 								</c:when>
 								<c:otherwise>
-									<a
-										href="${page.target}?page=0&query=${page.query}&order=NAME&sort=ASC&size=${page.size}">
-										Computer name</a>
+									<custom:url target="${page.target}" pageNumber="0"
+										query="${page.query}" orderBy="NAME" sort="ASC"
+										size="${page.size}" value="Computer name"></custom:url>
 								</c:otherwise>
 							</c:choose></th>
 
@@ -88,20 +89,21 @@
 						<th><c:choose>
 								<c:when test="${page.orderBy == 'COMPANY_NAME'}">
 									<c:if test="${page.sort == 'ASC'}">
-										<a
-											href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=DESC&size=${page.size}">
-											Company name</a>
+										<custom:url target="${page.target}" pageNumber="0"
+											query="${page.query}" orderBy="COMPANY_NAME" sort="DESC"
+											size="${page.size}" value="Company name"></custom:url>
+
 									</c:if>
 									<c:if test="${page.sort == 'DESC'}">
-										<a
-											href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=ASC&size=${page.size}">
-											Company name</a>
+										<custom:url target="${page.target}" pageNumber="0"
+											query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
+											size="${page.size}" value="Company name"></custom:url>
 									</c:if>
 								</c:when>
 								<c:otherwise>
-									<a
-										href="${page.target}?page=0&query=${page.query}&order=COMPANY_NAME&sort=ASC&size=${page.size}">
-										Company name</a>
+									<custom:url target="${page.target}" pageNumber="0"
+										query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
+										size="${page.size}" value="Company name"></custom:url>
 								</c:otherwise>
 							</c:choose></th>
 				</thead>
@@ -110,12 +112,12 @@
 					<c:forEach items="${page.list}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a>
-							</td>
-							<td>${computer.introduced}</td>
-							<td>${computer.discontinued}</td>
-							<td>${computer.company.name}</td>
+								class="cb" value="${computer.id}"></td>
+							<td><a href="computers/edit?id=${computer.id}" onclick=""><c:out
+										value="${computer.name}"></c:out></a></td>
+							<td><c:out value="${computer.introduced}"></c:out></td>
+							<td><c:out value="${computer.discontinued}"></c:out></td>
+							<td><c:out value="${computer.company.name}"></c:out></td>
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -7,14 +7,15 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="../css/main.css" rel="stylesheet" media="screen">
+<script src="../js/jquery.min.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href="home"> Application - Computer
+		<a class="navbar-brand" href="../computers"> Application - Computer
 			Database </a>
 	</div>
 	</header>
@@ -48,7 +49,7 @@
 								value="${computer.discontinued}">
 						</div>
 						<div class="form-group">
-							<label for="companyId">Company</label> <select
+							<label for="companyId">Company</label> <selecthome
 								class="form-control" id="companyId" name="company_id">
 								<option value="null">--</option>
 								<c:forEach items="${companies}" var="company">
@@ -65,8 +66,9 @@
 						</div>
 					</fieldset>
 					<div class="actions pull-right">
-						<input type="submit" value="Edit" class="btn btn-primary">
-						or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+						<input type="submit" value="Edit" id="submit"
+							class="btn btn-primary"> or <a href="dashboard.html"
+							class="btn btn-default">Cancel</a>
 					</div>
 				</form>
 			</div>
@@ -74,15 +76,37 @@
 	</div>
 	</section>
 	<script>
-	$('#btn-submit').click(function() {
-		  if($('#name').value.length < 0){
-		    alert('Please choose longer name !');
-		    return false;
-		  } else {
-		    $('#btn-submit').after('<span class="error">Form Accepted.</span>');
-		    return false;
-		  }
+		$('#name').change(function() {
+			if (jQuery('#name').val() == "") {
+				$('#submit').prop('disabled', true);
+			} else {
+				$('#submit').prop('disabled', false);
+			}
 		});
+		$('#introduced')
+				.change(
+						function() {
+							if ($('#introduced')
+									.val()
+									.match(
+											"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
+								$('#submit').prop('disabled', false);
+							} else {
+								$('#submit').prop('disabled', true);
+							}
+						});
+		$('#discontinued')
+		.change(
+				function() {
+					if ($('#discontinued')
+							.val()
+							.match(
+									"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
+						$('#submit').prop('disabled', false);
+					} else {
+						$('#submit').prop('disabled', true);
+					}
+				});
 	</script>
 </body>
 </html>

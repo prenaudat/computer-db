@@ -33,6 +33,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String DELETE_STMT = "DELETE FROM computer WHERE id=?;";
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
+	private static final String DELETE_COMPANY_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
+	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
 	ComputerMapper computerMapper = new ComputerMapper();
 	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	private static int pageSize = 10;
@@ -101,16 +103,26 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2,
-					Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()
-					.atStartOfDay()));
+			System.out.println(computer.getIntroduced());
+			if (computer.getIntroduced() != null) {
+				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()
+						.atStartOfDay()));
+			} else {
+				stmt.setNull(2, java.sql.Types.TIMESTAMP);
+			}
+			if (computer.getDiscontinued() != null) {
+				stmt.setTimestamp(3, Timestamp.valueOf(computer
+						.getDiscontinued().atStartOfDay()));
+			} else {
+				stmt.setNull(3, java.sql.Types.TIMESTAMP);
+			}
 			if (computer.getCompany() != null) {
 				stmt.setLong(4, computer.getCompany().getId());
 			} else {
 				stmt.setLong(4, 0);
 			}
 			stmt.setLong(5, computer.getId());
+			System.out.println(stmt);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			// logger.warn("Error updating id=" + computer.getId());
@@ -141,12 +153,17 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt = conn.prepareStatement(INSERT_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2,
-
-					Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			if (computer.getIntroduced() != null) {
+				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()
+						.atStartOfDay()));
+			} else {
+				stmt.setNull(2, java.sql.Types.TIMESTAMP);
+			}
 			if (computer.getDiscontinued() != null) {
 				stmt.setTimestamp(3, Timestamp.valueOf(computer
 						.getDiscontinued().atStartOfDay()));
+			} else {
+				stmt.setNull(3, java.sql.Types.TIMESTAMP);
 			}
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.executeUpdate();
@@ -199,7 +216,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	/**
 	 * Delete a computer from database
 	 * 
-	 * @param id ID of computer to delete
+	 * @param id
+	 *            ID of computer to delete
 	 * @throws SQLException
 	 */
 	public void remove(final long id) {
@@ -219,7 +237,31 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	}
 
 	/**
-	 * Get count of Computers 
+	 * Removes a company and all its associated computers
+	 * 
+	 * @param id
+	 *            ID of company to delete, along with its computers
+	 */
+	public void removeByCompany(final long id, Connection conn) {
+		PreparedStatement cptStmt = null;
+		PreparedStatement cmpStmt = null;
+		try {
+			cptStmt = conn.prepareStatement(DELETE_COMPANY_COMPUTERS);
+			cmpStmt = conn.prepareStatement(DELETE_COMPANY);
+			cptStmt.setLong(1, id);
+			cmpStmt.setLong(1, id);
+			cptStmt.executeUpdate();
+			cmpStmt.executeUpdate();
+			cmpStmt.close();
+			cptStmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Get count of Computers
+	 * 
 	 * @return number of computers
 	 */
 	public int getCount(String query) {
@@ -227,9 +269,10 @@ public enum ComputerDAO implements ComputerDAOInterface {
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(COUNT_STMT, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, "%"+query+"%");
-			stmt.setString(2, "%"+query+"%");
+			stmt = conn.prepareStatement(COUNT_STMT,
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, "%" + query + "%");
+			stmt.setString(2, "%" + query + "%");
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int numberOfRows = rs.getInt(1);
@@ -245,22 +288,24 @@ public enum ComputerDAO implements ComputerDAOInterface {
 		}
 	}
 
-	public Page getPage(Page page){
+	public Page getPage(Page page) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			String query= PAGE_QUERY + "ORDER BY "+page.getOrderBy().toString()+" " + page.getSort().toString() + " LIMIT ? , ?;";
+			String query = PAGE_QUERY + "ORDER BY "
+					+ page.getOrderBy().toString() + " "
+					+ page.getSort().toString() + " LIMIT ? , ?;";
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, "%"+page.getQuery()+"%");
-			stmt.setString(2, "%"+page.getQuery()+"%");
-			stmt.setInt(3, page.getPageNumber()*page.getSize());
+			stmt.setString(1, "%" + page.getQuery() + "%");
+			stmt.setString(2, "%" + page.getQuery() + "%");
+			stmt.setInt(3, page.getPageNumber() * page.getSize());
 			stmt.setInt(4, page.getSize());
 			ResultSet rs = stmt.executeQuery();
 			List<Computer> computerList = computerMapper.mapRowList(rs);
 			page.setList(computerDTOMapper.mapToDTO(computerList));
 			page.setCount(getCount(page.getQuery()));
-			page.setPageCount(page.getCount()/page.getSize());
+			page.setPageCount(page.getCount() / page.getSize());
 			return page;
 		} catch (SQLException e) {
 			// logger.warn("Error counting rows");
