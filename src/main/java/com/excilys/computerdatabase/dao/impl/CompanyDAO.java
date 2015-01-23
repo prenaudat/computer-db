@@ -29,18 +29,20 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 	private static final String QUERY_ALL = "SELECT * FROM company;";
+	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
 	private static final int pageSize = 10;
 	private Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 	private ConnectionManager connectionManager = ConnectionManager
 			.getInstance();
 	private CompanyMapper companyMapper = new CompanyMapper();
+
 	/**
 	 * Get instance of CompanyDAO
 	 * 
 	 * @return
 	 */
 	public static CompanyDAO getInstance() {
-			return INSTANCE;
+		return INSTANCE;
 	}
 
 	/**
@@ -155,4 +157,21 @@ public enum CompanyDAO implements CompanyDAOInterface {
 		}
 	}
 
+	public void remove(Connection conn, long id) {
+
+		PreparedStatement cmpStmt = null;
+		try {
+			cmpStmt = conn.prepareStatement(DELETE_COMPANY);
+			cmpStmt.setLong(1, id);
+			cmpStmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException();
+		}finally{
+			try {
+				cmpStmt.close();
+			} catch (SQLException e) {
+				LOGGER.warn("Error FATAL STAHP Error 0x000000"+id+" to STAHP Error 0x000000BF");
+			}
+		}
+	}
 }

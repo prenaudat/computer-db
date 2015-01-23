@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
+import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Company;
 
@@ -22,8 +23,7 @@ public class CompanyDAOMock implements CompanyDAOInterface {
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 	private int pageSize=10;
-	ConnectionManagerTest connectionManager = ConnectionManagerTest
-			.getInstance();
+	ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 	@Override
 	public Company get(long id) {
@@ -115,5 +115,11 @@ public class CompanyDAOMock implements CompanyDAOInterface {
 		} finally {
 			connectionManager.close(stmt, conn);
 		}
+	}
+
+	@Override
+	public void remove(Connection conn, long id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

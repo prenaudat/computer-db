@@ -1,10 +1,19 @@
 package com.excilys.computerdatabase.dao;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
+
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -18,34 +27,33 @@ import com.jolbox.bonecp.BoneCPConfig;
 public enum ConnectionManager {
 	INSTANCE;
 	BoneCP connectionPool ;
-
-	/**
-	 * JDBC Driver Class name
-	 */
-	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	/**
-	 * Database URL
-	 */
-	private static final String DB_URL = "jdbc:mysql://localhost/computer-database-db?zeroDateTimeBehavior=convertToNull";
-	/**
-	 * Database id
-	 */
-	private static final String USER = "admincdb";
-	/**
-	 * Database Password
-	 */
-	private static final String PASS = "qwerty1234";
-
-	// static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(ConnectionManager.class);
 
 	/**
 	 * Load JDBC driver and create new ConnectionManager
 	 */
 	private ConnectionManager() {
+        InputStream is = ConnectionManager.class.getClassLoader().getResourceAsStream("mysql.properties");
+        Properties props = new Properties();
+        try {
+			props.load(is);
+		} catch (IOException e1) {
+			LOGGER.warn("Can't load Connection properties");
+		}
+        try {
+			is.close();
+		} catch (IOException e1) {
+			LOGGER.warn("Can't close Connection properties");
+		}
+        final String JDBC_DRIVER = props.getProperty("JDBC_DRIVER");
+        final String DB_URL = props.getProperty("DB_URL");
+        final String USER  = props.getProperty("USER");
+        final String PASS = props.getProperty("PASS");
+
 		try {
 			Class.forName(JDBC_DRIVER);
 		} catch (ClassNotFoundException e) {
-			throw new PersistenceException("Failed to load " + JDBC_DRIVER);
+			throw new PersistenceException("Failed to load JDBC_DRIVER " + JDBC_DRIVER);
 		}
 		BoneCPConfig config = new BoneCPConfig();
 		config.setJdbcUrl(DB_URL);
@@ -79,6 +87,7 @@ public enum ConnectionManager {
 		try {
 			return connectionPool.getConnection();
 		} catch (SQLException e) {
+			LOGGER.warn("Can't get connection from connection pool");
 			throw new PersistenceException("Couldn't get connection");
 		} 
 	}
@@ -100,8 +109,8 @@ public enum ConnectionManager {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			// logger.warn("Can't close connection");
-			throw new PersistenceException("Failed to load " + JDBC_DRIVER);
+			LOGGER.warn("can't close PreparedStatement and Connection");
+			throw new PersistenceException("Failed to close connections");
 		}
 	}
 
@@ -127,8 +136,8 @@ public enum ConnectionManager {
 				rs.close();
 			}
 		} catch (SQLException e) {
-			// logger.warn("Can't close connection");
-			throw new PersistenceException("Failed to load " + JDBC_DRIVER);
+			 LOGGER.warn("Can't close connection ResultSet or Statement");
+			throw new PersistenceException("Failed to close connections");
 		}
 	}
 }

@@ -13,6 +13,7 @@
 		<selenium.version>2.44.0</selenium.version>
 		<mockito.version>2.0.2-beta</mockito.version>
 		<logback.version>1.1.2</logback.version>
+		<bonecp.version>0.8.0.RELEASE</bonecp.version>
 	</properties>
 
 	<!-- DEPENDENCIES -->
@@ -40,7 +41,7 @@
 		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
-			<version>0.8.0.RELEASE</version>
+			<version>${bonecp.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- TEST DEPENDENCIES -->
@@ -105,5 +106,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>2.0.7</version>
+	<version>2.0.8</version>
 </project>

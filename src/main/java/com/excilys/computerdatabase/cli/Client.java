@@ -353,7 +353,7 @@ public class Client {
 			String input = sc.nextLine();
 			massDelete = !Validator.isValidNumber(input);
 			if (!massDelete) {
-				computerDBService.deleteByCompany(Long.parseLong(input));
+				computerDBService.remove(Long.parseLong(input));
 			}
 		}
 	}

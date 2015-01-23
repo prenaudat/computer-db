@@ -16,4 +16,6 @@ public interface CompanyDBServiceInterface {
 	public void save(String name);
 
 	public void update(long id, String name);
+	
+	public void remove(long id);
 }

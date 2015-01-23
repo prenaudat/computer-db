@@ -28,9 +28,9 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testList() {
-		Page c1 = mockComputerDAO.getPage(1);
-		Page c2 = mockComputerDAO.getPage(1);
-		assertEquals(c1.getList(), c2.getList());
+		Page c1 = mockComputerDAO.getPage(5);
+		Page c2 = mockComputerDAO.getPage(5);
+		assertEquals(c1, c2);
 	}
 
 	@Test
@@ -49,8 +49,6 @@ public class ComputerDAOTest {
 		int i1 = mockComputerDAO.save(c);
 		c.setId(i1);
 		Computer c1 = mockComputerDAO.get(i1);
-		System.out.println(c);
-		System.out.println(c1);
 		assertEquals(c1, c);
 	}
 

@@ -1,12 +1,9 @@
 package test.excilys.computerdatabase.service;
 
-import java.util.List;
-
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
 
-import test.excilys.computerdatabase.dao.CompanyDAOMock;
 import test.excilys.computerdatabase.dao.ComputerDAOMock;
 
 public class ComputerDBServiceMock implements ComputerDBServiceInterface{
@@ -42,7 +39,13 @@ public class ComputerDBServiceMock implements ComputerDBServiceInterface{
 	}
 
 	@Override
-	public int getCount() {
-		return computerDAO.getCount();
+	public int getCount(String query) {
+		return computerDAO.getCount(query);
+	}
+
+	@Override
+	public void removeByCompany(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.excilys.computerdatabase.dao.ConnectionManager;
+import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.dao.impl.ComputerDAO;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.model.Computer;
@@ -16,6 +17,8 @@ import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
  */
 public class ComputerDBService implements ComputerDBServiceInterface {
 	ComputerDAO computerDAO = ComputerDAO.getInstance();
+	CompanyDAO companyDAO = CompanyDAO.getInstance();
+
 	ConnectionManager connectionmanager = ConnectionManager.getInstance();
 
 	/**
@@ -30,7 +33,8 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 
 	/**
 	 * @param id
-	 * @return
+	 * @return // TODO Auto-generated catch block e.printStackTrace();
+	 * 
 	 * @throws SQLException
 	 */
 	public Computer get(final long id) {
@@ -78,19 +82,25 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 		return computerDAO.getPage(page);
 	}
 
-	public void deleteByCompany(long id) {
+	public void removeByCompany(long id) {
 		Connection conn = connectionmanager.getConnection();
-		System.out.println("deleting company "+id);
 		try {
 			conn.setAutoCommit(false);
-			computerDAO.removeByCompany(id, conn);
+			computerDAO.removeByCompany(conn, id);
+			companyDAO.remove(conn, id);
 			conn.commit();
-			conn.close();
-		} catch (SQLException e) {
+		} catch (SQLException | PersistenceException e) {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				e.printStackTrace();
+				throw new PersistenceException();
+			}
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+				conn.close();
+			} catch (SQLException e) {
+				throw new PersistenceException();
 			}
 		}
 	}

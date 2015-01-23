@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.dao;
 
+import java.sql.Connection;
+
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
 
@@ -62,4 +64,6 @@ public interface ComputerDAOInterface {
 	 * @return
 	 */
 	public Page getPage(Page page);
+
+	public void removeByCompany(Connection conn, long id);
 }

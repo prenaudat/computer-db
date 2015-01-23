@@ -12,13 +12,18 @@ import java.util.List;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDAOMock {
-	ConnectionManagerTest connectionManager = ConnectionManagerTest.getInstance();
+	private ConnectionManager connectionManager = ConnectionManager
+			.getInstance();
+	private ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	private static final String SINGLE_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;";
 	private static final String LIST_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id AS company_id, cmp.name AS company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;";
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
@@ -27,6 +32,7 @@ public class ComputerDAOMock {
 	private static final String COUNT_STMT = "SELECT COUNT(id) FROM computer;";
 
 	private static int pageSize = 10;
+
 	public Computer get(final long id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -44,10 +50,11 @@ public class ComputerDAOMock {
 				if (resIntroduced != null) {
 					cb.introduced(resIntroduced.toLocalDateTime().toLocalDate());
 				} else {
-					cb.introduced(null);	
+					cb.introduced(null);
 				}
 				if (resDiscontinued != null) {
-					cb.discontinued(resDiscontinued.toLocalDateTime().toLocalDate());
+					cb.discontinued(resDiscontinued.toLocalDateTime()
+							.toLocalDate());
 				} else {
 					cb.discontinued(null);
 				}
@@ -62,7 +69,7 @@ public class ComputerDAOMock {
 			connectionManager.close(stmt, conn);
 		}
 	}
-	
+
 	public void update(final Computer computer) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -70,8 +77,10 @@ public class ComputerDAOMock {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
+			stmt.setTimestamp(2,
+					Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()
+					.atStartOfDay()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
@@ -81,8 +90,10 @@ public class ComputerDAOMock {
 			connectionManager.close(stmt, conn);
 		}
 	}
+
 	/**
 	 * Insert a new computer into the database
+	 * 
 	 * @param name
 	 * @param introduced
 	 * @param discontinued
@@ -94,10 +105,13 @@ public class ComputerDAOMock {
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(INSERT_STMT,
+					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
+			stmt.setTimestamp(2,
+					Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued()
+					.atStartOfDay()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -109,8 +123,10 @@ public class ComputerDAOMock {
 			connectionManager.close(stmt, conn);
 		}
 	}
+
 	/**
 	 * Retrieve a list of computers corresponding to the selection
+	 * 
 	 * @param currentIndex
 	 * @param pageSize
 	 * @return
@@ -150,9 +166,9 @@ public class ComputerDAOMock {
 			}
 			Page page = new Page();
 			page.setPageNumber(pageNumber);
-			page.setList(computerList);
+			page.setList(computerDTOMapper.mapToDTO(computerList));
 			page.setCount(getCount());
-			page.setPageCount((int)Math.ceil(page.getCount()/pageSize));
+			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
 			return page;
 		} catch (SQLException e) {
 			throw new PersistenceException();
@@ -160,43 +176,69 @@ public class ComputerDAOMock {
 			connectionManager.close(stmt, conn);
 		}
 	}
-	 /**
-		 * Delete a computer from database
-		 * @param id
-		 * @return
-		 * @throws SQLException
-		 */
-		public void remove(final long id) {
-			Connection conn = null;
-			PreparedStatement stmt = null;
-			try {
-				conn = connectionManager.getConnection();
-				stmt = conn.prepareStatement(DELETE_STMT);
-				stmt.setLong(1, id);
-				stmt.executeUpdate();
-			} catch (SQLException e) {
-				throw new PersistenceException();
-			} finally {
-				connectionManager.close(stmt, conn);
-			}
+
+	/**
+	 * Delete a computer from database
+	 * 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public void remove(final long id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = connectionManager.getConnection();
+			stmt = conn.prepareStatement(DELETE_STMT);
+			stmt.setLong(1, id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException();
+		} finally {
+			connectionManager.close(stmt, conn);
 		}
-		public int getCount() {
-			Connection conn = null;
-			PreparedStatement stmt = null;
-			try {
-				conn = connectionManager.getConnection();
-				stmt = conn.prepareStatement(COUNT_STMT);
-				ResultSet rs = stmt.executeQuery();
-				if (rs.next()) {
-					int numberOfRows = rs.getInt(1);
-					return numberOfRows;
-				} else {
-					return 0;
-				}
-			} catch (SQLException e) {
-				throw new PersistenceException();
-			} finally {
-				connectionManager.close(stmt, conn);
+	}
+
+	public int getCount() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = connectionManager.getConnection();
+			stmt = conn.prepareStatement(COUNT_STMT);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int numberOfRows = rs.getInt(1);
+				return numberOfRows;
+			} else {
+				return 0;
 			}
+		} catch (SQLException e) {
+			throw new PersistenceException();
+		} finally {
+			connectionManager.close(stmt, conn);
 		}
+	}
+
+		public int getCount(String query) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = connectionManager.getConnection();
+			stmt = conn.prepareStatement(COUNT_STMT,
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, "%" + query + "%");
+			stmt.setString(2, "%" + query + "%");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int numberOfRows = rs.getInt(1);
+				return numberOfRows;
+			} else {
+				return 0;
+			}
+		} catch (SQLException e) {
+			throw new PersistenceException();
+		} finally {
+			connectionManager.close(stmt, conn);
+		}
+	}
 }

@@ -37,7 +37,6 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	private static final String DELETE_COMPANY_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
-	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
 	ComputerMapper computerMapper = new ComputerMapper();
 	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	private static int pageSize = 10;
@@ -50,6 +49,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * 
 	 * @return returns instance of ComputerDAO
 	 */
+	// TODO Auto-generated method stub
+
 	public static ComputerDAO getInstance() {
 		try {
 			return INSTANCE;
@@ -209,7 +210,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			return page;
 		} catch (SQLException e) {
 			LOGGER.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
-			* pageSize, (pageNumber + 1) * pageSize);
+					* pageSize, (pageNumber + 1) * pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn, rs);
@@ -245,20 +246,15 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @param id
 	 *            ID of company to delete, along with its computers
 	 */
-	public void removeByCompany(final long id, Connection conn) {
+	public void removeByCompany(Connection conn, long id) {
 		PreparedStatement cptStmt = null;
-		PreparedStatement cmpStmt = null;
 		try {
 			cptStmt = conn.prepareStatement(DELETE_COMPANY_COMPUTERS);
-			cmpStmt = conn.prepareStatement(DELETE_COMPANY);
 			cptStmt.setLong(1, id);
-			cmpStmt.setLong(1, id);
 			cptStmt.executeUpdate();
-			cmpStmt.executeUpdate();
-			cmpStmt.close();
 			cptStmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new PersistenceException();
 		}
 	}
 
