@@ -49,13 +49,13 @@
 								value="${computer.discontinued}">
 						</div>
 						<div class="form-group">
-							<label for="companyId">Company</label> <selecthome
+							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId" name="company_id">
 								<option value="null">--</option>
 								<c:forEach items="${companies}" var="company">
 									<c:choose>
 										<c:when test="${company.id!=computer.company.id}">
-											<option value="${company.id}">${company.id}-${company.name}</option>
+											<option value="${company.id}">${company.name}</option>
 										</c:when>
 										<c:otherwise>
 											<option selected value="${company.id}">${company.name}</option>

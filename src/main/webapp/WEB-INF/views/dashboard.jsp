@@ -17,13 +17,13 @@
 	<header class="navbar navbar-inverse navbar-fixed-top">
 
 		<div class="container">
-			<a class="navbar-brand" href="#" onclick='location.reload(true)'>
+			<a class="navbar-brand" href="" onclick='location.reload(true)'>
 				Application - Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.count}Computersfound</h1>
+			<h1 id="homeTitle">${page.count} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"

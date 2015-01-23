@@ -19,13 +19,11 @@ public class Client {
 	private CompanyDBService companyDBService;
 	//Page index for Company and Computer Directory
 	private int pageNumber=0;
-	private int currentComputerPageIndex = 0;
-	private int currentCompanyPageIndex = 0;
 	private int pageSize = 10;
 	private Boolean loop;
 	private Scanner sc;
 	private static final String FAIL = "You failed to select an available option, please try again";
-	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size";
+	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size \nH) Delete Company+Computers";
 	//Logger for this class
 
 	/**
@@ -238,26 +236,27 @@ public class Client {
 		boolean outerLoop = true;
 		while (innerLoop) {
 			System.out.println("A) Return to previous menu\nB) Next page");
-			if (currentComputerPageIndex > 0) {
+			if (pageNumber > 0) {
 				System.out.println("C) Previous page");
 			}
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				innerLoop = false;
 				outerLoop = false;
+				pageNumber=0;
 				break;
 			case "b":
-				currentComputerPageIndex += pageSize;
+				pageNumber += 1;
 				outerLoop = true;
 				innerLoop = false;
 				break;
 			case "c":
-				if (currentComputerPageIndex > pageSize) {
-					currentComputerPageIndex -= pageSize;
+				if (pageNumber > pageSize) {
+					pageNumber -= 1;
 					outerLoop = true;
 					innerLoop = false;
 				} else {
-					currentComputerPageIndex = 0;
+					pageNumber = 0;
 					outerLoop = true;
 					innerLoop = false;
 				}
@@ -282,7 +281,7 @@ public class Client {
 		while (innerLoop) {
 			System.out.println(companyDBService.getPage(
 					pageNumber));
-			innerLoop = getCompanyListMenu(currentCompanyPageIndex);
+			innerLoop = getCompanyListMenu(pageNumber);
 		}
 	}
 
@@ -293,26 +292,27 @@ public class Client {
 		Boolean outerLoop = false;
 		while (innerLoop) {
 			System.out.println("A) Return to previous menu\nB) Next page");
-			if (currentCompanyPageIndex > 0) {
+			if (pageNumber > 0) {
 				System.out.println("C) Previous page");
 			}
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				innerLoop = false;
 				outerLoop = false;
+				pageNumber=0;
 				break;
 			case "b":
-				currentCompanyPageIndex += pageSize;
+				pageNumber += 1;
 				innerLoop = false;
 				outerLoop = true;
 				break;
 			case "c":
-				if (currentCompanyPageIndex > pageSize) {
-					currentCompanyPageIndex -= pageSize;
+				if (pageNumber > pageSize) {
+					pageNumber -= pageSize;
 					innerLoop = false;
 					outerLoop = true;
 				} else {
-					currentCompanyPageIndex = 0;
+					pageNumber = 0;
 					innerLoop = false;
 					outerLoop = true;
 				}
@@ -343,7 +343,20 @@ public class Client {
 		}
 	}
 
-	
+	/**
+	 * Display page size and modify.
+	 */
+	public void deleteCompanyAndComputers() {
+		boolean massDelete = true;
+		while (massDelete) {
+			System.out.println("Please select ID of company to delete ");
+			String input = sc.nextLine();
+			massDelete = !Validator.isValidNumber(input);
+			if (!massDelete) {
+				computerDBService.deleteByCompany(Long.parseLong(input));
+			}
+		}
+	}
 	/**
 	 *Instantiate DBservices, associated counters 
 	 */
@@ -385,7 +398,7 @@ public class Client {
 				changePageSize();
 				break;
 			case "h":
-				loop = false;
+				deleteCompanyAndComputers();
 				break;
 			default:
 				fail();

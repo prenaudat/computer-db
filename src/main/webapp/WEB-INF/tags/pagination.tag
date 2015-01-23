@@ -13,6 +13,10 @@
 		<ul class="pagination">
 			<c:if test="${pageNumber>0}">
 				<li><a
+					href="${target}?page=0&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
+					aria-label="Next"> <span aria-hidden="true">First</span>
+				</a></li>
+				<li><a
 					href="${target}?page=${pageNumber-1}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
@@ -45,6 +49,10 @@
 				<li><a
 					href="${target}?page=${pageNumber+1}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+				<li><a
+					href="${target}?page=${pageCount}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
+					aria-label="Next"> <span aria-hidden="true">Last</span>
 				</a></li>
 			</c:if>
 		</ul>
