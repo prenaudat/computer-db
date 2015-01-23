@@ -24,7 +24,6 @@
 			<version>${javax.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Connectivity Dependencies -->
 		<dependency>
 			<groupId>jstl</groupId>
@@ -38,7 +37,12 @@
 			<version>${mysql-connector-java.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.8.0.RELEASE</version>
+			<scope>runtime</scope>
+		</dependency>
 		<!-- TEST DEPENDENCIES -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -59,11 +63,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- LOGGING -->
-		<!-- <dependency> -->
-		<!-- <groupId>ch.qos.logback</groupId> -->
-		<!-- <artifactId>logback-classic</artifactId> -->
-		<!-- <version>${logback.version}</version> -->
-		<!-- </dependency> -->
+		<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+		<version>${logback.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>

@@ -27,7 +27,7 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
-						action="home?page=0&order=${orderBy}&sort=${sort}&size=${size}"
+						action="${page.target}?page=0&order=${orderBy}&sort=${sort}&size=${size}"
 						method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="query"
 							class="form-control" placeholder="Search name" /> <input

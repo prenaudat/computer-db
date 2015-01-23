@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
@@ -40,7 +43,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static int pageSize = 10;
 
 	// Logger for this class
-	// private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	private Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
 	/**
 	 * Return instance of Singleton ComputerDAO
@@ -75,7 +78,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			return computerMapper.mapRow(rs);
 
 		} catch (SQLException e) {
-			// logger.warn("Error selecting id=" + id);
+			LOGGER.warn("Error selecting id=" + id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn, rs);
@@ -125,7 +128,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			System.out.println(stmt);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// logger.warn("Error updating id=" + computer.getId());
+			LOGGER.warn("Error updating id=" + computer.getId());
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -171,7 +174,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			// logger.warn("Error saving computer" + computer);
+			LOGGER.warn("Error saving computer" + computer);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn, rs);
@@ -205,8 +208,8 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
 			return page;
 		} catch (SQLException e) {
-			// logger.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
-			// * pageSize, (pageNumber + 1) * pageSize);
+			LOGGER.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
+			* pageSize, (pageNumber + 1) * pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn, rs);
@@ -229,7 +232,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			stmt.setLong(1, id);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// logger.warn("Error removing id=[ %d=", id);
+			LOGGER.warn("Error removing id=[ %d=", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -281,7 +284,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 				return 0;
 			}
 		} catch (SQLException e) {
-			// logger.warn("Error counting rows");
+			LOGGER.warn("Error counting rows");
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -308,7 +311,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 			page.setPageCount(page.getCount() / page.getSize());
 			return page;
 		} catch (SQLException e) {
-			// logger.warn("Error counting rows");
+			LOGGER.warn("Error counting rows");
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);

@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
@@ -27,7 +30,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 	private static final String QUERY_ALL = "SELECT * FROM company;";
 	private static final int pageSize = 10;
-//	private Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	private Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 	private ConnectionManager connectionManager = ConnectionManager
 			.getInstance();
 	private CompanyMapper companyMapper = new CompanyMapper();
@@ -54,7 +57,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			ResultSet rs = stmt.executeQuery();
 			return companyMapper.mapRow(rs);
 		} catch (SQLException e) {
-//			logger.warn("Error selecting Company  id=[ %d=", id);
+			LOGGER.warn("Error selecting Company  id=[ %d=", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -78,8 +81,8 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			final ResultSet rs = stmt.executeQuery();
 			return companyMapper.mapRowList(rs);
 		} catch (SQLException e) {
-//			logger.warn("Couldn't select list of companies: %d-%d", pageNumber
-//					* pageSize, (pageNumber + 1) * pageSize);
+			LOGGER.warn("Couldn't select list of companies: %d-%d", pageNumber
+					* pageSize, (pageNumber + 1) * pageSize);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -103,7 +106,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-//			logger.warn("Couldn't save company: %s", name);
+			LOGGER.warn("Couldn't save company: %s", name);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -125,7 +128,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-//			logger.warn("Couldn't update company with id=%d", id);
+			LOGGER.warn("Couldn't update company with id=%d", id);
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);
@@ -145,7 +148,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			}
 			return list;
 		} catch (SQLException e) {
-//			logger.warn("Error getting all Companies");
+			LOGGER.warn("Error getting all Companies");
 			throw new PersistenceException();
 		} finally {
 			connectionManager.close(stmt, conn);

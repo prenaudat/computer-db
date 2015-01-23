@@ -9,12 +9,16 @@ import java.sql.SQLException;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import com.excilys.computerdatabase.exception.PersistenceException;
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
 
 /**
  * @author excilys Singleton Connection Manager to give and close connections.
  */
 public enum ConnectionManager {
 	INSTANCE;
+	BoneCP connectionPool ;
+
 	/**
 	 * JDBC Driver Class name
 	 */
@@ -43,6 +47,18 @@ public enum ConnectionManager {
 		} catch (ClassNotFoundException e) {
 			throw new PersistenceException("Failed to load " + JDBC_DRIVER);
 		}
+		BoneCPConfig config = new BoneCPConfig();
+		config.setJdbcUrl(DB_URL);
+		config.setUser(USER);
+		config.setPassword(PASS);
+		config.setMinConnectionsPerPartition(5);
+		config.setMaxConnectionsPerPartition(10);
+		config.setPartitionCount(1);
+		try {
+			connectionPool = new BoneCP(config);
+		} catch (SQLException e) {
+			throw new PersistenceException("Failed to load Configuration" + config);
+		}
 	}
 
 	/**
@@ -61,11 +77,10 @@ public enum ConnectionManager {
 	 */
 	public Connection getConnection() {
 		try {
-			return DriverManager.getConnection(DB_URL, USER, PASS);
+			return connectionPool.getConnection();
 		} catch (SQLException e) {
-			// logger.warn("Failed to connect to database");
-			throw new PersistenceException("Failed to connect to database");
-		}
+			throw new PersistenceException("Couldn't get connection");
+		} 
 	}
 
 	/**
