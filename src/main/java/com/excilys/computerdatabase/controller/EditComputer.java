@@ -64,7 +64,7 @@ public class EditComputer extends HttpServlet {
 			c.company(new Company.CompanyBuilder().id(Long.parseLong(req.getParameter("company_id"))).build());
 		}
 		computerDBService.update(c.build());
-		resp.sendRedirect("computers");
+		resp.sendRedirect("../computers");
 		
 			}
 }

@@ -8,15 +8,35 @@ import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.pagination.Sort;
 
 public class Validator {
-	private static final String NUMBER_REGEX = "^[0-9]*$";
-	private static final String DATE_REGEX = "^((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$";
-	private static final String DAT_REGEX = "(((0[1-9]|[12][0-9]|3[01])([/])(0[13578]|10|12)([/])(\\d{4}))|(([0][1-9]|[12][0-9]|30)([/])(0[469]|11)([/])(\\d{4}))|((0[1-9]|1[0-9]|2[0-8])([/])(02)([/])(\\d{4}))|((29)(\\.|-|\\/)(02)([/])([02468][048]00))|((29)([/])(02)([/])([13579][26]00))|((29)([/])(02)([/])([0-9][0-9][0][48]))|((29)([/])(02)([/])([0-9][0-9][2468][048]))|((29)([/])(02)([/])([0-9][0-9][13579][26])))";
+	  private static final String REGEX_DELIMITER = "(\\.|-|\\/)";
+	  private static final String REGEX_DATE_EN = "("
+	      + "((\\d{4})" + REGEX_DELIMITER + "(0[13578]|10|12)" + REGEX_DELIMITER + "(0[1-9]|[12][0-9]|3[01]))"
+	      + "|((\\d{4})" + REGEX_DELIMITER + "(0[469]|11)" + REGEX_DELIMITER + "([0][1-9]|[12][0-9]|30))"
+	      + "|((\\d{4})" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER  + "(0[1-9]|1[0-9]|2[0-8]))"
+	      + "|(([02468][048]00)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(29))"
+	      + "|(([13579][26]00)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(29))"
+	      + "|(([0-9][0-9][0][48])" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(29))"
+	      + "|(([0-9][0-9][2468][048])" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(29))"
+	      + "|(([0-9][0-9][13579][26])" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(29))"
+	      + ")";
+	  private static final String REGEX_DATE_FR = "("
+	      + "((0[1-9]|[12][0-9]|3[01])" + REGEX_DELIMITER + "(0[13578]|10|12)" + REGEX_DELIMITER + "(\\d{4}))"
+	      + "|(([0][1-9]|[12][0-9]|30)" + REGEX_DELIMITER + "(0[469]|11)" + REGEX_DELIMITER + "(\\d{4}))"
+	      + "|((0[1-9]|1[0-9]|2[0-8])" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "(\\d{4}))"
+	      + "|((29)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "([02468][048]00))"
+	      + "|((29)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "([13579][26]00))"
+	      + "|((29)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "([0-9][0-9][0][48]))"
+	      + "|((29)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "([0-9][0-9][2468][048]))"
+	      + "|((29)" + REGEX_DELIMITER + "(02)" + REGEX_DELIMITER + "([0-9][0-9][13579][26]))"
+	      + ")";
+	  private static final String REGEX_NUMBER = "[+-]?\\d{1,19}";
+	  
 
 	public static Boolean isValidNumber(final String input) {
 		if (input == null) {
 			return false;
 		}
-		if (input.matches(NUMBER_REGEX)) {
+		if (input.matches(REGEX_NUMBER)) {
 			return true;
 		} else {
 			System.out.println("invalid number");
@@ -24,16 +44,11 @@ public class Validator {
 		}
 	}
 
-	public static Boolean isValidDate(final String input) {
-		if (input.length() == 10 && input.matches(DATE_REGEX)) {
-			return true;
-		} else {
-			return false;
-		}
+	public static void main(String[] args){
+		System.out.println(REGEX_DATE_EN);
 	}
-
-	public static Boolean isValidDat(final String input) {
-		if (input.length() == 10 && input.matches(DAT_REGEX)) {
+	public static Boolean isValidDate(final String input) {
+		if (input.length() == 10 && input.matches(REGEX_DATE_EN) && Integer.parseInt(input.split("-")[0])>1970) {
 			return true;
 		} else {
 			return false;
@@ -49,7 +64,7 @@ public class Validator {
 	}
 
 	public static int validateInt(final String input) {
-		if (input != null && input.matches(NUMBER_REGEX) && input.length() > 0) {
+		if (input != null && input.matches(REGEX_NUMBER) && input.length() > 0) {
 			return Integer.parseInt(input);
 			}
 		else {

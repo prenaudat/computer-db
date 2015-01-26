@@ -33,7 +33,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 
 	/**
 	 * @param id
-	 * @return // TODO Auto-generated catch block e.printStackTrace();
+	 * @return Computer corresponding to ID 
 	 * 
 	 * @throws SQLException
 	 */

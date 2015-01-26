@@ -11,6 +11,7 @@
 <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="../css/main.css" rel="stylesheet" media="screen">
 <script src="../js/jquery.min.js"></script>
+<script src="../js/validation.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -26,29 +27,29 @@
 				<div class="label label-default pull-right">id: ${computer.id}</div>
 				<h1>Edit Computer</h1>
 
-				<form action="editComputer" method="POST">
+				<form action="edit" method="POST">
 					<fieldset>
 						<div class="form-group">
 							<input type="hidden" name="id" value="${computer.id}" />
 						</div>
-						<div class="form-group">
-							<label for="computerName">Computer name</label> <input
+						<div class="form-group has-feedback">
+							<label for="name">Computer name</label> <input
 								type="text" class="form-control" id="name" name="name"
 								placeholder="Computer name" value=" ${computer.name}">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="introduced">Introduced date</label> <input
 								type="date" class="form-control" id="introduced"
 								name="introduced" placeholder="Introduced date"
 								value="${computer.introduced}">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="discontinued">Discontinued date</label> <input
 								type="date" class="form-control" id="discontinued"
 								name="discontinued" placeholder="Discontinued date"
 								value="${computer.discontinued}">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId" name="company_id">
 								<option value="null">--</option>
@@ -75,38 +76,23 @@
 		</div>
 	</div>
 	</section>
-	<script>
-		$('#name').change(function() {
-			if (jQuery('#name').val() == "") {
-				$('#submit').prop('disabled', true);
-			} else {
-				$('#submit').prop('disabled', false);
-			}
+<script type="text/javascript">
+		checkName();
+		checkDate("introduced");
+		checkDate("discontinued");
+		checkCompany();
+		$("#name").on('keyup change', function() {
+			checkName();
 		});
-		$('#introduced')
-				.change(
-						function() {
-							if ($('#introduced')
-									.val()
-									.match(
-											"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
-								$('#submit').prop('disabled', false);
-							} else {
-								$('#submit').prop('disabled', true);
-							}
-						});
-		$('#discontinued')
-		.change(
-				function() {
-					if ($('#discontinued')
-							.val()
-							.match(
-									"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
-						$('#submit').prop('disabled', false);
-					} else {
-						$('#submit').prop('disabled', true);
-					}
-				});
+		$("#introduced").on('keyup change', function() {
+			checkDate("introduced");
+		});
+		$("#discontinued").on('keyup change', function() {
+			checkDate("discontinued");
+		});
+		$("#companyId").on('keyup change', function() {
+			checkCompany();
+					});		
 	</script>
 </body>
 </html>

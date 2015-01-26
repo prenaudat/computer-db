@@ -11,38 +11,39 @@
 <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="../css/main.css" rel="stylesheet" media="screen">
 <script src="../js/jquery.min.js"></script>
+<script src="../js/validation.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href="../computers"> Application - Computer
-			Database </a>
+		<a class="navbar-brand" href="../computers"> Application -
+			Computer Database </a>
 	</div>
 	</header>
-
+	<!doctype html>
 	<section id="main">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
 				<h1>Add Computer</h1>
-				<form action="addComputer" method="POST">
+				<form id="add" action="add" method="POST">
 					<fieldset>
-						<div class="form-group">
-							<label for="computerName">Computer name</label> <input
-								type="text" class="form-control" id="computerName" name="name"
+						<div class="form-group has-feedback">
+							<label for="name">Computer name</label> <input
+								type="text" class="form-control" id="name" name="name"
 								placeholder="Computer name">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="introduced">Introduced date</label> <input
 								type="date" class="form-control" name="introduced"
 								id="introduced" placeholder="Introduced date">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="discontinued">Discontinued date</label> <input
 								type="date" class="form-control" name="discontinued"
 								id="discontinued" placeholder="Discontinued date">
 						</div>
-						<div class="form-group">
+						<div class="form-group has-feedback">
 							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId" name="company_id">
 								<option value="null">--</option>
@@ -69,38 +70,23 @@
 		</div>
 	</div>
 	</section>
+	<script type="text/javascript">
+		checkName();
+		checkDate("introduced");
+		checkDate("discontinued");
+		checkCompany();
+		$("#name").on('keyup change', function() {
+			checkName();
+		});
+		$("#introduced").on('keyup change', function() {
+			checkDate("introduced");
+		});
+		$("#discontinued").on('keyup change', function() {
+			checkDate("discontinued");
+		});
+		$("#companyId").on('keyup change', function() {
+			checkCompany();
+					});		
+	</script>
 </body>
-<script>
-	$('#name').change(function() {
-		if ($(this).val().strip() == "") {
-			$('#submit').prop('disabled', true);
-		} else {
-			$('#submit').prop('disabled', false);
-		}
-	});
-	$('#introduced')
-			.change(
-					function() {
-						if ($(this)
-								.val()
-								.match(
-										"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
-							$('#submit').prop('disabled', false);
-						} else {
-							$('#submit').prop('disabled', true);
-						}
-					});
-	$('#discontinued')
-			.change(
-					function() {
-						if ($(this)
-								.val()
-								.match(
-										"^$|^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$")) {
-							$('#submit').prop('disabled', false);
-						} else {
-							$('#submit').prop('disabled', true);
-						}
-					});
-</script>
 </html>
