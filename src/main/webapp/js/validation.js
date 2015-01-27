@@ -33,8 +33,7 @@ function checkDate(argument) {
 				.after(
 						'<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
 		$('#submit').prop('disabled', false);
-	} else if ($("#" + argument).val() != ""
-			&& !reg.test($("#" + argument).val())) {
+	} else if (($("#" + argument).val() != "" && !reg.test($("#" + argument).val())) || ($("#introduced").val().length==10 && (parseInt($("#introduced").val().split("-")[0])<1970 || parseInt($("#introduced").val().split("-")[0])>2038))) {
 		$("#" + argument).parent().removeClass("has-success");
 		$("#" + argument).parent().removeClass("has-warning");
 		$("#" + argument).parent().addClass("has-error");
