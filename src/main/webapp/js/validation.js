@@ -2,7 +2,7 @@
  * JQuery plugin for Input validation on addComputer page
  */
 function checkName() {
-	if ($("#name").val().length > 0) {
+	if ($("#name").val().length > 0 && $("#name").val().length < 256) {
 		$("#name").parent().removeClass("has-error ");
 		$("#name").parent().addClass("has-success");
 		$("#name").next().remove();
@@ -16,7 +16,8 @@ function checkName() {
 		$("#name").next().remove();
 		$("#name")
 				.after(
-						'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+						'<span class="glyphicon glyphicon-remove form-control-feedback"></span>'
+						);
 		$('#submit').prop('disabled', true);
 	}
 }
@@ -31,17 +32,18 @@ function checkDate(argument) {
 		$("#" + argument)
 				.after(
 						'<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-	} else if($("#" + argument).val()!="" && !reg.test($("#" + argument).val() )){
+		$('#submit').prop('disabled', false);
+	} else if ($("#" + argument).val() != ""
+			&& !reg.test($("#" + argument).val())) {
 		$("#" + argument).parent().removeClass("has-success");
 		$("#" + argument).parent().removeClass("has-warning");
 		$("#" + argument).parent().addClass("has-error");
 		$("#" + argument).next().remove();
 		$("#" + argument)
-		.after(
-				'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-
-		
-	}else{
+				.after(
+						'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+		$('#submit').prop('disabled', true);
+	} else {
 		$("#" + argument).parent().removeClass("has-success");
 		$("#" + argument).parent().addClass("has-warning");
 		$("#" + argument).parent().removeClass("has-error");
@@ -49,6 +51,7 @@ function checkDate(argument) {
 		$("#" + argument)
 				.after(
 						'<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
+		$('#submit').prop('disabled', false);
 	}
 }
 

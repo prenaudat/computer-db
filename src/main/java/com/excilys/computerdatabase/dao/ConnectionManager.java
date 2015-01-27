@@ -113,6 +113,7 @@ public enum ConnectionManager {
 			if (conn != null) {
 				conn.close();
 			}
+			connection.remove();
 		} catch (SQLException e) {
 			LOGGER.warn("can't close PreparedStatement and Connection");
 			throw new PersistenceException("Failed to close connections");
@@ -140,6 +141,7 @@ public enum ConnectionManager {
 			if (rs != null) {
 				rs.close();
 			}
+			connection.remove();
 		} catch (SQLException e) {
 			LOGGER.warn("Can't close connection ResultSet or Statement");
 			throw new PersistenceException("Failed to close connections");

@@ -143,6 +143,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 		try {
 			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(QUERY_ALL);
+			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			List<Company> list = new ArrayList<Company>();
 			while (rs.next()) {
@@ -170,7 +171,7 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			try {
 				cmpStmt.close();
 			} catch (SQLException e) {
-				LOGGER.warn("Error FATAL STAHP Error 0x000000"+id+" to STAHP Error 0x000000BF");
+				LOGGER.warn("error deleting company id:"+id);
 			}
 		}
 	}
