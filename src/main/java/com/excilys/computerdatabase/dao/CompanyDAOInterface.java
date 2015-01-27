@@ -19,5 +19,5 @@ public interface CompanyDAOInterface {
 
 	public void update(long id, String name);
 	
-	public void remove(Connection conn, long id);
+	public void remove(long id);
 }

@@ -17,6 +17,16 @@
 		<location>/WEB-INF/views/500.html</location>
 	</error-page>
 	<welcome-file-list>
-		<welcome-file>/WEB-INF/views/dashboard.jsp?page=0</welcome-file>
+		<welcome-file>/WEB-INF/views/dashboard.jsp</welcome-file>
 	</welcome-file-list>
+	  <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/Beans.xml</param-value>
+  </context-param>
+<listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+  </listener>
+ 
 </web-app>

@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Company Model
  * 

@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.dto;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author excilys
  *Company Data Transfer Object

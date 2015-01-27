@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
@@ -13,8 +17,10 @@ import com.excilys.computerdatabase.service.CompanyDBServiceInterface;
  * @author excilys
  *
  */
+@Service("companyService")
 public class CompanyDBService implements CompanyDBServiceInterface {
-	CompanyDAO companyDAO = CompanyDAO.getInstance();
+	@Autowired
+	CompanyDAO companyDAO;
 	ConnectionManager connectionmanager = ConnectionManager.getInstance();
 
 	/**
@@ -45,7 +51,6 @@ public class CompanyDBService implements CompanyDBServiceInterface {
 
 	@Override
 	public void remove(long id) {
-		Connection conn = connectionmanager.getConnection();
-		companyDAO.remove(conn, id);
+		companyDAO.remove(id);
 	}
 }

@@ -8,8 +8,13 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
@@ -23,11 +28,9 @@ import com.excilys.computerdatabase.pagination.Page;
  * @author excilys
  *
  */
-public enum ComputerDAO implements ComputerDAOInterface {
-	// The instance of the ComputerDAO singleton
-	INSTANCE;
-	private ConnectionManager connectionManager = ConnectionManager
-			.getInstance();
+@Repository
+public class ComputerDAO implements ComputerDAOInterface {
+	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 	// Static Queries and Updates to be prepared
 	private static final String SINGLE_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;";
 	private static final String LIST_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id AS company_id, cmp.name AS company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;";
@@ -37,28 +40,13 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	private static final String DELETE_COMPANY_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
-	ComputerMapper computerMapper = new ComputerMapper();
-	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	private ComputerMapper computerMapper = new ComputerMapper();
+	private ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	@Autowired
+	private DataSource datasource;
 	private static int pageSize = 10;
-
 	// Logger for this class
 	private Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-
-	/**
-	 * Return instance of Singleton ComputerDAO
-	 * 
-	 * @return returns instance of ComputerDAO
-	 */
-	// TODO Auto-generated method stub
-
-	public static ComputerDAO getInstance() {
-		try {
-			return INSTANCE;
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 
 	/**
 	 * Retrieve a single computer identified by its unique ID
@@ -68,11 +56,10 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @return Computer corresponding to ID
 	 */
 	public Computer get(final long id) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
@@ -101,10 +88,9 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 *            new company ID for computer
 	 */
 	public void update(final Computer computer) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, computer.getName());
 			System.out.println(computer.getIntroduced());
@@ -149,11 +135,10 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 *            Company ID for new COmputer
 	 */
 	public int save(final Computer computer) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
@@ -191,11 +176,10 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @throws SQLException
 	 */
 	public Page getPage(int pageNumber) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, pageNumber * pageSize);
@@ -225,7 +209,7 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @throws SQLException
 	 */
 	public void remove(final long id) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
 			conn = connectionManager.getConnection();
@@ -246,15 +230,18 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @param id
 	 *            ID of company to delete, along with its computers
 	 */
-	public void removeByCompany(Connection conn, long id) {
+	public void removeByCompany(long id) {
 		PreparedStatement cptStmt = null;
-		try {
-			cptStmt = conn.prepareStatement(DELETE_COMPANY_COMPUTERS);
+		Connection conn = DataSourceUtils.getConnection(datasource);
+		try{
+		cptStmt = conn.prepareStatement(DELETE_COMPANY_COMPUTERS);
 			cptStmt.setLong(1, id);
 			cptStmt.executeUpdate();
-			cptStmt.close();
-		} catch (SQLException e) {
+		}catch(SQLException e){
 			throw new PersistenceException();
+		}
+		finally{
+			connectionManager.close(cptStmt, conn);
 		}
 	}
 
@@ -264,10 +251,9 @@ public enum ComputerDAO implements ComputerDAOInterface {
 	 * @return number of computers
 	 */
 	public int getCount(String query) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(COUNT_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, "%" + query + "%");

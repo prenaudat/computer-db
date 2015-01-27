@@ -5,10 +5,13 @@ import java.time.LocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.excilys.computerdatabase.dao.AbstractController;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.service.impl.CompanyDBService;
@@ -17,13 +20,17 @@ import com.excilys.computerdatabase.validator.Validator;
 
 /**
  * Manage /addComputer Display and persist computer for adding
+ * 
  * @author excilys
  *
  */
+@Controller
 @WebServlet("/computers/add")
-public class AddComputer extends HttpServlet {
-	ComputerDBService computerDBService = new ComputerDBService();
-	CompanyDBService companyDBService = new CompanyDBService();
+public class AddComputer extends AbstractController {
+	@Autowired
+	ComputerDBService computerDBService;
+	@Autowired
+	CompanyDBService companyDBService;
 	/**
 	 * 
 	 */
@@ -54,7 +61,7 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		//Call computerDBService
+		// Call computerDBService
 		Computer.Builder c = new Computer.Builder();
 		if (Validator.isValidString(req.getParameter("name"))) {
 			c.name(req.getParameter("name"));
@@ -71,7 +78,7 @@ public class AddComputer extends HttpServlet {
 		}
 		System.out.println(c.build());
 		computerDBService.save(c.build());
-		resp.sendRedirect("computers");
+		resp.sendRedirect("../computers");
 	}
 
 }

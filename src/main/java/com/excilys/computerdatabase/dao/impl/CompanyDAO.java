@@ -8,8 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
 import com.excilys.computerdatabase.dao.ConnectionManager;
@@ -21,9 +26,8 @@ import com.excilys.computerdatabase.model.Company;
  * @author paulr_000 d
  */
 // Computer Database Access object..
-public enum CompanyDAO implements CompanyDAOInterface {
-	// Singleton pattern
-	INSTANCE;
+@Repository
+public class CompanyDAO implements CompanyDAOInterface {
 	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
 	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
@@ -32,28 +36,19 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
 	private static final int pageSize = 10;
 	private Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-	private ConnectionManager connectionManager = ConnectionManager
-			.getInstance();
-	private CompanyMapper companyMapper = new CompanyMapper();
-
-	/**
-	 * Get instance of CompanyDAO
-	 * 
-	 * @return
-	 */
-	public static CompanyDAO getInstance() {
-		return INSTANCE;
-	}
-
+	private ConnectionManager connectionManager = ConnectionManager.getInstance();
+	@Autowired
+	private DataSource datasource;
+	private CompanyMapper companyMapper = new CompanyMapper();	
+	
 	/**
 	 * @param id
 	 * @return Return one company
 	 */
 	public Company get(long id) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -62,7 +57,6 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			LOGGER.warn("Error selecting Company  id=[ %d=", id);
 			throw new PersistenceException();
 		} finally {
-			connectionManager.close(stmt, conn);
 		}
 
 	}
@@ -73,10 +67,9 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	 * @return
 	 */
 	public List<Company> getPage(int pageNumber) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(LIST_QUERY_STMT);
 			stmt.setInt(1, pageNumber * pageSize);
 			stmt.setInt(2, pageSize);
@@ -96,10 +89,9 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	 * @param name
 	 */
 	public int save(String name) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(INSERT_STMT,
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, name);
@@ -120,10 +112,9 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	 * @param name
 	 */
 	public void update(long id, String name) {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(UPDATE_STMT);
 			stmt.setString(1, name);
 			stmt.setLong(2, id);
@@ -138,10 +129,9 @@ public enum CompanyDAO implements CompanyDAOInterface {
 	}
 
 	public List<Company> getAll() {
-		Connection conn = null;
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement stmt = null;
 		try {
-			conn = connectionManager.getConnection();
 			stmt = conn.prepareStatement(QUERY_ALL);
 			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
@@ -158,8 +148,8 @@ public enum CompanyDAO implements CompanyDAOInterface {
 		}
 	}
 
-	public void remove(Connection conn, long id) {
-
+	public void remove(long id) {
+		Connection conn = DataSourceUtils.getConnection(datasource);
 		PreparedStatement cmpStmt = null;
 		try {
 			cmpStmt = conn.prepareStatement(DELETE_COMPANY);
@@ -167,11 +157,11 @@ public enum CompanyDAO implements CompanyDAOInterface {
 			cmpStmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new PersistenceException();
-		}finally{
+		} finally {
 			try {
 				cmpStmt.close();
 			} catch (SQLException e) {
-				LOGGER.warn("error deleting company id:"+id);
+				LOGGER.warn("error deleting company id:" + id);
 			}
 		}
 	}

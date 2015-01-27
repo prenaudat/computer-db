@@ -13,7 +13,7 @@ import com.excilys.computerdatabase.pagination.Page;
 public interface ComputerDAOInterface {
 
 	/**
-	 * Return a compubter
+	 * Return a computer
 	 * 
 	 * @param id
 	 *            Idetifies the computer
@@ -65,5 +65,5 @@ public interface ComputerDAOInterface {
 	 */
 	public Page getPage(Page page);
 
-	public void removeByCompany(Connection conn, long id);
+	public void removeByCompany(long id);
 }

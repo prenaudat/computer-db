@@ -68,7 +68,7 @@
 					</fieldset>
 					<div class="actions pull-right">
 						<input type="submit" value="Edit" id="submit"
-							class="btn btn-primary"> or <a href="dashboard.html"
+							class="btn btn-primary"> or <a href="../computers"
 							class="btn btn-default">Cancel</a>
 					</div>
 				</form>
