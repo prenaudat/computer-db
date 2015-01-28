@@ -1,11 +1,6 @@
 package com.excilys.computerdatabase.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -14,11 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
-import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
 import com.excilys.computerdatabase.model.Computer;
@@ -65,7 +58,7 @@ public class ComputerDAO implements ComputerDAOInterface {
 	public Computer get(final long id) {
 		System.out.println(id);
 		List<Computer> list = template.query(SINGLE_QUERY_STMT,
-				new Object[]{id}, new ComputerMapper());
+				new Object[] { id }, new ComputerMapper());
 		System.out.println(list);
 		if (list.size() > 0) {
 			return list.get(0);
@@ -89,10 +82,13 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            new company ID for computer
 	 */
 	public void update(final Computer computer) {
-		template.update(UPDATE_STMT, new Object[] { computer.getName(),
-				computer.getIntroduced(), computer.getDiscontinued(),
-				computer.getCompany().getId(), computer.getId() });
-		// Timestamp.valueOf(computer.getDiscontinued().atStartOfDay());
+		System.out.println(computer);
+		template.update(
+				UPDATE_STMT,
+				new Object[] { computer.getName(),
+						computer.getIntroducedAsTimestamp(),
+						computer.getDiscontinuedAsTimestamp(),
+						null , computer.getId() });
 	}
 
 	/**
@@ -107,37 +103,14 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 * @param companyId
 	 *            Company ID for new COmputer
 	 */
-	public int save(final Computer computer) {
-		Connection conn = DataSourceUtils.getConnection(dataSource);
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.prepareStatement(INSERT_STMT,
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, computer.getName());
-			if (computer.getIntroduced() != null) {
-				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()
-						.atStartOfDay()));
-			} else {
-				stmt.setNull(2, java.sql.Types.TIMESTAMP);
-			}
-			if (computer.getDiscontinued() != null) {
-				stmt.setTimestamp(3, Timestamp.valueOf(computer
-						.getDiscontinued().atStartOfDay()));
-			} else {
-				stmt.setNull(3, java.sql.Types.TIMESTAMP);
-			}
-			stmt.setLong(4, computer.getCompany().getId());
-			stmt.executeUpdate();
-			rs = stmt.getGeneratedKeys();
-			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
-			LOGGER.warn("Error saving computer" + computer);
-			throw new PersistenceException();
-		} finally {
-			ConnectionManager.close(conn, stmt, rs);
-		}
+	public void save(final Computer computer) {
+
+		template.update(
+				INSERT_STMT,
+				new Object[] { computer.getName(),
+						computer.getIntroducedAsTimestamp(),
+						computer.getDiscontinuedAsTimestamp(),
+						computer.getCompanyId()});
 	}
 
 	/**

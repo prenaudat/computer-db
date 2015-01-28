@@ -1,5 +1,6 @@
 package com.excilys.computerdatabase.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -92,7 +93,39 @@ public class Computer {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
+	
+	public LocalDateTime getIntroducedAsLDT(){
+		if(introduced != null){
+			return introduced.atStartOfDay();
+		}else{
+			return null;
+		}
+	}
+	public LocalDateTime getDiscontinuedAsLDT(){
+		if(discontinued != null){
+			return discontinued.atStartOfDay();
+		}else{
+			return null;		}
+	}
+	public Timestamp getIntroducedAsTimestamp(){
+		if(introduced != null){
+			return Timestamp.valueOf(introduced.atStartOfDay());
+		}else{
+			return null;
+		}
+	}
+	public Timestamp getDiscontinuedAsTimestamp(){
+		if(discontinued != null){
+			return Timestamp.valueOf(discontinued.atStartOfDay());
+		}else{
+			return null;		}
+	}
+	public Long getCompanyId(){
+		if(company != null){
+			return company.getId();
+		}else{
+			return 0l;		}
+	}
 	/**
 	 * Constructor from all fields
 	 * 

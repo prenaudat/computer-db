@@ -36,10 +36,10 @@ public class Validator {
 		if (input == null) {
 			return false;
 		}
-		if (input.matches(REGEX_NUMBER)) {
+		if (input.matches(REGEX_NUMBER) || input==null) {
 			return true;
 		} else {
-			System.out.println("invalid number");
+			System.out.println("invalid number" + input);
 			return false;
 		}
 	}

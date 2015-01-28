@@ -35,7 +35,7 @@ public interface ComputerDAOInterface {
 	 * @param computer
 	 *            the computer to be saved
 	 */
-	public int save(final Computer computer);
+	public void save(final Computer computer);
 
 	/**
 	 * Get a page by index

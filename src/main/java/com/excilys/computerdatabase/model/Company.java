@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Company {
 
 	// Instance variables
-	private long id;
+	private Long id;
 	private String name;
 
 	// Behavior : getters and setter
@@ -26,7 +26,7 @@ public class Company {
 	 * @param id
 	 *            ID to be set
 	 */
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -102,7 +102,7 @@ public class Company {
 	}
 
 	public Company() {
-		this.id = 0;
+		this.id = 0l;
 		this.name = "";
 	}
 
@@ -116,7 +116,7 @@ public class Company {
 		private Company company = new Company();
 
 		public CompanyBuilder() {
-			company.setId(0);
+			company.setId(null);
 			company.name = null;
 		}
 

@@ -46,7 +46,7 @@
 						<div class="form-group has-feedback">
 							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId" name="company_id">
-								<option value="null">--</option>
+								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
 									<c:choose>
 										<c:when test="${company.id!=computer.company.id}">
