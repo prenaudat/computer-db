@@ -9,7 +9,6 @@ import com.excilys.computerdatabase.model.Company;
  *
  */
 public interface CompanyDBServiceInterface {
-	public List<Company> getPage(int pageNumber);
 
 	public Company get(long id);
 

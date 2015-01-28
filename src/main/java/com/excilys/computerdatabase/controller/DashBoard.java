@@ -47,7 +47,6 @@ public class DashBoard extends AbstractController {
 				resp);
 	}
 
-
 	/**
 	 * Initialize page from URL parameters
 	 * 

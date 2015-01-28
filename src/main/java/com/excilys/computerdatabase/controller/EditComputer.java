@@ -3,6 +3,8 @@ package com.excilys.computerdatabase.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +26,15 @@ import com.excilys.computerdatabase.validator.Validator;
  * @author excilys
  *
  */
-@WebServlet("/computers/edit")
 @Controller
+@WebServlet("/computers/edit")
 public class EditComputer extends AbstractController {
 	@Autowired
 	ComputerDBService computerDBService;
 	@Autowired
 	CompanyDBService companyDBService;
+    private ServletContext context;
+    private ServletConfig config;
 
 	/**
 	 * 

@@ -43,7 +43,7 @@ public class CompanyDBServiceMock implements CompanyDBServiceInterface {
 	@Override
 	public void remove(long id) {
 		Connection conn = connectionManager.getConnection();
-		companyDAO.remove(conn, id);
+		companyDAO.remove(id);
 	}
 
 }

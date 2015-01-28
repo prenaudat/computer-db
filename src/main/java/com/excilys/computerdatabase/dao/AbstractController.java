@@ -1,8 +1,12 @@
 package com.excilys.computerdatabase.dao;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import org.springframework.web.context.ServletConfigAware;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 /**
@@ -10,7 +14,8 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
  * @author excilys
  *
  */
-public abstract class AbstractController extends HttpServlet{
+public abstract class AbstractController extends HttpServlet {
+
 
 	/**
 	 * 

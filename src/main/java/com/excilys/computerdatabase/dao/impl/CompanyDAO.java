@@ -2,10 +2,7 @@ package com.excilys.computerdatabase.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,11 +10,11 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.CompanyDAOInterface;
-import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.row.impl.CompanyMapper;
 import com.excilys.computerdatabase.model.Company;
@@ -29,82 +26,45 @@ import com.excilys.computerdatabase.model.Company;
 @Repository
 public class CompanyDAO implements CompanyDAOInterface {
 	private static final String UPDATE_STMT = "UPDATE company SET name=? WHERE id=? ;";
-	private static final String LIST_QUERY_STMT = "SELECT * FROM company LIMIT ?,?;";
 	private static final String INSERT_STMT = "INSERT INTO company(name) VALUES (?);";
 	private static final String SINGLE_QUERY_STMT = "SELECT * FROM company WHERE id =?";
 	private static final String QUERY_ALL = "SELECT * FROM company;";
 	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
-	private static final int pageSize = 10;
 	private Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 	@Autowired
-	private DataSource datasource;
-	private CompanyMapper companyMapper = new CompanyMapper();	
-	
+	private DataSource dataSource;
+	private JdbcTemplate template;
+
+	/**		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+	 * At DAO initialisation, sets DataSource for template.
+	 */
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.template = new JdbcTemplate(dataSource);
+	}
+
 	/**
 	 * @param id
 	 * @return Return one company
 	 */
 	public Company get(long id) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
-			stmt.setLong(1, id);
-			ResultSet rs = stmt.executeQuery();
-			return companyMapper.mapRow(rs);
-		} catch (SQLException e) {
-			LOGGER.warn("Error selecting Company  id=[ %d=", id);
-			throw new PersistenceException();
-		} finally {
+		List<Company> list = template.query(SINGLE_QUERY_STMT,
+				new Long[] { id }, new CompanyMapper());
+		if (list.size() > 0) {
+			return list.get(1);
+		} else {
+			return null;
 		}
-
-	}
-
-	/**
-	 * @param currentIndex
-	 * @param pageSize
-	 * @return
-	 */
-	public List<Company> getPage(int pageNumber) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(LIST_QUERY_STMT);
-			stmt.setInt(1, pageNumber * pageSize);
-			stmt.setInt(2, pageSize);
-			final ResultSet rs = stmt.executeQuery();
-			return companyMapper.mapRowList(rs);
-		} catch (SQLException e) {
-			LOGGER.warn("Couldn't select list of companies: %d-%d", pageNumber
-					* pageSize, (pageNumber + 1) * pageSize);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
-
 	}
 
 	/**
 	 * @param name
 	 */
-	public int save(String name) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(INSERT_STMT,
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, name);
-			stmt.executeUpdate();
-			ResultSet rs = stmt.getGeneratedKeys();
-			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
-			LOGGER.warn("Couldn't save company: %s", name);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+	public void save(String name) {
+		template.update(INSERT_STMT, new Object[] { name });
 	}
 
 	/**
@@ -112,57 +72,14 @@ public class CompanyDAO implements CompanyDAOInterface {
 	 * @param name
 	 */
 	public void update(long id, String name) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(UPDATE_STMT);
-			stmt.setString(1, name);
-			stmt.setLong(2, id);
-			stmt.executeUpdate();
-
-		} catch (SQLException e) {
-			LOGGER.warn("Couldn't update company with id=%d", id);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		template.update(UPDATE_STMT, new Object[] { name, id });
 	}
 
 	public List<Company> getAll() {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(QUERY_ALL);
-			System.out.println(stmt);
-			ResultSet rs = stmt.executeQuery();
-			List<Company> list = new ArrayList<Company>();
-			while (rs.next()) {
-				list.add(new Company(rs.getLong("id"), rs.getString("name")));
-			}
-			return list;
-		} catch (SQLException e) {
-			LOGGER.warn("Error getting all Companies");
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		return template.query(QUERY_ALL, new CompanyMapper());
 	}
 
 	public void remove(long id) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement cmpStmt = null;
-		try {
-			cmpStmt = conn.prepareStatement(DELETE_COMPANY);
-			cmpStmt.setLong(1, id);
-			cmpStmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new PersistenceException();
-		} finally {
-			try {
-				cmpStmt.close();
-			} catch (SQLException e) {
-				LOGGER.warn("error deleting company id:" + id);
-			}
-		}
+		template.update(DELETE_COMPANY, new Object[] { id });
 	}
 }

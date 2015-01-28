@@ -13,11 +13,11 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
-import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
@@ -30,7 +30,6 @@ import com.excilys.computerdatabase.pagination.Page;
  */
 @Repository
 public class ComputerDAO implements ComputerDAOInterface {
-	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 	// Static Queries and Updates to be prepared
 	private static final String SINGLE_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;";
 	private static final String LIST_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id AS company_id, cmp.name AS company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;";
@@ -40,13 +39,21 @@ public class ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	private static final String DELETE_COMPANY_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
-	private ComputerMapper computerMapper = new ComputerMapper();
 	private ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 	@Autowired
-	private DataSource datasource;
+	private DataSource dataSource;
 	private static int pageSize = 10;
 	// Logger for this class
 	private Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
+	private JdbcTemplate template;
+
+	/**
+	 * Set datasource on innitialization
+	 */
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.template = new JdbcTemplate(dataSource);
+	}
 
 	/**
 	 * Retrieve a single computer identified by its unique ID
@@ -56,20 +63,14 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 * @return Computer corresponding to ID
 	 */
 	public Computer get(final long id) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.prepareStatement(SINGLE_QUERY_STMT);
-			stmt.setLong(1, id);
-			rs = stmt.executeQuery();
-			return computerMapper.mapRow(rs);
-
-		} catch (SQLException e) {
-			LOGGER.warn("Error selecting id=" + id);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn, rs);
+		System.out.println(id);
+		List<Computer> list = template.query(SINGLE_QUERY_STMT,
+				new Object[]{id}, new ComputerMapper());
+		System.out.println(list);
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
 		}
 	}
 
@@ -88,38 +89,10 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            new company ID for computer
 	 */
 	public void update(final Computer computer) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(UPDATE_STMT);
-			stmt.setString(1, computer.getName());
-			System.out.println(computer.getIntroduced());
-			if (computer.getIntroduced() != null) {
-				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced()
-						.atStartOfDay()));
-			} else {
-				stmt.setNull(2, java.sql.Types.TIMESTAMP);
-			}
-			if (computer.getDiscontinued() != null) {
-				stmt.setTimestamp(3, Timestamp.valueOf(computer
-						.getDiscontinued().atStartOfDay()));
-			} else {
-				stmt.setNull(3, java.sql.Types.TIMESTAMP);
-			}
-			if (computer.getCompany() != null) {
-				stmt.setLong(4, computer.getCompany().getId());
-			} else {
-				stmt.setLong(4, 0);
-			}
-			stmt.setLong(5, computer.getId());
-			System.out.println(stmt);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.warn("Error updating id=" + computer.getId());
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		template.update(UPDATE_STMT, new Object[] { computer.getName(),
+				computer.getIntroduced(), computer.getDiscontinued(),
+				computer.getCompany().getId(), computer.getId() });
+		// Timestamp.valueOf(computer.getDiscontinued().atStartOfDay());
 	}
 
 	/**
@@ -135,7 +108,7 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            Company ID for new COmputer
 	 */
 	public int save(final Computer computer) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
+		Connection conn = DataSourceUtils.getConnection(dataSource);
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -163,7 +136,7 @@ public class ComputerDAO implements ComputerDAOInterface {
 			LOGGER.warn("Error saving computer" + computer);
 			throw new PersistenceException();
 		} finally {
-			connectionManager.close(stmt, conn, rs);
+			ConnectionManager.close(conn, stmt, rs);
 		}
 	}
 
@@ -171,34 +144,19 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 * Retrieve a list of computers corresponding to the selection
 	 * 
 	 * @param pageNumber
-	 *            index of Page to return
+	 *            indeConnection is null. x of Page to return
 	 * @return Page of computers
 	 * @throws SQLException
 	 */
 	public Page getPage(int pageNumber) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.prepareStatement(LIST_QUERY_STMT,
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, pageNumber * pageSize);
-			stmt.setInt(2, pageSize);
-			rs = stmt.executeQuery();
-			List<Computer> computerList = computerMapper.mapRowList(rs);
-			Page page = new Page();
-			page.setList(computerDTOMapper.mapToDTO(computerList));
-			page.setPageNumber(pageNumber);
-			page.setCount(getCount(page.getQuery()));
-			page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
-			return page;
-		} catch (SQLException e) {
-			LOGGER.warn("Error retrieving ids=[ %d-%d  ]", pageNumber
-					* pageSize, (pageNumber + 1) * pageSize);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn, rs);
-		}
+		List<Computer> list = template.query(LIST_QUERY_STMT, new Object[] {
+				pageNumber * pageSize, pageSize }, new ComputerMapper());
+		Page page = new Page();
+		page.setList(computerDTOMapper.mapToDTO(list));
+		page.setPageNumber(pageNumber);
+		page.setCount(getCount(page.getQuery()));
+		page.setPageCount((int) Math.ceil(page.getCount() / pageSize));
+		return page;
 	}
 
 	/**
@@ -209,19 +167,7 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 * @throws SQLException
 	 */
 	public void remove(final long id) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			conn = connectionManager.getConnection();
-			stmt = conn.prepareStatement(DELETE_STMT);
-			stmt.setLong(1, id);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.warn("Error removing id=[ %d=", id);
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		template.update(DELETE_STMT, new Object[] { id });
 	}
 
 	/**
@@ -231,72 +177,32 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            ID of company to delete, along with its computers
 	 */
 	public void removeByCompany(long id) {
-		PreparedStatement cptStmt = null;
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		try{
-		cptStmt = conn.prepareStatement(DELETE_COMPANY_COMPUTERS);
-			cptStmt.setLong(1, id);
-			cptStmt.executeUpdate();
-		}catch(SQLException e){
-			throw new PersistenceException();
-		}
-		finally{
-			connectionManager.close(cptStmt, conn);
-		}
+		template.update(DELETE_COMPANY_COMPUTERS, new Object[] { id });
 	}
 
 	/**
-	 * Get count of Computers
+	 * Get count of Computersprivate static final Logger LOGGER = new Logger;
+	 * 
 	 * 
 	 * @return number of computers
 	 */
 	public int getCount(String query) {
-		Connection conn = DataSourceUtils.getConnection(datasource);
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(COUNT_STMT,
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, "%" + query + "%");
-			stmt.setString(2, "%" + query + "%");
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				int numberOfRows = rs.getInt(1);
-				return numberOfRows;
-			} else {
-				return 0;
-			}
-		} catch (SQLException e) {
-			LOGGER.warn("Error counting rows");
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		return template.queryForObject(COUNT_STMT, new Object[] {
+				"%" + query + "%", "%" + query + "%" }, Integer.class);
 	}
 
 	public Page getPage(Page page) {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		try {
-			conn = connectionManager.getConnection();
-			String query = PAGE_QUERY + "ORDER BY "
-					+ page.getOrderBy().toString() + " "
-					+ page.getSort().toString() + " LIMIT ? , ?;";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, "%" + page.getQuery() + "%");
-			stmt.setString(2, "%" + page.getQuery() + "%");
-			stmt.setInt(3, page.getPageNumber() * page.getSize());
-			stmt.setInt(4, page.getSize());
-			ResultSet rs = stmt.executeQuery();
-			List<Computer> computerList = computerMapper.mapRowList(rs);
-			page.setList(computerDTOMapper.mapToDTO(computerList));
-			page.setCount(getCount(page.getQuery()));
-			page.setPageCount(page.getCount() / page.getSize());
-			return page;
-		} catch (SQLException e) {
-			LOGGER.warn("Error counting rows");
-			throw new PersistenceException();
-		} finally {
-			connectionManager.close(stmt, conn);
-		}
+		String query = PAGE_QUERY + "ORDER BY " + page.getOrderBy().toString()
+				+ " " + page.getSort().toString() + " LIMIT ? , ?;";
+		List<Computer> computerList = template
+				.query(query,
+						new Object[] { "%" + page.getQuery() + "%",
+								"%" + page.getQuery() + "%",
+								page.getPageNumber() * page.getSize(),
+								page.getSize() }, new ComputerMapper());
+		page.setList(computerDTOMapper.mapToDTO(computerList));
+		page.setCount(getCount(page.getQuery()));
+		page.setPageCount(page.getCount() / page.getSize());
+		return page;
 	}
 }

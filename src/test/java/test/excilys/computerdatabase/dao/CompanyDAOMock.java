@@ -117,8 +117,9 @@ public class CompanyDAOMock implements CompanyDAOInterface {
 		}
 	}
 
+
 	@Override
-	public void remove(Connection conn, long id) {
+	public void remove(long id) {
 		// TODO Auto-generated method stub
 		
 	}

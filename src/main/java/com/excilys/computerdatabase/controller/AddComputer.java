@@ -45,8 +45,8 @@ public class AddComputer extends AbstractController {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+//		computerDBService.removeByCompany(1);
 		resp.setContentType("text/html");
-
 		req.setAttribute("companies", companyDBService.getAll());
 		req.getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(req,
 				resp);
