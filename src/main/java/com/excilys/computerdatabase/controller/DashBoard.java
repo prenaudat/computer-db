@@ -1,69 +1,49 @@
 package com.excilys.computerdatabase.controller;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.computerdatabase.dao.AbstractController;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
 
 /**
- * @author excilys Servlet redirects home to Dashboard after populating JSP with
- *         computer List
+ * Servlet redirects to after populating JSP with computer List
+ * 
+ * @author excilys
  */
 @Controller
-@WebServlet("/computers")
-public class DashBoard extends AbstractController {
+public class DashBoard {
 	@Autowired
 	ComputerDBService computerDBService;
 	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
-	private static final long serialVersionUID = 1L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
-	 * , javax.servlet.http.HttpServletResponse)
-	 */
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		resp.setContentType("text/html");
-		Page page = initPage(req);
-		page = computerDBService.getPage(page);
-		req.setAttribute("page", page);
-		req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(req,
-				resp);
+	@RequestMapping(value = "/computers", method = RequestMethod.GET)
+	protected ModelAndView get(
+			@RequestParam Map<String, String> allRequestParams) {
+		return sendHomePage(allRequestParams);
 	}
 
-	/**
-	 * Initialize page from URL parameters
-	 * 
-	 * @param req
-	 * @return
-	 */
-	private Page initPage(HttpServletRequest req) {
-		Map<String, String[]> paramList = req.getParameterMap();
-		Page page = Validator.validateParameterList(paramList);
-		page.setTarget("computers"); // because we are currently on home page
-		return page;
+	@RequestMapping(value = "/computers", method = RequestMethod.POST)
+	protected ModelAndView post(
+			@RequestParam Map<String, String> allRequestParams) {
+		Arrays.asList(allRequestParams.get("selection").split(",")).forEach(
+				i -> computerDBService.remove(Validator.validateInt(i)));
+		return sendHomePage(allRequestParams);
 	}
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		Arrays.asList(req.getParameter("selection").split(",")).forEach(
-				i -> computerDBService.remove(Long.parseLong(i)));
-		resp.sendRedirect("computers");
+	protected ModelAndView sendHomePage(Map<String, String> allRequestParams) {
+		Page page = Validator.validateParameterList(allRequestParams);
+		page.setList(computerDBService.getPage(page).getList());
+		page.setTarget("computers");
+		return new ModelAndView("dashboard", "page", page);
 	}
 }

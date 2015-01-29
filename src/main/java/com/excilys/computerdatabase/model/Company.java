@@ -1,7 +1,5 @@
 package com.excilys.computerdatabase.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * Company Model
  * 
@@ -102,8 +100,8 @@ public class Company {
 	}
 
 	public Company() {
-		this.id = 0l;
-		this.name = "";
+		this.id = null;
+		this.name = null;
 	}
 
 	/**

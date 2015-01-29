@@ -13,7 +13,7 @@ import com.excilys.computerdatabase.validator.Validator;
  */
 public class Computer {
 	// Instance variables
-	private long id;
+	private Long id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
@@ -23,14 +23,14 @@ public class Computer {
 	/**
 	 * @return Id of computer
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id Id to be set
 	 */
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -121,10 +121,10 @@ public class Computer {
 			return null;		}
 	}
 	public Long getCompanyId(){
-		if(company != null){
+		if(company != null && company.getId()!=0){
 			return company.getId();
 		}else{
-			return 0l;		}
+			return null;		}
 	}
 	/**
 	 * Constructor from all fields
@@ -135,7 +135,7 @@ public class Computer {
 	 * @param discontinued discontinuation date of computer
 	 * @param companyId ID for company of computer
 	 */
-	public Computer(long id, String name, LocalDate introduced,
+	public Computer(Long id, String name, LocalDate introduced,
 			LocalDate discontinued, Company company) {
 		super();
 		this.id = id;
@@ -158,11 +158,11 @@ public class Computer {
 
 	public Computer() {
 		super();
-		this.id = 0;
-		this.name = "";
+		this.id = null;
+		this.name = null;
 		this.introduced = null;
 		this.discontinued = null;
-		this.company = new Company();		
+		this.company = null;		
 	}
 
 	/* (non-Javadoc)
@@ -228,14 +228,14 @@ public class Computer {
 		private Computer computer = new Computer();
 		
 		public Builder() {
-			computer.id = 0;
+			computer.id = null;
 			computer.name = "";
 			computer.introduced = null;
 			computer.discontinued = null;
 			computer.company = new Company();
 		}
 
-		public Builder id(final long newId) {
+		public Builder id(final Long newId) {
 			computer.setId(newId);
 			return this;
 		}

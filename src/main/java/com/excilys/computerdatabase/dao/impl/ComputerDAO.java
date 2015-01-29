@@ -56,10 +56,8 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 * @return Computer corresponding to ID
 	 */
 	public Computer get(final long id) {
-		System.out.println(id);
 		List<Computer> list = template.query(SINGLE_QUERY_STMT,
 				new Object[] { id }, new ComputerMapper());
-		System.out.println(list);
 		if (list.size() > 0) {
 			return list.get(0);
 		} else {
@@ -82,13 +80,12 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            new company ID for computer
 	 */
 	public void update(final Computer computer) {
-		System.out.println(computer);
 		template.update(
 				UPDATE_STMT,
-				new Object[] { computer.getName(),
+				new Object[]{computer.getName(),
 						computer.getIntroducedAsTimestamp(),
 						computer.getDiscontinuedAsTimestamp(),
-						null , computer.getId() });
+						computer.getCompanyId(), computer.getId()});
 	}
 
 	/**
@@ -104,7 +101,6 @@ public class ComputerDAO implements ComputerDAOInterface {
 	 *            Company ID for new COmputer
 	 */
 	public void save(final Computer computer) {
-
 		template.update(
 				INSERT_STMT,
 				new Object[] { computer.getName(),

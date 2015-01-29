@@ -1,24 +1,22 @@
 package com.excilys.computerdatabase.controller;
 
-import java.io.IOException;
-import java.time.LocalDate;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.computerdatabase.dao.AbstractController;
-import com.excilys.computerdatabase.model.Company;
-import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.dto.ComputerDTO;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
 import com.excilys.computerdatabase.service.impl.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
-import com.excilys.computerdatabase.validator.Validator;
+import com.excilys.computerdatabase.validator.ComputerDTOValidator;
 
 /**
  * Edit computer controller. Maps /editComputer url
@@ -27,61 +25,41 @@ import com.excilys.computerdatabase.validator.Validator;
  *
  */
 @Controller
-@WebServlet("/computers/edit")
-public class EditComputer extends AbstractController {
+public class EditComputer {
 	@Autowired
 	ComputerDBService computerDBService;
 	@Autowired
 	CompanyDBService companyDBService;
-    private ServletContext context;
-    private ServletConfig config;
+	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		resp.setContentType("text/html");
-		String idParam = req.getParameter("id");
-		Long id;
-		if (Validator.isValidNumber(idParam)) {
-			id = Long.parseLong(idParam);
-			req.setAttribute("computer", computerDBService.get(id));
-			req.setAttribute("companies", companyDBService.getAll());
-			req.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-					.forward(req, resp);
-		} else {
-			req.getRequestDispatcher("/WEB-INF/views/404.html").forward(req,
-					resp);
-		}
+	@InitBinder("computerDTO")
+	protected void initComputerDTOBinder(WebDataBinder binder) {
+		binder.setValidator(new ComputerDTOValidator());
 	}
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		Computer.Builder c = new Computer.Builder();
-		if (Validator.isValidNumber(req.getParameter("id"))) {
-			c.id(Long.parseLong(req.getParameter("id")));
-		}
-		if (Validator.isValidString(req.getParameter("name"))) {
-			c.name(req.getParameter("name"));
-		}
-		if (Validator.isValidDate(req.getParameter("introduced"))
-				|| req.getParameter("introduced") == null) {
-			c.introduced(LocalDate.parse(req.getParameter("introduced")));
-		}
-		if (Validator.isValidDate(req.getParameter("discontinued"))
-				|| req.getParameter("discontinued") == null) {
-			c.discontinued(LocalDate.parse(req.getParameter("discontinued")));
-		}
-		if (Validator.isValidNumber(req.getParameter("company_id"))
-				|| req.getParameter("introduced") == null) {
-			c.company(new Company.CompanyBuilder().id(
-					Long.parseLong(req.getParameter("company_id"))).build());
-		}
-		computerDBService.update(c.build());
-		resp.sendRedirect("../computers");
-
+	@RequestMapping(value = "/computers/edit", method = RequestMethod.GET)
+	protected ModelAndView get(@RequestParam(value = "id") Long id) {
+		return sendEditPage(id);
 	}
+
+	@RequestMapping(value = "/computers/edit", method = RequestMethod.POST)
+	protected ModelAndView doPost(@Valid ComputerDTO dto,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			ModelAndView mav = sendEditPage(dto.getId());
+			mav.addObject("errors", bindingResult.getAllErrors());
+			mav.addObject("companies", companyDBService.getAll());
+			return new ModelAndView("editComputer", "computer", dto);
+		}
+		computerDBService.update(computerDTOMapper.mapFromDTO(dto));
+		return new ModelAndView("dashboard", "page", computerDBService.getPage(0));
+	}
+
+	private ModelAndView sendEditPage(Long id) {
+		ModelAndView editPage = new ModelAndView("editComputer");
+		editPage.addObject("computer", computerDBService.get(id));
+		editPage.addObject("companies", companyDBService.getAll());
+		return editPage;
+	}
+
 }

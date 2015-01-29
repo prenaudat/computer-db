@@ -2,29 +2,43 @@ package com.excilys.computerdatabase.dto;
 
 import java.time.LocalDate;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.excilys.computerdatabase.model.Company;
-import com.google.common.base.Preconditions;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author excilys Computer Data Transfer Object
  */
 public class ComputerDTO implements java.io.Serializable {
 
-	private static final long serialVersionUID = 5760780429754830864L;
-
-	private long id;
+	private static final Long serialVersionUID = 5760780429754830864L;
+	@NotNull
+	@Min(0)
+	@Size(max = 20)
+	private Long id;
+	@Min(1)
+	@Size(max = 255)
 	private String name;
+	@Size(max = 10)
 	private String introduced;
+	@Size(max = 10)
 	private String discontinued;
-	private Company company;
+	private Long companyId;
+	private String companyName; 
 
-	public long getId() {
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -41,33 +55,27 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 	public void setIntroduced(LocalDate introduced) {
-		if(introduced!=null){
+		if (introduced != null) {
 			this.introduced = introduced.toString();
 		}
 	}
-	
+
 	public String getDiscontinued() {
 		return discontinued;
 	}
 
 	public void setDiscontinued(String discontinued) {
-		if(discontinued!=null){
+		if (discontinued != null) {
 			this.discontinued = discontinued.toString();
-		}	}
-
-
-	public Company getCompany() {
-		return company;
+		}
 	}
 
-	public void setCompany(Company company) {
-		if(company != null){
-		this.company.setId(company.getId());
-		this.company.setName(company.getName());
-		}else{
-			this.company = new Company();
-		}
-		
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 
 	public void setIntroduced(String introduced) {
@@ -75,24 +83,35 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 
-
 	@Override
 	public String toString() {
-		StringBuilder builder= new StringBuilder();
-		builder.append("ComputerDTO [id=").append(id).append(", name=")
+		StringBuilder builder2 = new StringBuilder();
+		builder2.append("ComputerDTO [id=").append(id).append(", name=")
 				.append(name).append(", introduced=").append(introduced)
 				.append(", discontinued=").append(discontinued)
-				.append(", company=").append(company).append("]");
-		return builder.toString();
+				.append(", companyId=").append(companyId)
+				.append(", companyName=").append(companyName).append("]");
+		return builder2.toString();
 	}
 
-	public ComputerDTO(long id, String name, String introduced,
-			String discontinued, String company_Name, long company_Id) {
+	public ComputerDTO(Long id, String name, String introduced,
+			String discontinued, String company_Name, Long company_Id) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
+		this.companyId=company_Id;
+		this.companyName = company_Name;
+	}
+
+	public ComputerDTO() {
+		this.id = null;
+		this.name = null;
+		this.introduced = null;
+		this.discontinued = null;
+		this.companyId = null;
+		this.companyName = null;
 	}
 
 	private ComputerDTO(Builder builder) {
@@ -100,18 +119,20 @@ public class ComputerDTO implements java.io.Serializable {
 		this.name = builder.name;
 		this.introduced = builder.introduced;
 		this.discontinued = builder.discontinued;
-		this.company = builder.company;
+		this.companyId = builder.companyId;
+		this.companyName = builder.companyName;
 	}
 
 	public static class Builder {
 
-		private long id;
+		private Long id;
 		private String name;
 		private String introduced;
 		private String discontinued;
-		private Company company;
+		private Long companyId;
+		private String companyName;
 
-		public Builder withId(long id) {
+		public Builder withId(Long id) {
 			this.id = id;
 			return this;
 		}
@@ -122,21 +143,26 @@ public class ComputerDTO implements java.io.Serializable {
 		}
 
 		public Builder withIntroduced(LocalDate introduced) {
-			if(introduced != null){
-			this.introduced = introduced.toString();
+			if (introduced != null) {
+				this.introduced = introduced.toString();
 			}
 			return this;
 		}
 
 		public Builder withDiscontinued(LocalDate discontinued) {
-			if(discontinued != null){
-			this.discontinued = discontinued.toString();
+			if (discontinued != null) {
+				this.discontinued = discontinued.toString();
 			}
 			return this;
 		}
 
-		public Builder withCompany(Company company) {
-			this.company = company;
+		public Builder withCompanyId(Long companyId) {
+			this.companyId = companyId;
+			return this;
+		}
+		
+		public Builder withCompanyName(String companyName) {
+			this.companyName = companyName;
 			return this;
 		}
 

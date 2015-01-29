@@ -9,10 +9,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/main.css" />" rel="stylesheet" media="screen">
 </head>
+
+
+
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 
@@ -43,7 +46,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST" action="delete">
+		<form id="deleteForm" method="POST" action="computers">
 			<input type="hidden" name="selection" value="">
 		</form>
 		<div class="container" style="margin-top: 10px;">
@@ -55,7 +58,7 @@
 
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - <a href="#"
+							style="vertical-align: top;"> - <a
 								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
@@ -117,16 +120,16 @@
 										value="${computer.name}"></c:out></a></td>
 							<td><c:out value="${computer.introduced}"></c:out></td>
 							<td><c:out value="${computer.discontinued}"></c:out></td>
-							<td><c:out value="${computer.company.name}"></c:out></td>
+							<td><c:out value="${computer.companyName}"></c:out></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</section>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="<c:url value="js/jquery.min.js"/>"></script>
+	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="js/dashboard.js"/>"/></script>
 
 	<custom:pagination target="${page.target}" query="${page.query}"
 		pageCount="${page.pageCount}" orderBy="${page.orderBy}"

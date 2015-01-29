@@ -36,7 +36,7 @@ public class Validator {
 		if (input == null) {
 			return false;
 		}
-		if (input.matches(REGEX_NUMBER) || input==null) {
+		if (input.matches(REGEX_NUMBER) || input==null && input!="0" ) {
 			return true;
 		} else {
 			System.out.println("invalid number" + input);
@@ -84,26 +84,27 @@ public class Validator {
 		}
 	}
 
-	public static Page validateParameterList(Map<String, String[]> paramList){
+	public static Page validateParameterList(Map<String, String> paramList){
 		Page page = new Page();
 		if(paramList.containsKey("size")){
-			page.setSize(Validator.validateInt(paramList.get("size")[0]));
+			page.setSize(Validator.validateInt(paramList.get("size")));
 		}		
 		if(paramList.containsKey("page")){
-			page.setPageNumber(Validator.validateInt(paramList.get("page")[0]));
+			page.setPageNumber(Validator.validateInt(paramList.get("page")));
 		}		
 		if(paramList.containsKey("sort")){
-			page.setSort(Sort.valueOf(paramList.get("sort")[0].toUpperCase()));
+			page.setSort(Sort.valueOf(paramList.get("sort").toUpperCase()));
 		}
 		if(paramList.containsKey("order")){
-			page.setOrderBy(OrderBy.valueOf(paramList.get("order")[0].toUpperCase()));
+			page.setOrderBy(OrderBy.valueOf(paramList.get("order").toUpperCase()));
 		}
 		if(paramList.containsKey("query")){
-			page.setQuery(paramList.get("query")[0]);
+			page.setQuery(paramList.get("query"));
 		}
 		else{
 			page.setQuery("");
 		}
+		System.out.println(page);
 		return page;
 	}
 }

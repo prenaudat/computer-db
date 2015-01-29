@@ -1,10 +1,12 @@
 package com.excilys.computerdatabase.mapper.dto.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.DTOMapper;
+import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 
 /**
@@ -24,10 +26,11 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 	 */
 	@Override
 	public ComputerDTO mapToDTO(Computer c) {
-		return new ComputerDTO.Builder().withName(c.getName())
+		ComputerDTO ret =new ComputerDTO.Builder().withName(c.getName())
 				.withId(c.getId()).withIntroduced(c.getIntroduced())
 				.withDiscontinued(c.getDiscontinued())
-				.withCompany(c.getCompany()).build();
+				.withCompanyId(c.getCompany().getId()).withCompanyName(c.getCompany().getName()).build();
+		return ret;
 	}
 
 	/*
@@ -39,7 +42,13 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 	 */
 	@Override
 	public Computer mapFromDTO(ComputerDTO x) {
-		return null;
+		return new Computer.Builder().id(x.getId())
+				.name(x.getName())
+				.introduced(LocalDate.parse(x.getIntroduced()))
+				.discontinued(LocalDate.parse(x.getDiscontinued()))
+				.company(
+						new Company.CompanyBuilder().id(x.getCompanyId())
+								.build()).build();
 	}
 
 	@Override

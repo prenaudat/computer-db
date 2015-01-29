@@ -7,11 +7,11 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
-<script src="../js/jquery.min.js"></script>
-<script src="../js/validation.js"></script>
+<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/main.css" />" rel="stylesheet" media="screen">
+<script src="<c:url value="/js/jquery.min.js"/>"></script>
+<script src="<c:url value="/js/validation.js"/>">"</script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -35,7 +35,7 @@
 						<div class="form-group has-feedback">
 							<label for="name">Computer name</label> <input
 								type="text" class="form-control" id="name" name="name"
-								placeholder="Computer name" value=" ${computer.name}">
+								placeholder="Computer name" value="${computer.name}">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="introduced">Introduced date</label> <input
@@ -51,7 +51,7 @@
 						</div>
 						<div class="form-group has-feedback">
 							<label for="companyId">Company</label> <select
-								class="form-control" id="companyId" name="company_id">
+								class="form-control" id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
 									<c:choose>
