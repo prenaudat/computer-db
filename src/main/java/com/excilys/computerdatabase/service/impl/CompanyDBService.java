@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
+import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.CompanyDBServiceInterface;
 
 /**
@@ -45,6 +46,10 @@ public class CompanyDBService implements CompanyDBServiceInterface {
 	@Override
 	public void remove(long id) {
 		companyDAO.remove(id);
+	}
+
+	public List<Company> getPage(Page page) {
+		return companyDAO.getPage(page);
 	}
 
 }

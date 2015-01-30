@@ -1,10 +1,13 @@
 package com.excilys.computerdatabase.cli;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.Page;
 import com.excilys.computerdatabase.service.impl.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBService;
 import com.excilys.computerdatabase.validator.Validator;
@@ -18,8 +21,7 @@ public class Client {
 	private ComputerDBService computerDBService;
 	private CompanyDBService companyDBService;
 	//Page index for Company and Computer Directory
-	private int pageNumber=0;
-	private int pageSize = 10;
+	Page page;
 	private Boolean loop;
 	private Scanner sc;
 	private static final String FAIL = "You failed to select an available option, please try again";
@@ -34,7 +36,7 @@ public class Client {
 		Boolean innerLoop = true;
 		while (innerLoop) {
 			System.out.println(computerDBService.getPage(
-					pageNumber));
+					page.getPageNumber()));
 			innerLoop = getComputerListMenu();
 		}
 	}
@@ -83,7 +85,7 @@ public class Client {
 			Boolean displayLoop = true;
 			while (displayLoop) {
 				System.out.println(computerDBService.getPage(
-						pageNumber));
+						page.getPageNumber()));
 				displayLoop = getComputerListMenu();
 			}
 			break;
@@ -236,27 +238,27 @@ public class Client {
 		boolean outerLoop = true;
 		while (innerLoop) {
 			System.out.println("A) Return to previous menu\nB) Next page");
-			if (pageNumber > 0) {
+			if (page.getPageNumber() > 0) {
 				System.out.println("C) Previous page");
 			}
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				innerLoop = false;
 				outerLoop = false;
-				pageNumber=0;
+				page.setPageNumber(0);
 				break;
 			case "b":
-				pageNumber += 1;
+				page.setPageNumber(page.getPageNumber()+1);
 				outerLoop = true;
 				innerLoop = false;
 				break;
 			case "c":
-				if (pageNumber > pageSize) {
-					pageNumber -= 1;
+				if (page.getPageNumber() > page.getSize()) {
+					page.setPageNumber(page.getPageNumber()-1);
 					outerLoop = true;
 					innerLoop = false;
 				} else {
-					pageNumber = 0;
+					page.setPageNumber(0);
 					outerLoop = true;
 					innerLoop = false;
 				}
@@ -279,9 +281,8 @@ public class Client {
 	public void getCompanyList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(companyDBService.getPage(
-					pageNumber));
-			innerLoop = getCompanyListMenu(pageNumber);
+			System.out.println(companyDBService.getPage(page));
+			innerLoop = getCompanyListMenu(page.getPageNumber());
 		}
 	}
 
@@ -292,27 +293,27 @@ public class Client {
 		Boolean outerLoop = false;
 		while (innerLoop) {
 			System.out.println("A) Return to previous menu\nB) Next page");
-			if (pageNumber > 0) {
+			if (page.getPageNumber() > 0) {
 				System.out.println("C) Previous page");
 			}
 			switch (sc.nextLine().toLowerCase()) {
 			case "a":
 				innerLoop = false;
 				outerLoop = false;
-				pageNumber=0;
+				page.setPageNumber(0);
 				break;
 			case "b":
-				pageNumber += 1;
+				page.setPageNumber(page.getPageNumber()+1);
 				innerLoop = false;
 				outerLoop = true;
 				break;
 			case "c":
-				if (pageNumber > pageSize) {
-					pageNumber -= pageSize;
+				if (page.getPageNumber() > page.getSize()) {
+					page.setPageNumber(page.getPageNumber()- page.getSize());
 					innerLoop = false;
 					outerLoop = true;
 				} else {
-					pageNumber = 0;
+					page.setPageNumber(0);
 					innerLoop = false;
 					outerLoop = true;
 				}
@@ -327,18 +328,18 @@ public class Client {
 
 	
 	/**
-	 * Display page size and modify.
+	 * Display page size and modify.size
 	 */
 	public void changePageSize() {
 		boolean pageSizeLoop = true;
 		while (pageSizeLoop) {
-			System.out.println("Current page size is " + pageSize
+			System.out.println("Current page size is " + page.getSize()
 					+ ".\nChange page size to :");
 			String input = sc.nextLine();
 			pageSizeLoop = !Validator.isValidNumber(input);
 			if (!pageSizeLoop) {
-				pageSize = Integer.parseInt(input);
-				System.out.printf("Page size changed to %d \n", pageSize);
+				page.setSize(Integer.parseInt(input));
+				System.out.printf("Page size changed to %d \n", page.getSize());
 			}
 		}
 	}
@@ -361,10 +362,12 @@ public class Client {
 	 *Instantiate DBservices, associated counters 
 	 */
 	public void init() {
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext (this);
 		computerDBService = new ComputerDBService();
 		companyDBService = new CompanyDBService();
 		sc = new Scanner(System.in);
 		loop = true;
+		page = new Page();
 		mainMenu();
 	}
 
