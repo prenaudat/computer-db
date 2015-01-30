@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="custom" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
@@ -9,9 +10,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
-<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet" media="screen">
-<link href="<c:url value="/css/main.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/main.css" />" rel="stylesheet"
+	media="screen">
+<script src="<c:url value="js/jquery.min.js"/>"></script>
+<script src="<c:url value="js/bootstrap.min.js"/>"></script>
+<script src="<c:url value="js/dashboard.js"/>" /></script>
 </head>
 
 
@@ -26,11 +33,14 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.count} Computers found</h1>
+			<h1 id="homeTitle">
+				<c:out value="${page.count} " />
+				<spring:message code="dashboard.computersFound" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
-						action="computers?page=0&order=${orderBy}&sort=${sort}&size=${size}"
+						action="computers?page=0&order=<c:out value="${orderBy}"/>&sort=<c:out value="${sort}"/>&size=<c:out value="${sort}"/>"
 						method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="query"
 							class="form-control" placeholder="Search name" /> <input
@@ -39,9 +49,10 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="computers/add">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="computers/add"><spring:message
+							code="label.add" /> </a> <a class="btn btn-default"
+						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
+							code="label.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -58,8 +69,8 @@
 
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - <a
-								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+							style="vertical-align: top;"> - <a id="deleteSelected"
+								onclick="$.fn.deleteSelected();"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
@@ -69,44 +80,50 @@
 									<c:if test="${page.sort == 'ASC'}">
 										<custom:url target="${page.target}" pageNumber="0"
 											query="${page.query}" orderBy="NAME" sort="DESC"
-											size="${page.size}" value="Computer name"></custom:url>
+											size="${page.size}">
+											<spring:message code="label.cptName" />
+										</custom:url>
 									</c:if>
 									<c:if test="${page.sort == 'DESC'}">
 										<custom:url target="${page.target}" pageNumber="0"
 											query="${page.query}" orderBy="NAME" sort="ASC"
-											size="${page.size}" value="Computer name"></custom:url>
+											size="${page.size}">
+											<spring:message code="label.cptName" />
+										</custom:url>
 
 									</c:if>
 								</c:when>
 								<c:otherwise>
 									<custom:url target="${page.target}" pageNumber="0"
 										query="${page.query}" orderBy="NAME" sort="ASC"
-										size="${page.size}" value="Computer name"></custom:url>
+										size="${page.size}">
+										<spring:message code="label.cptName" />
+									</custom:url>
 								</c:otherwise>
 							</c:choose></th>
 
-						<th>Introduced date</th>
+						<th><spring:message code="label.introduced" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message code="label.discontinued" /></th>
 						<!-- Table header for Company -->
 						<th><c:choose>
 								<c:when test="${page.orderBy == 'COMPANY_NAME'}">
 									<c:if test="${page.sort == 'ASC'}">
 										<custom:url target="${page.target}" pageNumber="0"
 											query="${page.query}" orderBy="COMPANY_NAME" sort="DESC"
-											size="${page.size}" value="Company name"></custom:url>
+											size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
 
 									</c:if>
 									<c:if test="${page.sort == 'DESC'}">
 										<custom:url target="${page.target}" pageNumber="0"
 											query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
-											size="${page.size}" value="Company name"></custom:url>
+											size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
 									</c:if>
 								</c:when>
 								<c:otherwise>
 									<custom:url target="${page.target}" pageNumber="0"
 										query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
-										size="${page.size}" value="Company name"></custom:url>
+										size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
 								</c:otherwise>
 							</c:choose></th>
 				</thead>
@@ -115,8 +132,9 @@
 					<c:forEach items="${page.list}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computer.id}"></td>
-							<td><a href="computers/edit?id=${computer.id}" onclick=""><c:out
+								class="cb" value="<c:out value="${computer.id}"/>"></td>
+							<td><a
+								href="computers/edit?id=<c:out value="${computer.id}"/>"><c:out
 										value="${computer.name}"></c:out></a></td>
 							<td><c:out value="${computer.introduced}"></c:out></td>
 							<td><c:out value="${computer.discontinued}"></c:out></td>
@@ -127,10 +145,6 @@
 			</table>
 		</div>
 	</section>
-	<script src="<c:url value="js/jquery.min.js"/>"></script>
-	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
-	<script src="<c:url value="js/dashboard.js"/>"/></script>
-
 	<custom:pagination target="${page.target}" query="${page.query}"
 		pageCount="${page.pageCount}" orderBy="${page.orderBy}"
 		sort="${page.sort}" pageNumber="${page.pageNumber}"

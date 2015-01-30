@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="<c:url value="/css/bootstrap.min.css"/> rel="stylesheet" media="screen">
-<link href="<c:url value="/css/font-awesome.css"/>" rel="stylesheet" media="screen">
-<link href="<c:url value="/css/main.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="/css/bootstrap.min.css"/>" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/font-awesome.css"/>" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="/css/main.css"/>" rel="stylesheet"
+	media="screen">
 <script src="<c:url value="/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/js/validation.js"/>"></script>
 </head>
@@ -25,27 +30,35 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
-				<h1>Add Computer</h1>
+				<h1><spring:message
+									code="label.add"/></h1>
 				<form id="add" action="add" method="POST">
 					<fieldset>
 						<div class="form-group has-feedback">
-							<label for="name">Computer name</label> <input
-								type="text" class="form-control" id="name" name="name"
-								placeholder="Computer name">
+							<label for="name"> <spring:message
+									code="label.cptName" />
+							</label> <input type="text" class="form-control" id="name" name="name"
+								placeholder="<spring:message
+									code="label.cptName" />">
 						</div>
 						<div class="form-group has-feedback">
-							<label for="introduced">Introduced date</label> <input
+							<label for="introduced"><spring:message
+									code="label.introduced"/></label> <input
 								type="date" class="form-control" name="introduced"
-								id="introduced" placeholder="Introduced date">
+								id="introduced" placeholder="<spring:message
+									code="label.introduced"/>">
 						</div>
 						<div class="form-group has-feedback">
-							<label for="discontinued">Discontinued date</label> <input
+							<label for="discontinued"><spring:message
+									code="label.discontinued"/></label> <input
 								type="date" class="form-control" name="discontinued"
-								id="discontinued" placeholder="Discontinued date">
+								id="discontinued" placeholder="<spring:message
+									code="label.discontinued"/>">
 						</div>
 						<div class="form-group has-feedback">
-							<label for="companyId">Company</label> <select
-								class="form-control" id="companyId" name="company_id">
+							<label for="companyId"><spring:message
+									code="label.cmpName"/></label> <select
+								class="form-control" id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
 									<c:choose>
@@ -61,9 +74,11 @@
 						</div>
 					</fieldset>
 					<div class="actions pull-right">
-						<input type="submit" value="Add" id="submit"
-							class="btn btn-primary"> or <a href="../computers"
-							class="btn btn-default">Cancel</a>
+						<input type="submit" value="<spring:message
+									code="label.add"/>" id="submit"
+							class="btn btn-primary">  <spring:message code="label.or"/> <a href="../computers"
+							class="btn btn-default"><spring:message
+									code="label.cancel"/></a>
 					</div>
 				</form>
 			</div>
@@ -86,7 +101,7 @@
 		});
 		$("#companyId").on('keyup change', function() {
 			checkCompany();
-					});		
+		});
 	</script>
 </body>
 </html>

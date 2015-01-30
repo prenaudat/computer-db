@@ -1,4 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ attribute name="target" required="true"%>
 <%@ attribute name="query" required="false"%>
@@ -14,7 +15,7 @@
 			<c:if test="${pageNumber>0}">
 				<li><a
 					href="${target}?page=0&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
-					aria-label="Next"> <span aria-hidden="true">First</span>
+					aria-label="Next"> <span aria-hidden="true"><spring:message code="dashboard.first" /></span>
 				</a></li>
 				<li><a
 					href="${target}?page=${pageNumber-1}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
@@ -52,7 +53,7 @@
 				</a></li>
 				<li><a
 					href="${target}?page=${pageCount}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}"
-					aria-label="Next"> <span aria-hidden="true">Last</span>
+					aria-label="Next"> <span aria-hidden="true"><spring:message code="dashboard.last" /></span>
 				</a></li>
 			</c:if>
 		</ul>

@@ -24,7 +24,7 @@ public class ComputerDTO implements java.io.Serializable {
 	@Size(max = 10)
 	private String discontinued;
 	private Long companyId;
-	private String companyName; 
+	private String companyName;
 
 	public String getCompanyName() {
 		return companyName;
@@ -68,6 +68,9 @@ public class ComputerDTO implements java.io.Serializable {
 		if (discontinued != null) {
 			this.discontinued = discontinued.toString();
 		}
+		if (discontinued.length() != 10) {
+			this.discontinued = null;
+		}
 	}
 
 	public Long getCompanyId() {
@@ -79,9 +82,13 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 	public void setIntroduced(String introduced) {
-		this.introduced = introduced;
+		if (introduced != null) {
+			this.introduced = introduced.toString();
+		}
+		if (introduced.length() != 10) {
+			this.introduced = null;
+		}
 	}
-
 
 	@Override
 	public String toString() {
@@ -101,7 +108,7 @@ public class ComputerDTO implements java.io.Serializable {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId=company_Id;
+		this.companyId = company_Id;
 		this.companyName = company_Name;
 	}
 
@@ -160,7 +167,7 @@ public class ComputerDTO implements java.io.Serializable {
 			this.companyId = companyId;
 			return this;
 		}
-		
+
 		public Builder withCompanyName(String companyName) {
 			this.companyName = companyName;
 			return this;

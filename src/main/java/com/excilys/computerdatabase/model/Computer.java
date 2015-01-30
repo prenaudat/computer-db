@@ -249,11 +249,25 @@ public class Computer {
 			this.computer.setIntroduced(newIntroduced);
 			return this;
 		}
+		public Builder introduced(final String newIntroduced) {
+			if(newIntroduced != null && newIntroduced.length()!=0){
+				this.computer.setIntroduced(LocalDate.parse(newIntroduced));
+			}
+			return this;
+		}
+
 
 		public Builder discontinued(final LocalDate newDiscontinued) {
 			this.computer.setDiscontinued(newDiscontinued);
 			return this;
 		}
+		public Builder discontinued(final String discontinued) {
+			if(discontinued != null && discontinued.length()!=0){
+				this.computer.setDiscontinued(LocalDate.parse(discontinued));
+			}
+			return this;
+		}
+
 
 		public Builder company(final Company company) {
 			this.computer.company.setId(company.getId());

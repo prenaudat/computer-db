@@ -104,7 +104,6 @@ public class Validator {
 		else{
 			page.setQuery("");
 		}
-		System.out.println(page);
 		return page;
 	}
 }

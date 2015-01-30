@@ -1,6 +1,5 @@
 package com.excilys.computerdatabase.mapper.dto.impl;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +25,12 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 	 */
 	@Override
 	public ComputerDTO mapToDTO(Computer c) {
-		ComputerDTO ret =new ComputerDTO.Builder().withName(c.getName())
+		return new ComputerDTO.Builder().withName(c.getName())
 				.withId(c.getId()).withIntroduced(c.getIntroduced())
 				.withDiscontinued(c.getDiscontinued())
-				.withCompanyId(c.getCompany().getId()).withCompanyName(c.getCompany().getName()).build();
-		return ret;
+				.withCompanyId(c.getCompany().getId())
+				.withCompanyName(c.getCompany().getName()).build();
+
 	}
 
 	/*
@@ -42,10 +42,11 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 	 */
 	@Override
 	public Computer mapFromDTO(ComputerDTO x) {
-		return new Computer.Builder().id(x.getId())
+		return new Computer.Builder()
+				.id(x.getId())
 				.name(x.getName())
-				.introduced(LocalDate.parse(x.getIntroduced()))
-				.discontinued(LocalDate.parse(x.getDiscontinued()))
+				.introduced(x.getIntroduced())
+				.discontinued(x.getDiscontinued())
 				.company(
 						new Company.CompanyBuilder().id(x.getCompanyId())
 								.build()).build();

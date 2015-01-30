@@ -3,8 +3,10 @@ package com.excilys.computerdatabase.mapper.row.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
+
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 
@@ -24,17 +26,16 @@ public class ComputerMapper implements RowMapper<Computer> {
 			if (resIntroduced != null) {
 				cb.introduced(resIntroduced.toLocalDateTime().toLocalDate());
 			} else {
-				cb.introduced(null);
+				cb.introduced((LocalDate) null);
 			}
 			if (resDiscontinued != null) {
 				cb.discontinued(resDiscontinued.toLocalDateTime()
 						.toLocalDate());
 			} else {
-				cb.discontinued(null);
+				cb.discontinued((LocalDate) null);
 			}
 			cb.company(new Company(rs.getLong("company_id"), rs
 					.getString("company_name")));
-		System.out.println(cb.build());
 		return cb.build();
 		}
 

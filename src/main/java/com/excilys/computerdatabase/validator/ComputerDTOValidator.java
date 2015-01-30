@@ -22,17 +22,14 @@ public class ComputerDTOValidator implements Validator {
 				&& (dto.getName().length() == 0 || dto.getName().length() > 255)) {
 			e.rejectValue("name", "Name is not between 1 and 255 characters");
 		}
-		if (dto.getIntroduced() != null && dto.getIntroduced().length() != 10) {
+		if (dto.getIntroduced() != null && dto.getIntroduced().length() != 10 && dto.getIntroduced().length() != 0) {
 			System.out.println(dto.getIntroduced().length());
 			e.rejectValue("introduced",
 					"Introduction date must be in correct format yyyy-mm-dd");
 		}
-		if (dto.getDiscontinued() != null && dto.getDiscontinued().length() != 10) {
+		if (dto.getDiscontinued() != null && dto.getDiscontinued().length() != 10 && dto.getDiscontinued().length() != 0) {
 			e.rejectValue("discontinued",
 					"Discontinuation date must be in correct format yyyy-mm-dd");
-		}
-		if (dto.getCompanyId() != null && (dto.getCompanyId() == 0)) {
-			e.rejectValue("companyId", "Company Id must be real");
 		}
 	}
 }

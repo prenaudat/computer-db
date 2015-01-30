@@ -26,12 +26,22 @@ public class DashBoard {
 	ComputerDBService computerDBService;
 	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
 
+	/**
+	 * Map GET requests to /computers.
+	 * @param allRequestParams : URL parameters concerning the page
+	 * @return ModelAndView of Dashboard
+	 */
 	@RequestMapping(value = "/computers", method = RequestMethod.GET)
 	protected ModelAndView get(
 			@RequestParam Map<String, String> allRequestParams) {
 		return sendHomePage(allRequestParams);
 	}
 
+	/**
+	 * Map POST requests to /computers for deletion. 
+	 * @param allRequestParams CSV type : 1,2,3,4,5 values corresponding to values of IDs to be separated
+	 * @return ModelAndView of dash board
+	 */
 	@RequestMapping(value = "/computers", method = RequestMethod.POST)
 	protected ModelAndView post(
 			@RequestParam Map<String, String> allRequestParams) {
@@ -40,6 +50,11 @@ public class DashBoard {
 		return sendHomePage(allRequestParams);
 	}
 
+	/**
+	 * Return home page Model after populating with computers from ComputerDBService
+	 * @param allRequestParams All request parameters.
+	 * @return ModelAndView of dashboard. 
+	 */
 	protected ModelAndView sendHomePage(Map<String, String> allRequestParams) {
 		Page page = Validator.validateParameterList(allRequestParams);
 		page.setList(computerDBService.getPage(page).getList());
