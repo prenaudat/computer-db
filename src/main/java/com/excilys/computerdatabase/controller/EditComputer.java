@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.controller;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ public class EditComputer {
 
 	/**
 	 * Initialize and bind ComputerDTOValidator
+	 * 
 	 * @param binder
 	 */
 	@InitBinder("computerDTO")
@@ -43,8 +46,11 @@ public class EditComputer {
 	}
 
 	/**
-	 * Request mapping for /computers/edit and return page to edit computer with corresponding id
-	 * @param id id of computer to edit
+	 * Request mapping for /computers/edit and return page to edit computer with
+	 * corresponding id
+	 * 
+	 * @param id
+	 *            id of computer to edit
 	 * @return ModelAndView of EditComputer Page
 	 */
 	@RequestMapping(value = "/computers/edit", method = RequestMethod.GET)
@@ -53,21 +59,29 @@ public class EditComputer {
 	}
 
 	/**
-	 * Map post requests on /computers/edit and either accept or send back to form.
-	 * @param dto the computer from the form
-	 * @param bindingResult Validator results
+	 * Map post requests on /computers/edit and either accept or send back to
+	 * form.
+	 * 
+	 * @param dto
+	 *            the computer from the form
+	 * @param bindingResult
+	 *            Validator results
 	 * @return ModelAndView of edit or home page in case of success
 	 */
 	@RequestMapping(value = "/computers/edit", method = RequestMethod.POST)
 	protected ModelAndView doPost(@Valid ComputerDTO dto,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			ModelAndView mav = sendEditPage(dto.getId());
-			mav.addObject("errors", bindingResult.getAllErrors());
-			mav.addObject("companies", companyDBService.getAll());
-			mav.addObject("computer", dto);
-			return new ModelAndView(new RedirectView("/computers/edit?id="
-					+ dto.getId(), true));
+			ModelAndView mav = new ModelAndView("editComputer", "computer", dto);
+			mav.addObject("id", dto.getId());
+			ArrayList<String> errorCodes = new ArrayList<>();
+			bindingResult.getAllErrors().forEach(
+					c -> errorCodes.add(c.getCode().toString()));
+			mav.getModel().put("companies", companyDBService.getAll());
+			mav.getModel().put("computer", dto);
+			mav.getModel().put("errors", errorCodes);
+			System.out.println(errorCodes);
+			return mav;
 		}
 		computerDBService.update(computerDTOMapper.mapFromDTO(dto));
 		ModelAndView home = new ModelAndView(new RedirectView("/computers",
@@ -78,12 +92,13 @@ public class EditComputer {
 
 	/**
 	 * 
-	 * @param id ID of computer to edit
+	 * @param id
+	 *            ID of computer to edit
 	 * @return ModelAndView of editComputer with corresponding computer.
 	 */
 	private ModelAndView sendEditPage(Long id) {
 		ModelAndView editPage = new ModelAndView("editComputer");
-		editPage.addObject("computer", computerDBService.get(id));
+		editPage.addObject("computer", computerDTOMapper.mapToDTO(computerDBService.get(id)));
 		editPage.addObject("companies", companyDBService.getAll());
 		return editPage;
 	}

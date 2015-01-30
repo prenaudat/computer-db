@@ -31,5 +31,6 @@ public class ComputerDTOValidator implements Validator {
 			e.rejectValue("discontinued",
 					"Discontinuation date must be in correct format yyyy-mm-dd");
 		}
+		
 	}
 }

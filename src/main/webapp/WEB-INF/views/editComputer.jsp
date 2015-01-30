@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,6 +17,7 @@
 	media="screen">
 <link href="<c:url value="/css/main.css" />" rel="stylesheet"
 	media="screen">
+
 <script src="<c:url value="/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/js/validation.js"/>">"</script>
 </head>
@@ -33,36 +36,53 @@
 					id:
 					<c:out value="${computer.id}" />
 				</div>
-				<h1><spring:message code="label.editComputer"/></h1>
+				<h1>
+					<spring:message code="label.editComputer" />
+				</h1>
+				<div class="alert-bar">
+					<div class="alert alert-danger alert-error">
+						<a onClick="$(this).parent().parent().remove();" class="close"
+							data-dismiss="alert">&times;</a> <strong>Error!</strong> A
+						problem has been occurred while submitting your data.
+						<c:forEach items="${errors}" var ="error">
+							<li>${error}</li>
+						</c:forEach>
+					</div>
+				</div>
+
 				<form action="edit" method="POST">
 					<fieldset>
 						<div class="form-group">
 							<input type="hidden" name="id" value="${computer.id}" />
 						</div>
 						<div class="form-group has-feedback">
-							<label for="name"><spring:message code="label.cptName"/></label> <input type="text"
-								class="form-control" id="name" name="name"
-								placeholder="<spring:message code="label.cptName"/>" value="${computer.name}">
+							<label for="name"><spring:message code="label.cptName" /></label>
+							<input type="text" class="form-control" id="name" name="name"
+								placeholder="<spring:message code="label.cptName"/>"
+								value="${computer.name}">
 						</div>
 						<div class="form-group has-feedback">
-							<label for="introduced"><spring:message code="label.introduced"/></label> <input
-								type="date" class="form-control" id="introduced"
-								name="introduced" placeholder="Introduced date"
+							<label for="introduced"><spring:message
+									code="label.introduced" /></label> <input type="date"
+								class="form-control" id="introduced" name="introduced"
+								placeholder="Introduced date"
 								value="<c:out value="${computer.introduced}"/>">
 						</div>
 						<div class="form-group has-feedback">
-							<label for="discontinued"><spring:message code="label.discontinued"/></label> <input
-								type="date" class="form-control" id="discontinued"
-								name="discontinued" placeholder="Discontinued date"
+							<label for="discontinued"><spring:message
+									code="label.discontinued" /></label> <input type="date"
+								class="form-control" id="discontinued" name="discontinued"
+								placeholder="Discontinued date"
 								value="<c:out value="${computer.discontinued}"/>" />
 						</div>
 						<div class="form-group has-feedback">
-							<label for="companyId"><spring:message code="label.cmpName"/></label> <select
-								class="form-control" id="companyId" name="companyId">
+							<label for="companyId"><spring:message
+									code="label.cmpName" /></label> <select class="form-control"
+								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
 									<c:choose>
-										<c:when test="${company.id!=computer.company.id}">
+										<c:when test="${company.id!=computer.companyId}">
 											<option value="<c:out value="${company.id}"/>"><c:out
 													value="${company.name}" /></option>
 										</c:when>
@@ -77,8 +97,10 @@
 					</fieldset>
 					<div class="actions pull-right">
 						<input type="submit" value="Edit" id="submit"
-							class="btn btn-primary"> <spring:message code="label.or"/> <a href="../computers"
-							class="btn btn-default"> <spring:message code="label.cancel"/></a>
+							class="btn btn-primary">
+						<spring:message code="label.or" />
+						<a href="../computers" class="btn btn-default"> <spring:message
+								code="label.cancel" /></a>
 					</div>
 				</form>
 			</div>
