@@ -27,7 +27,10 @@ target/
 *.jar
 *.war
 *.ear
+<<<<<<< HEAD
+c:/*
+=======
 *.classpath
 *.project
 *.tern-project
-c:/*
+>>>>>>> 81226a458a775d56acc910906a6f9f8aca12c215
