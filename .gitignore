@@ -27,3 +27,4 @@ target/
 *.jar
 *.war
 *.ear
+c:/*

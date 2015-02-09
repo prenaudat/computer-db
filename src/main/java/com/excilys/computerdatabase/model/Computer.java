@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.excilys.computerdatabase.validator.Validator;
-
 /**
  * Computer Object Class
  * @author paulr_000
@@ -45,11 +43,7 @@ public class Computer {
 	 * @param name Name to be set
 	 */
 	public void setName(String name) {
-		if(Validator.isValidString(name)){
 			this.name = name;
-		}else{
-			this.name="";
-		}
 	}
 
 	/**

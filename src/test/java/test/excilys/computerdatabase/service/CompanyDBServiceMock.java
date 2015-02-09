@@ -9,10 +9,10 @@ import test.excilys.computerdatabase.dao.CompanyDAOMock;
 
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.model.Company;
-import com.excilys.computerdatabase.service.CompanyDBServiceInterface;
+import com.excilys.computerdatabase.service.CompanyDBService;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
-public class CompanyDBServiceMock implements CompanyDBServiceInterface {
+public class CompanyDBServiceMock implements CompanyDBService {
 	private CompanyDAOMock companyDAO = new CompanyDAOMock();
 	ConnectionManager connectionManager = ConnectionManager.getInstance();
 	

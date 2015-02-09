@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ page isELIgnored="false" %>
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -39,24 +40,25 @@
 				<h1>
 					<spring:message code="label.editComputer" />
 				</h1>
-				<div class="alert-bar">
-					<div class="alert alert-danger alert-error">
-						<a onClick="$(this).parent().parent().remove();" class="close"
-							data-dismiss="alert">&times;</a> <strong>Error!</strong> A
-						problem has been occurred while submitting your data.
-						<c:forEach items="${errors}" var ="error">
-							<li>${error}</li>
-						</c:forEach>
+				<c:if test="${fn:length(errors) gt 0}">
+					<div class="alert-bar">
+						<div class="alert alert-danger alert-error">
+							<a onClick="$(this).parent().parent().remove();" class="close"
+								data-dismiss="alert">&times;</a> <strong>Error!</strong> A
+							problem has been occurred while submitting your data.
+							<c:forEach items="${errors}" var="error">
+								<li><spring:message code="${error}"/></li>
+							</c:forEach>
+						</div>
 					</div>
-				</div>
-
+				</c:if>
 				<form action="edit" method="POST">
 					<fieldset>
 						<div class="form-group">
 							<input type="hidden" name="id" value="${computer.id}" />
 						</div>
 						<div class="form-group has-feedback">
-							<label for="name"><spring:message code="label.cptName" /></label>
+							<label for="name"><spring:message code="label.cptName"/></label>
 							<input type="text" class="form-control" id="name" name="name"
 								placeholder="<spring:message code="label.cptName"/>"
 								value="${computer.name}">
@@ -65,14 +67,16 @@
 							<label for="introduced"><spring:message
 									code="label.introduced" /></label> <input type="date"
 								class="form-control" id="introduced" name="introduced"
-								placeholder="Introduced date"
+								placeholder="<spring:message
+									code="label.introduced" />"
 								value="<c:out value="${computer.introduced}"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="discontinued"><spring:message
 									code="label.discontinued" /></label> <input type="date"
 								class="form-control" id="discontinued" name="discontinued"
-								placeholder="Discontinued date"
+								placeholder="<spring:message
+									code="label.discontinued" />"
 								value="<c:out value="${computer.discontinued}"/>" />
 						</div>
 						<div class="form-group has-feedback">

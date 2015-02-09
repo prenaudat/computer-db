@@ -14,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.excilys.computerdatabase.dao.ConnectionManager;
 import com.excilys.computerdatabase.exception.PersistenceException;
-import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
@@ -23,7 +23,7 @@ import com.excilys.computerdatabase.pagination.Page;
 public class ComputerDAOMock {
 	private ConnectionManager connectionManager = ConnectionManager
 			.getInstance();
-	private ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	private ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 	private static final String SINGLE_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.id=?;";
 	private static final String LIST_QUERY_STMT = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id AS company_id, cmp.name AS company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id LIMIT ? , ?;";
 	private static final String INSERT_STMT = "INSERT into computer(name, introduced, discontinued, company_id) VALUES (?,?,?,?);";

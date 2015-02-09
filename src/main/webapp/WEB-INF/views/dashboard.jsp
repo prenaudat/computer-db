@@ -44,7 +44,7 @@
 						method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="query"
 							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							type="submit" id="searchsubmit" value="<spring:message code="dashboard.filter" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
@@ -132,7 +132,7 @@
 					<c:forEach items="${page.list}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="<c:out value="${computer.id}"/>"></td>
+								class="cb" value="<c:out value="${computer.id}" />"> </td>
 							<td><a
 								href="computers/edit?id=<c:out value="${computer.id}"/>"><c:out
 										value="${computer.name}"></c:out></a></td>

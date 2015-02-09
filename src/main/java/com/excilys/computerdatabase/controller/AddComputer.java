@@ -17,13 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.excilys.computerdatabase.dto.ComputerDTO;
-import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.service.impl.CompanyDBService;
-import com.excilys.computerdatabase.service.impl.ComputerDBService;
+import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
+import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 import com.excilys.computerdatabase.validator.ComputerDTOValidator;
-import com.excilys.computerdatabase.validator.Validator;
 
 /**
  * Manage /addComputer Display and persist computer for adding
@@ -34,10 +33,10 @@ import com.excilys.computerdatabase.validator.Validator;
 @Controller
 public class AddComputer {
 	@Autowired
-	ComputerDBService computerDBService;
+	ComputerDBServiceImpl computerDBService;
 	@Autowired
-	CompanyDBService companyDBService;
-	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	CompanyDBServiceImpl companyDBService;
+	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 
 	@InitBinder("computerDTO")
 	protected void initComputerDTOBinder(WebDataBinder binder) {

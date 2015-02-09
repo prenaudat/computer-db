@@ -9,7 +9,7 @@ import com.excilys.computerdatabase.pagination.Page;
  * @author paulr_000
  *
  */
-public interface CompanyDBServiceInterface {
+public interface CompanyDBService {
 
 	public Company get(long id);
 

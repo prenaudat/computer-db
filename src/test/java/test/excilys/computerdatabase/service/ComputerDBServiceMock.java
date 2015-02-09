@@ -2,11 +2,11 @@ package test.excilys.computerdatabase.service;
 
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
-import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
+import com.excilys.computerdatabase.service.ComputerDBService;
 
 import test.excilys.computerdatabase.dao.ComputerDAOMock;
 
-public class ComputerDBServiceMock implements ComputerDBServiceInterface{
+public class ComputerDBServiceMock implements ComputerDBService{
 	private ComputerDAOMock computerDAO;
 	
 	public ComputerDBServiceMock(ComputerDAOMock companyDAO) {

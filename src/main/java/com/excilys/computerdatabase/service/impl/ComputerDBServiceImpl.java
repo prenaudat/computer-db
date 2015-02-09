@@ -1,7 +1,9 @@
 package com.excilys.computerdatabase.service.impl;
 
 import java.sql.SQLException;
+import java.util.Map;
 
+import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,15 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.dao.impl.ComputerDAO;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.pagination.OrderBy;
 import com.excilys.computerdatabase.pagination.Page;
-import com.excilys.computerdatabase.service.ComputerDBServiceInterface;
+import com.excilys.computerdatabase.pagination.Sort;
+import com.excilys.computerdatabase.service.ComputerDBService;
 
 /**
  * @author paulr_000
  *
  */
 @Service("computerService")
-public class ComputerDBService implements ComputerDBServiceInterface {
+public class ComputerDBServiceImpl implements ComputerDBService {
 	@Autowired
 	ComputerDAO computerDAO;
 	@Autowired
@@ -27,6 +31,7 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * @param currentComputerPageIndex
 	 * @param pageSize
 	 * @return
+			;
 	 * @throws SQLException
 	 */
 	public Page getPage(int pageNumber) {
@@ -67,14 +72,6 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 
 	/**
 	 * @param id
-	 * @throws SQLException
-	 */
-	public void remove(final long id) {
-		computerDAO.remove(id);
-	}
-
-	/**
-	 * @param id
 	 * @param name
 	 * @param introducedDate
 	 * @param discontinuedDate
@@ -89,8 +86,8 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.excilys.computerdatabase.service.ComputerDBServiceInterface#save(
-	 * com.excilys.computerdatabase.model.Computer)
+	 * com.excilisIntys.computerdatabase.service.ComputerDBServiceInterface#
+	 * save( com.excilys.computerdatabase.model.Computer)
 	 */
 	public void save(final Computer computer) {
 		computerDAO.save(computer);
@@ -110,5 +107,38 @@ public class ComputerDBService implements ComputerDBServiceInterface {
 			throw new RuntimeException("Rollback this transaction!");
 		}
 		companyDAO.remove(id);
+	}
+	/**
+	 * @param i
+	 * @return
+	 */
+	public void remove(String id) {
+		if (GenericValidator.isLong(id)) {
+			computerDAO.remove(Long.parseLong(id));
+		}
+	}
+
+	public Page generatePage(Map<String, String> allRequestParams) {
+		Page page = new Page();
+		if(allRequestParams.containsKey("size") && GenericValidator.isInt(allRequestParams.get("size"))){
+			page.setSize(Integer.parseInt(allRequestParams.get("size")));
+		}		
+		if(allRequestParams.containsKey("page") && GenericValidator.isInt(allRequestParams.get("page"))){
+			page.setPageNumber(Integer.parseInt(allRequestParams.get("page")));
+		}		
+		if(allRequestParams.containsKey("sort")){
+			page.setSort(Sort.valueOf(allRequestParams.get("sort").toUpperCase()));
+		}
+		if(allRequestParams.containsKey("order")){
+			page.setOrderBy(OrderBy.valueOf(allRequestParams.get("order").toUpperCase()));
+		}
+		if(allRequestParams.containsKey("query")){
+			page.setQuery(allRequestParams.get("query"));
+		}
+		else{
+			page.setQuery("");
+		}
+		return page;
+
 	}
 }

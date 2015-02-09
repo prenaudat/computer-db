@@ -7,7 +7,7 @@ import com.excilys.computerdatabase.pagination.Page;
  * @author excilys
  *
  */
-public interface ComputerDBServiceInterface {
+public interface ComputerDBService {
 	/**
 	 * @param pageNumber
 	 * @return
@@ -23,7 +23,7 @@ public interface ComputerDBServiceInterface {
 	/**
 	 * @param id
 	 */
-	public void remove(final long id);
+	public void remove(String id);
 
 	/**
 	 * @param computer

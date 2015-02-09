@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.pagination.Page;
-import com.excilys.computerdatabase.service.impl.ComputerDBService;
-import com.excilys.computerdatabase.validator.Validator;
+import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
 /**
  * Servlet redirects to after populating JSP with computer List
@@ -23,8 +22,8 @@ import com.excilys.computerdatabase.validator.Validator;
 @Controller
 public class DashBoard {
 	@Autowired
-	ComputerDBService computerDBService;
-	ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	ComputerDBServiceImpl computerDBService;
+	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 
 	/**
 	 * Map GET requests to /computers.
@@ -46,7 +45,7 @@ public class DashBoard {
 	protected ModelAndView post(
 			@RequestParam Map<String, String> allRequestParams) {
 		Arrays.asList(allRequestParams.get("selection").split(",")).forEach(
-				i -> computerDBService.remove(Validator.validateInt(i)));
+				i -> computerDBService.remove(i));
 		return sendHomePage(allRequestParams);
 	}
 
@@ -56,7 +55,7 @@ public class DashBoard {
 	 * @return ModelAndView of dashboard. 
 	 */
 	protected ModelAndView sendHomePage(Map<String, String> allRequestParams) {
-		Page page = Validator.validateParameterList(allRequestParams);
+		Page page = computerDBService.generatePage(allRequestParams);
 		page.setList(computerDBService.getPage(page).getList());
 		page.setTarget("computers");
 		return new ModelAndView("dashboard", "page", page);

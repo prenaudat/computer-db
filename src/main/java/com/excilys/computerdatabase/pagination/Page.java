@@ -15,7 +15,7 @@ import com.excilys.computerdatabase.model.Computer;
  * @author excilys
  *
  */
-public class Page {
+public class Page{
 	// A page has a size, a pageNumber, a list of Computers, is sorted(id, name,
 	// introduced company or discontinued) and ordered(asc or desc)
 	private int size;

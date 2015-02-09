@@ -14,7 +14,7 @@ import com.excilys.computerdatabase.model.Computer;
  * @author excilys
  *
  */
-public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
+public class ComputerDTOMapperImpl implements DTOMapper<ComputerDTO, Computer> {
 
 	/*
 	 * (non-Javadoc)
@@ -42,14 +42,11 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 	 */
 	@Override
 	public Computer mapFromDTO(ComputerDTO x) {
-		return new Computer.Builder()
-				.id(x.getId())
-				.name(x.getName())
+		return new Computer.Builder().id(x.getId()).name(x.getName())
 				.introduced(x.getIntroduced())
 				.discontinued(x.getDiscontinued())
-				.company(
-						new Company.CompanyBuilder().id(x.getCompanyId())
-								.build()).build();
+				.company(new Company.Builder().id(x.getCompanyId()).build())
+				.build();
 	}
 
 	@Override
@@ -63,7 +60,10 @@ public class ComputerDTOMapper implements DTOMapper<ComputerDTO, Computer> {
 
 	@Override
 	public List<Computer> mapFromDTO(List<ComputerDTO> x) {
-		return null;
+		List<Computer> computerList = new ArrayList<Computer>();
+		x.forEach(c -> {
+			computerList.add(mapFromDTO(c));
+		});
+		return computerList;
 	}
-
 }

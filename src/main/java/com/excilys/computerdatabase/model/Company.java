@@ -110,20 +110,20 @@ public class Company {
 	 * @author excilys
 	 *
 	 */
-	public static class CompanyBuilder {
+	public static class Builder {
 		private Company company = new Company();
 
-		public CompanyBuilder() {
+		public Builder() {
 			company.setId(null);
 			company.name = null;
 		}
 
-		public CompanyBuilder id(final long id) {
+		public Builder id(final long id) {
 			company.id = id;
 			return this;
 		}
 
-		public CompanyBuilder name(final String name) {
+		public Builder name(final String name) {
 			company.name = name;
 			return this;
 		}

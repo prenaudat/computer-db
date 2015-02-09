@@ -1,32 +1,36 @@
 package com.excilys.computerdatabase.cli;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Scanner;
 
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.apache.commons.validator.GenericValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
-import com.excilys.computerdatabase.service.impl.CompanyDBService;
-import com.excilys.computerdatabase.service.impl.ComputerDBService;
-import com.excilys.computerdatabase.validator.Validator;
+import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
+import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
 /**
  * @author excilys
  *
  */
 public class Client {
-	//Database Services
-	private ComputerDBService computerDBService;
-	private CompanyDBService companyDBService;
-	//Page index for Company and Computer Directory
+	// Database Services
+	private ComputerDBServiceImpl computerDBService;
+	private CompanyDBServiceImpl companyDBService;
+	// Page index for Company and Computer Directory
 	Page page;
 	private Boolean loop;
 	private Scanner sc;
+	 
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Change page size \nH) Delete Company+Computers";
-	//Logger for this class
+
+	// Logger for this class
 
 	/**
 	 * Display page of Computers and calls Computer Menu
@@ -35,8 +39,7 @@ public class Client {
 	public void getComputerList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			System.out.println(computerDBService.getPage(
-					page.getPageNumber()));
+			System.out.println(computerDBService.getPage(page.getPageNumber()));
 			innerLoop = getComputerListMenu();
 		}
 	}
@@ -50,7 +53,7 @@ public class Client {
 		while (detailedLoop) {
 			System.out.println("Id of computer to visualize?");
 			final String id = sc.nextLine();
-			detailedLoop = !Validator.isValidNumber(id);
+			detailedLoop = GenericValidator.isLong(id);
 			if (!detailedLoop) {
 				System.out.println(computerDBService.get(Integer.parseInt(id)));
 				detailedLoop = getComputerMenu(Integer.parseInt(id));
@@ -69,9 +72,9 @@ public class Client {
 			System.out
 					.println("Enter id of computer would you like to delete?");
 			id = sc.nextLine();
-			deleteLoop = !Validator.isValidNumber(id);
+			deleteLoop = GenericValidator.isLong(id);
 		}
-		computerDBService.remove(Long.parseLong(id));
+		computerDBService.remove(id);
 	}
 
 	/**
@@ -84,8 +87,8 @@ public class Client {
 		case "a":
 			Boolean displayLoop = true;
 			while (displayLoop) {
-				System.out.println(computerDBService.getPage(
-						page.getPageNumber()));
+				System.out.println(computerDBService.getPage(page
+						.getPageNumber()));
 				displayLoop = getComputerListMenu();
 			}
 			break;
@@ -95,7 +98,7 @@ public class Client {
 			while (idValidation) {
 				System.out.println("Id of computer to update?");
 				input = sc.nextLine();
-				idValidation = !Validator.isValidNumber(input);
+				idValidation = GenericValidator.isLong(input);
 			}
 			Boolean nameLoop = true;
 			Computer c = computerDBService.get(Long.parseLong(input));
@@ -103,7 +106,7 @@ public class Client {
 				System.out.println("Current name is : " + c.getName());
 				System.out.println("New name?");
 				String name = sc.nextLine();
-				nameLoop = !Validator.isValidString(name);
+				nameLoop = !GenericValidator.minLength(name, 1);
 				if (!nameLoop) {
 					c.setName(name);
 				}
@@ -115,7 +118,8 @@ public class Client {
 				System.out
 						.println("New introduction year? Format : YYYY-MM-DD");
 				String introduced = sc.nextLine();
-				introducedLoop = !Validator.isValidDate(introduced);
+				introducedLoop = !GenericValidator.isDate(introduced,
+						Locale.FRANCE);
 				if (!introducedLoop) {
 					c.setIntroduced(LocalDate.parse(introduced));
 				}
@@ -127,7 +131,8 @@ public class Client {
 				System.out
 						.println("New introduction year? Format : YYYY-MM-DD");
 				String discontinued = sc.nextLine();
-				discontinuedLoop = !Validator.isValidDate(discontinued);
+				discontinuedLoop = !GenericValidator.isDate(discontinued,
+						Locale.FRANCE);
 				if (!discontinuedLoop) {
 					c.setDiscontinued(LocalDate.parse(discontinued));
 				}
@@ -136,10 +141,10 @@ public class Client {
 			while (companyLoop) {
 				System.out.println("new company ID?");
 				String id = sc.nextLine();
-				companyLoop = !Validator.isValidNumber(id);
+				companyLoop = !GenericValidator.isLong(id);
 				if (!companyLoop) {
-					c.setCompany(new Company.CompanyBuilder().id(
-							Long.parseLong(id)).build());
+					c.setCompany(new Company.Builder().id(Long.parseLong(id))
+							.build());
 				}
 			}
 			computerDBService.update(c);
@@ -148,9 +153,8 @@ public class Client {
 
 	}
 
-	
 	/**
-	 *Create computer
+	 * Create computer
 	 * 
 	 */
 	public void createComputer() {
@@ -159,7 +163,7 @@ public class Client {
 		while (nameLoop) {
 			System.out.println("New name?");
 			String name = sc.nextLine();
-			nameLoop = !Validator.isValidString(name);
+			nameLoop = !GenericValidator.minLength(name, 1);
 			if (!nameLoop) {
 				c.name(name);
 			}
@@ -168,7 +172,8 @@ public class Client {
 		while (introducedLoop) {
 			System.out.println("Introduction year? Format : YYYY-MM-DD");
 			String introduced = sc.nextLine();
-			introducedLoop = !Validator.isValidDate(introduced);
+			introducedLoop = !GenericValidator
+					.isDate(introduced, Locale.FRANCE);
 			if (!introducedLoop) {
 				c.introduced(LocalDate.parse(introduced));
 			}
@@ -177,7 +182,8 @@ public class Client {
 		while (discontinuedLoop) {
 			System.out.println("Discontinuation year? Format : YYYY-MM-DD");
 			String discontinued = sc.nextLine();
-			discontinuedLoop = !Validator.isValidDate(discontinued);
+			discontinuedLoop = !GenericValidator.isDate(discontinued,
+					Locale.FRANCE);
 			if (!discontinuedLoop) {
 				c.discontinued(LocalDate.parse(discontinued));
 			}
@@ -186,18 +192,17 @@ public class Client {
 		while (companyLoop) {
 			System.out.println("Company ID?");
 			String id = sc.nextLine();
-			companyLoop = !Validator.isValidNumber(id);
+			companyLoop = !GenericValidator.isLong(id);
 			if (!companyLoop) {
-				c.company(new Company.CompanyBuilder().id(Long.parseLong(id))
-						.build());
+				c.company(new Company.Builder().id(Long.parseLong(id)).build());
 			}
 		}
 		computerDBService.save(c.build());
 	}
 
-
 	/**
 	 * Displays menu after a computer is displayed
+	 * 
 	 * @param index
 	 * @return
 	 */
@@ -228,9 +233,10 @@ public class Client {
 		return outerLoop;
 	}
 
- 
 	/**
-	 * Displays menu after displaying computer List. User can change pages or return to previous menu
+	 * Displays menu after displaying computer List. User can change pages or
+	 * return to previous menu
+	 * 
 	 * @return
 	 */
 	private Boolean getComputerListMenu() {
@@ -248,13 +254,13 @@ public class Client {
 				page.setPageNumber(0);
 				break;
 			case "b":
-				page.setPageNumber(page.getPageNumber()+1);
+				page.setPageNumber(page.getPageNumber() + 1);
 				outerLoop = true;
 				innerLoop = false;
 				break;
 			case "c":
 				if (page.getPageNumber() > page.getSize()) {
-					page.setPageNumber(page.getPageNumber()-1);
+					page.setPageNumber(page.getPageNumber() - 1);
 					outerLoop = true;
 					innerLoop = false;
 				} else {
@@ -273,7 +279,6 @@ public class Client {
 		return outerLoop;
 	}
 
-	
 	/**
 	 * Returns list of companies
 	 * 
@@ -303,13 +308,13 @@ public class Client {
 				page.setPageNumber(0);
 				break;
 			case "b":
-				page.setPageNumber(page.getPageNumber()+1);
+				page.setPageNumber(page.getPageNumber() + 1);
 				innerLoop = false;
 				outerLoop = true;
 				break;
 			case "c":
 				if (page.getPageNumber() > page.getSize()) {
-					page.setPageNumber(page.getPageNumber()- page.getSize());
+					page.setPageNumber(page.getPageNumber() - page.getSize());
 					innerLoop = false;
 					outerLoop = true;
 				} else {
@@ -326,7 +331,6 @@ public class Client {
 		return outerLoop;
 	}
 
-	
 	/**
 	 * Display page size and modify.size
 	 */
@@ -336,7 +340,7 @@ public class Client {
 			System.out.println("Current page size is " + page.getSize()
 					+ ".\nChange page size to :");
 			String input = sc.nextLine();
-			pageSizeLoop = !Validator.isValidNumber(input);
+			pageSizeLoop = !GenericValidator.isInt(input);
 			if (!pageSizeLoop) {
 				page.setSize(Integer.parseInt(input));
 				System.out.printf("Page size changed to %d \n", page.getSize());
@@ -352,28 +356,32 @@ public class Client {
 		while (massDelete) {
 			System.out.println("Please select ID of company to delete ");
 			String input = sc.nextLine();
-			massDelete = !Validator.isValidNumber(input);
+			massDelete = !GenericValidator.isLong(input);
 			if (!massDelete) {
-				computerDBService.remove(Long.parseLong(input));
+				computerDBService.remove(input);
 			}
 		}
 	}
+
 	/**
-	 *Instantiate DBservices, associated counters 
+	 * Instantiate DBservices, associated counters
 	 */
 	public void init() {
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext (this);
-		computerDBService = new ComputerDBService();
-		companyDBService = new CompanyDBService();
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"context.xml");
+		computerDBService = (ComputerDBServiceImpl) context
+				.getBean("computerService");
+		companyDBService = (CompanyDBServiceImpl) context
+				.getBean("companyService");
 		sc = new Scanner(System.in);
 		loop = true;
 		page = new Page();
 		mainMenu();
+		context.close();
 	}
 
-
 	/**
-	 * Display main menu loop 
+	 * Display main menu loop
 	 */
 	public void mainMenu() {
 		while (loop) {
@@ -418,13 +426,14 @@ public class Client {
 	}
 
 	/**
-	 * Execution start point: Instantiate Client and start it. 
-	 * @param args  
+	 * Execution start point: Instantiate Client and start it.
+	 * 
+	 * @param args
 	 */
 	public static void main(final String[] args) {
 		Client client = new Client();
 		client.init();
-		
+
 	}
 
 }

@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.dao.ComputerDAOInterface;
-import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapper;
+import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.mapper.row.impl.ComputerMapper;
 import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.pagination.Page;
@@ -32,7 +32,7 @@ public class ComputerDAO implements ComputerDAOInterface {
 	private static final String COUNT_STMT = "SELECT COUNT(cpt.id) FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ?";
 	private static final String PAGE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cmp.id as company_id, cmp.name as company_name FROM computer cpt LEFT JOIN company cmp ON cpt.company_id=cmp.id WHERE cpt.name LIKE ? OR cmp.name LIKE ? ";
 	private static final String DELETE_COMPANY_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
-	private ComputerDTOMapper computerDTOMapper = new ComputerDTOMapper();
+	private ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 	@Autowired
 	private DataSource dataSource;
 	private static int pageSize = 10;

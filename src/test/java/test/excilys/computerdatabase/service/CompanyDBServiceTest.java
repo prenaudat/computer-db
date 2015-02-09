@@ -13,7 +13,7 @@ import test.excilys.computerdatabase.dao.CompanyDAOMock;
 
 import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
-import com.excilys.computerdatabase.service.impl.CompanyDBService;
+import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 
 /**
  * Test class for CompanyDBService.Tests get, getList, save and update
