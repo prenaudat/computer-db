@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<version>3.3.0</version>
+	<version>4.0.0 BETA</version>
 	<groupId>cdb</groupId>
 	<artifactId>computer-db</artifactId>
 	<packaging>war</packaging>
@@ -21,6 +21,7 @@
 		<commons-validator.version>1.4.1</commons-validator.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 		<javax-validation.version>1.1.0.Final</javax-validation.version>
+		<hibernate-entitymanager.version>4.3.8.Final</hibernate-entitymanager.version>
 
 	</properties>
 
@@ -62,6 +63,11 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.7.2.RELEASE</version>
 		</dependency>
 		<!-- Servlet dependencies -->
 		<dependency>
@@ -146,6 +152,11 @@
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>${commons-validator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

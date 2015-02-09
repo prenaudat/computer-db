@@ -38,8 +38,8 @@
 					<div class="alert-bar">
 						<div class="alert alert-danger alert-error">
 							<a onClick="$(this).parent().parent().remove();" class="close"
-								data-dismiss="alert">&times;</a> <strong>Error!</strong> A
-							problem has been occurred while submitting your data.
+								data-dismiss="alert">&times;</a> <strong><spring:message
+									code="error.error"/>!</strong> <spring:message code="error.msg"/>
 							<c:forEach items="${errors}" var="error">
 								<li><spring:message code="${error}" /></li>
 							</c:forEach>
@@ -75,14 +75,7 @@
 								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
-									<c:choose>
-										<c:when test="${company.id!=computer.company.id}">
 											<option value="${company.id}">${company.name}</option>
-										</c:when>
-										<c:otherwise>
-											<option selected value="${company.id}">${company.name}</option>
-										</c:otherwise>
-									</c:choose>
 								</c:forEach>
 							</select>
 						</div>

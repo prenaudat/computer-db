@@ -80,7 +80,6 @@ public class EditComputer {
 			mav.getModel().put("companies", companyDBService.getAll());
 			mav.getModel().put("computer", dto);
 			mav.getModel().put("errors", errorCodes);
-			System.out.println(errorCodes);
 			return mav;
 		}
 		computerDBService.update(computerDTOMapper.mapFromDTO(dto));

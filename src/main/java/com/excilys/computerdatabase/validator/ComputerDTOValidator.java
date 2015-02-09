@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.validator;
 
 import org.apache.commons.validator.GenericValidator;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -19,17 +20,35 @@ public class ComputerDTOValidator implements Validator {
 	public void validate(Object obj, Errors e) {
 		ComputerDTO dto = (ComputerDTO) obj;
 		System.out.println(dto);
+		System.out.println(dto.getIntroduced());
 		if (dto.getName() != null
 				&& (dto.getName().length() == 0 || dto.getName().length() > 255)) {
 			e.rejectValue("name", "error.name");
 		}
-		if (dto.getIntroduced() != null && !GenericValidator.isDate(dto.getIntroduced(),"yyyy-MM-dd" ,false)) {
-			e.rejectValue("introduced",
-					"error.introduced");
+
+		if (dto.getIntroduced() != ""
+				&& LocaleContextHolder.getLocale().toLanguageTag() == "en"
+				&& !GenericValidator.isDate(dto.getIntroduced(), "yyyy-MM-dd",
+						false)) {
+			e.rejectValue("introduced", "error.introduced");
 		}
-		if (dto.getDiscontinued() != null && !GenericValidator.isDate(dto.getDiscontinued(),"yyyy-MM-dd" ,false)) {
-			e.rejectValue("discontinued",
-					"error.discontinued");
+		if (dto.getIntroduced() != ""
+				&& LocaleContextHolder.getLocale().toLanguageTag() == "fr"
+				&& !GenericValidator.isDate(dto.getIntroduced(), "dd-mm-yyyy",
+						false)) {
+			e.rejectValue("introduced", "error.introduced");
+		}
+		if (dto.getDiscontinued() != ""
+				&& LocaleContextHolder.getLocale().toLanguageTag() == "en"
+				&& !GenericValidator.isDate(dto.getDiscontinued(),
+						"yyyy-MM-dd", false)) {
+			e.rejectValue("introduced", "error.discontinued");
+		}
+		if (dto.getDiscontinued() != ""
+				&& LocaleContextHolder.getLocale().toLanguageTag() == "fr"
+				&& !GenericValidator.isDate(dto.getDiscontinued(),
+						"dd-mm-yyyy", false)) {
+			e.rejectValue("introduced", "error.discontinued");
 		}
 	}
 }

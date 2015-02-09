@@ -1,17 +1,26 @@
 package com.excilys.computerdatabase.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Company Model
  * 
- * @author paulr_000
+ * @author excilys
  *
  */
+@Entity
 public class Company {
 
-	// Instance variables
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
 
+	//Default Constructor
+	protected Company() {}
 	// Behavior : getters and setter
 	/**
 	 * @return return ID of company
@@ -59,8 +68,8 @@ public class Company {
 	public String toString() {
 		return new StringBuilder("Company [id=").append(id).append(", name=")
 				.append(name).append("]").toString();
-	}
-
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -97,11 +106,6 @@ public class Company {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-
-	public Company() {
-		this.id = null;
-		this.name = null;
 	}
 
 	/**

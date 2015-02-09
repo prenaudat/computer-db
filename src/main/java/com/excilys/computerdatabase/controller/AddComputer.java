@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.validation.Valid;
@@ -62,7 +63,15 @@ public class AddComputer {
     @RequestMapping(value="/computers/add", method = RequestMethod.POST)
 	protected ModelAndView doPost(@Valid ComputerDTO dto, BindingResult bindingResult) {
     	if (bindingResult.hasErrors()) {
-    		return doGet();
+			ModelAndView mav = new ModelAndView("addComputer", "computer", dto);
+			ArrayList<String> errorCodes = new ArrayList<>();
+			bindingResult.getAllErrors().forEach(
+					c -> errorCodes.add(c.getCode().toString()));
+			mav.getModel().put("companies", companyDBService.getAll());
+			mav.getModel().put("computer", dto);
+			mav.getModel().put("errors", errorCodes);
+			System.out.println(errorCodes);
+			return mav;
 		}
 		computerDBService.save(computerDTOMapper.mapFromDTO(dto));
 		ModelAndView home = new ModelAndView(new RedirectView("/computers",
