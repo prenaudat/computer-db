@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.pagination.ComputerPage;
 import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
@@ -23,7 +23,7 @@ public class Client {
 	private ComputerDBServiceImpl computerDBService;
 	private CompanyDBServiceImpl companyDBService;
 	// Page index for Company and Computer Directory
-	Page page;
+	ComputerPage page;
 	private Boolean loop;
 	private Scanner sc;
 	 
@@ -375,7 +375,7 @@ public class Client {
 				.getBean("companyService");
 		sc = new Scanner(System.in);
 		loop = true;
-		page = new Page();
+		page = new ComputerPage();
 		mainMenu();
 		context.close();
 	}

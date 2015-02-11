@@ -17,6 +17,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
+import com.excilys.computerdatabase.model.Company;
+import com.excilys.computerdatabase.model.Computer;
 import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 import com.excilys.computerdatabase.validator.ComputerDTOValidator;
@@ -82,10 +84,14 @@ public class EditComputer {
 			mav.getModel().put("errors", errorCodes);
 			return mav;
 		}
-		computerDBService.update(computerDTOMapper.mapFromDTO(dto));
+		Computer c = computerDTOMapper.mapFromDTO(dto);
+		if(c.getCompany().getId()==0){
+			c.setCompany(null);
+		}
+		computerDBService.save(c);
 		ModelAndView home = new ModelAndView(new RedirectView("/computers",
 				true));
-		home.addObject("page", computerDBService.getPage(0));
+		// home.addObject("page", computerDBService.getPage(0));
 		return home;
 	}
 
@@ -97,7 +103,8 @@ public class EditComputer {
 	 */
 	private ModelAndView sendEditPage(Long id) {
 		ModelAndView editPage = new ModelAndView("editComputer");
-		editPage.addObject("computer", computerDTOMapper.mapToDTO(computerDBService.get(id)));
+		editPage.addObject("computer",
+				computerDTOMapper.mapToDTO(computerDBService.get(id)));
 		editPage.addObject("companies", companyDBService.getAll());
 		return editPage;
 	}

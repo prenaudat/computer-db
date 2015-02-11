@@ -4,17 +4,42 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.excilys.computerdatabase.converter.LocalDatePersistenceConverter;
+
 /**
  * Computer Object Class
+ * 
  * @author paulr_000
  *
  */
+@Entity
+@Table(name = "computer")
 public class Computer {
-	// Instance variables
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "introduced")
+	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate introduced;
+	@Column(name = "discontinued")
+	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate discontinued;
+	@ManyToOne(targetEntity = com.excilys.computerdatabase.model.Company.class)
+	@JoinColumn(name = "company_id", nullable=true)
 	private Company company;
 
 	// Behavior : getters and setter
@@ -26,7 +51,8 @@ public class Computer {
 	}
 
 	/**
-	 * @param id Id to be set
+	 * @param id
+	 *            Id to be set
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -40,10 +66,11 @@ public class Computer {
 	}
 
 	/**
-	 * @param name Name to be set
+	 * @param name
+	 *            Name to be set
 	 */
 	public void setName(String name) {
-			this.name = name;
+		this.name = name;
 	}
 
 	/**
@@ -53,8 +80,9 @@ public class Computer {
 		return introduced;
 	}
 
-	/** 
-	 * @param introduced set Introduction date
+	/**
+	 * @param introduced
+	 *            set Introduction date
 	 */
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
@@ -68,7 +96,8 @@ public class Computer {
 	}
 
 	/**
-	 * @param discontinued Set discontinuation date
+	 * @param discontinued
+	 *            Set discontinuation date
 	 */
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
@@ -82,52 +111,73 @@ public class Computer {
 	}
 
 	/**
-	 * @param company Company to be set for computer
+	 * @param company
+	 *            Company to be set for computer
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
-	public LocalDateTime getIntroducedAsLDT(){
-		if(introduced != null){
+
+	public LocalDateTime getIntroducedAsLDT() {
+		if (introduced != null) {
 			return introduced.atStartOfDay();
-		}else{
+		} else {
 			return null;
 		}
 	}
-	public LocalDateTime getDiscontinuedAsLDT(){
-		if(discontinued != null){
+
+	public LocalDateTime getDiscontinuedAsLDT() {
+		if (discontinued != null) {
 			return discontinued.atStartOfDay();
-		}else{
-			return null;		}
-	}
-	public Timestamp getIntroducedAsTimestamp(){
-		if(introduced != null){
-			return Timestamp.valueOf(introduced.atStartOfDay());
-		}else{
+		} else {
 			return null;
 		}
 	}
-	public Timestamp getDiscontinuedAsTimestamp(){
-		if(discontinued != null){
+
+	public Timestamp getIntroducedAsTimestamp() {
+		if (introduced != null) {
+			return Timestamp.valueOf(introduced.atStartOfDay());
+		} else {
+			return null;
+		}
+	}
+
+	public Timestamp getDiscontinuedAsTimestamp() {
+		if (discontinued != null) {
 			return Timestamp.valueOf(discontinued.atStartOfDay());
-		}else{
-			return null;		}
+		} else {
+			return null;
+		}
 	}
-	public Long getCompanyId(){
-		if(company != null && company.getId()!=0){
+
+	public Long getCompanyId() {
+		if (company != null && company.getId() != 0) {
 			return company.getId();
-		}else{
-			return null;		}
+		} else {
+			return null;
+		}
 	}
+	
+	public String getCompanyName(){
+		if(company == null){
+			return null;
+		}
+		return company.getName();
+	}
+
 	/**
 	 * Constructor from all fields
 	 * 
-	 * @param id id of computer
-	 * @param name name of computer
-	 * @param introduced introducation date of computer
-	 * @param discontinued discontinuation date of computer
-	 * @param companyId ID for company of computer
+	 * @param id
+	 *            id of computer
+	 * @param name
+	 *            name of computer
+	 * @param introduced
+	 *            introducation date of computer
+	 * @param discontinued
+	 *            discontinuation date of computer
+	 * @param companyId
+	 *            ID for company of computer
 	 */
 	public Computer(Long id, String name, LocalDate introduced,
 			LocalDate discontinued, Company company) {
@@ -139,7 +189,9 @@ public class Computer {
 		this.company = company;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -156,10 +208,12 @@ public class Computer {
 		this.name = null;
 		this.introduced = null;
 		this.discontinued = null;
-		this.company = null;		
+		this.company = null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -176,7 +230,9 @@ public class Computer {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -215,12 +271,13 @@ public class Computer {
 
 	/**
 	 * Nested Builder class
+	 * 
 	 * @author excilys
 	 *
 	 */
 	public static class Builder {
 		private Computer computer = new Computer();
-		
+
 		public Builder() {
 			computer.id = null;
 			computer.name = "";
@@ -243,25 +300,25 @@ public class Computer {
 			this.computer.setIntroduced(newIntroduced);
 			return this;
 		}
+
 		public Builder introduced(final String newIntroduced) {
-			if(newIntroduced != null && newIntroduced.length()!=0){
+			if (newIntroduced != null && newIntroduced.length() != 0) {
 				this.computer.setIntroduced(LocalDate.parse(newIntroduced));
 			}
 			return this;
 		}
 
-
 		public Builder discontinued(final LocalDate newDiscontinued) {
 			this.computer.setDiscontinued(newDiscontinued);
 			return this;
 		}
+
 		public Builder discontinued(final String discontinued) {
-			if(discontinued != null && discontinued.length()!=0){
+			if (discontinued != null && discontinued.length() != 0) {
 				this.computer.setDiscontinued(LocalDate.parse(discontinued));
 			}
 			return this;
 		}
-
 
 		public Builder company(final Company company) {
 			this.computer.company.setId(company.getId());

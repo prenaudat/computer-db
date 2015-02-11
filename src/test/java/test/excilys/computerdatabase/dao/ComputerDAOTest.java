@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.pagination.ComputerPage;
 
 public class ComputerDAOTest {
 	ComputerDAOMock mockComputerDAO;
@@ -28,8 +28,8 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testList() {
-		Page c1 = mockComputerDAO.getPage(5);
-		Page c2 = mockComputerDAO.getPage(5);
+		ComputerPage c1 = mockComputerDAO.getPage(5);
+		ComputerPage c2 = mockComputerDAO.getPage(5);
 		assertEquals(c1, c2);
 	}
 

@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="custom" tagdir="/WEB-INF/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,13 +36,13 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<c:out value="${page.count} " />
+				<c:out value="${computerCount} " />
 				<spring:message code="dashboard.computersFound" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
-						action="computers?page=0&order=<c:out value="${orderBy}"/>&sort=<c:out value="${sort}"/>&size=<c:out value="${sort}"/>"
+						action="computers?page=0&orderBy=<c:out value="${orderBy}"/>&size=<c:out value="${size}"/>"
 						method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="query"
 							class="form-control" placeholder="Search name" /> <input
@@ -75,61 +77,17 @@
 							</a>
 						</span></th>
 
-						<th><c:choose>
-								<c:when test="${page.orderBy == 'NAME'}">
-									<c:if test="${page.sort == 'ASC'}">
-										<custom:url target="${page.target}" pageNumber="0"
-											query="${page.query}" orderBy="NAME" sort="DESC"
-											size="${page.size}">
-											<spring:message code="label.cptName" />
-										</custom:url>
-									</c:if>
-									<c:if test="${page.sort == 'DESC'}">
-										<custom:url target="${page.target}" pageNumber="0"
-											query="${page.query}" orderBy="NAME" sort="ASC"
-											size="${page.size}">
-											<spring:message code="label.cptName" />
-										</custom:url>
+						<th><custom:sort column="NAME" orderBy="${orderBy}" target="computers"></custom:sort></th>
 
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<custom:url target="${page.target}" pageNumber="0"
-										query="${page.query}" orderBy="NAME" sort="ASC"
-										size="${page.size}">
-										<spring:message code="label.cptName" />
-									</custom:url>
-								</c:otherwise>
-							</c:choose></th>
-
-						<th><spring:message code="label.introduced" /></th>
+						<th><custom:sort column="INTRODUCED" orderBy="${orderBy}" target="computers"></custom:sort></th>
 						<!-- Table header for Discontinued Date -->
-						<th><spring:message code="label.discontinued" /></th>
+						<th><custom:sort column="DISCONTINUED" orderBy="${orderBy}" target="computers"></custom:sort></th>
 						<!-- Table header for Company -->
-						<th><c:choose>
-								<c:when test="${page.orderBy == 'COMPANY_NAME'}">
-									<c:if test="${page.sort == 'ASC'}">
-										<custom:url target="${page.target}" pageNumber="0"
-											query="${page.query}" orderBy="COMPANY_NAME" sort="DESC"
-											size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
-
-									</c:if>
-									<c:if test="${page.sort == 'DESC'}">
-										<custom:url target="${page.target}" pageNumber="0"
-											query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
-											size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-									<custom:url target="${page.target}" pageNumber="0"
-										query="${page.query}" orderBy="COMPANY_NAME" sort="ASC"
-										size="${page.size}"><spring:message code="label.cmpName" /></custom:url>
-								</c:otherwise>
-							</c:choose></th>
+						<th><custom:sort column="COMPANY" orderBy="${orderBy}" target="computers"></custom:sort></th>
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${page.list}" var="computer">
+					<c:forEach items="${list}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="<c:out value="${computer.id}" />"> </td>
@@ -145,10 +103,10 @@
 			</table>
 		</div>
 	</section>
-	<custom:pagination target="${page.target}" query="${page.query}"
-		pageCount="${page.pageCount}" orderBy="${page.orderBy}"
-		sort="${page.sort}" pageNumber="${page.pageNumber}"
-		size="${page.size}"></custom:pagination>
+	<custom:pagination target="${target}" query="${query}"
+		pageCount="${pageCount}" orderBy="${orderBy}"
+		pageNumber="${pageNumber}"
+		size="${size}"></custom:pagination>
 
 </body>
 </html>

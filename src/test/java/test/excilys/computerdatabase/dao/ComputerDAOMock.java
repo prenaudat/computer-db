@@ -17,7 +17,7 @@ import com.excilys.computerdatabase.exception.PersistenceException;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.pagination.ComputerPage;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDAOMock {
@@ -132,7 +132,7 @@ public class ComputerDAOMock {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Page getPage(int pageNumber) {
+	public ComputerPage getPage(int pageNumber) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -164,7 +164,7 @@ public class ComputerDAOMock {
 								.name(rs.getString("company_name")).build())
 						.build());
 			}
-			Page page = new Page();
+			ComputerPage page = new ComputerPage();
 			page.setPageNumber(pageNumber);
 			page.setList(computerDTOMapper.mapToDTO(computerList));
 			page.setCount(getCount());

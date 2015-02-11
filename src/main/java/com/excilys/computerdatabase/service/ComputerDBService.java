@@ -1,18 +1,15 @@
 package com.excilys.computerdatabase.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
 
 /**
  * @author excilys
  *
  */
 public interface ComputerDBService {
-	/**
-	 * @param pageNumber
-	 * @return
-	 */
-	public Page getPage(int pageNumber);
 
 	/**
 	 * @param id
@@ -21,25 +18,9 @@ public interface ComputerDBService {
 	public Computer get(final long id);
 
 	/**
-	 * @param id
-	 */
-	public void remove(String id);
-
-	/**
-	 * @param computer
-	 */
-	public void update(final Computer computer);
-
-	/**
 	 * @param computer
 	 */
 	public void save(final Computer computer);
-
-	/**
-	 * @param query
-	 * @return
-	 */
-	public int getCount(String query);
 
 	/**
 	 * @param conn
@@ -47,4 +28,15 @@ public interface ComputerDBService {
 	 */
 	public void removeByCompany(long id);
 
+	/**
+	 * @param id
+	 */
+	public void delete(String id);
+
+	/**
+	 * @param pageable
+	 * @param search
+	 * @return
+	 */
+	public Page<Computer> retrievePage(Pageable pageable, String search);
 }

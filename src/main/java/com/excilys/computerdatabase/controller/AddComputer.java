@@ -1,7 +1,6 @@
 package com.excilys.computerdatabase.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -19,9 +18,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.excilys.computerdatabase.dto.ComputerDTO;
 import com.excilys.computerdatabase.mapper.dto.impl.ComputerDTOMapperImpl;
-import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
+import com.excilys.computerdatabase.service.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 import com.excilys.computerdatabase.validator.ComputerDTOValidator;
 
@@ -36,7 +34,7 @@ public class AddComputer {
 	@Autowired
 	ComputerDBServiceImpl computerDBService;
 	@Autowired
-	CompanyDBServiceImpl companyDBService;
+	CompanyDBService companyDBService;
 	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 
 	@InitBinder("computerDTO")
@@ -44,25 +42,30 @@ public class AddComputer {
 		binder.setValidator(new ComputerDTOValidator());
 	}
 
-    /**
-     * Maps GET requests on /computer/add
-     * @return ModelAndView of AddComputer Page, populating company list with Options
-     */
-    @RequestMapping(value="/computers/add", method = RequestMethod.GET)
-	protected ModelAndView doGet(){
-		return new ModelAndView("addComputer", "companies", companyDBService.getAll());
+	/**
+	 * Maps GET requests on /computer/add
+	 * 
+	 * @return ModelAndView of AddComputer Page, populating company list with
+	 *         Options
+	 */
+	@RequestMapping(value = "/computers/add", method = RequestMethod.GET)
+	protected ModelAndView doGet() {
+		return new ModelAndView("addComputer", "companies",
+				companyDBService.getAll());
 	}
 
-    /**
-     * Map PSOT requests on /computer/add 
-     * @param req 
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
-     */
-    @RequestMapping(value="/computers/add", method = RequestMethod.POST)
-	protected ModelAndView doPost(@Valid ComputerDTO dto, BindingResult bindingResult) {
-    	if (bindingResult.hasErrors()) {
+	/**
+	 * Map PSOT requests on /computer/add
+	 * 
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/computers/add", method = RequestMethod.POST)
+	protected ModelAndView doPost(@Valid ComputerDTO dto,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			ModelAndView mav = new ModelAndView("addComputer", "computer", dto);
 			ArrayList<String> errorCodes = new ArrayList<>();
 			bindingResult.getAllErrors().forEach(
@@ -70,13 +73,15 @@ public class AddComputer {
 			mav.getModel().put("companies", companyDBService.getAll());
 			mav.getModel().put("computer", dto);
 			mav.getModel().put("errors", errorCodes);
-			System.out.println(errorCodes);
 			return mav;
 		}
-		computerDBService.save(computerDTOMapper.mapFromDTO(dto));
+		Computer c = computerDTOMapper.mapFromDTO(dto);
+		if(c.getCompany().getId()==0){
+			c.setCompany(null);
+		}
+		computerDBService.save(c);
 		ModelAndView home = new ModelAndView(new RedirectView("/computers",
 				true));
-		home.addObject("page", computerDBService.getPage(0));
 		return home;
 	}
 

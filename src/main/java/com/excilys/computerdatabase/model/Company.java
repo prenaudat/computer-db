@@ -1,9 +1,14 @@
 package com.excilys.computerdatabase.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 /**
  * Company Model
@@ -12,15 +17,18 @@ import javax.persistence.Id;
  *
  */
 @Entity
+@Table(name = "company")
 public class Company {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@Min(1)
 	private Long id;
+	@Column(name = "name")
 	private String name;
 
-	//Default Constructor
-	protected Company() {}
+	// Default Constructor
+	protected Company() {
+	}
+
 	// Behavior : getters and setter
 	/**
 	 * @return return ID of company
@@ -68,8 +76,8 @@ public class Company {
 	public String toString() {
 		return new StringBuilder("Company [id=").append(id).append(", name=")
 				.append(name).append("]").toString();
-	}	
-	
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -84,6 +92,7 @@ public class Company {
 		return result;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
 	/*
 	 * (non-Javadoc)
 	 * 

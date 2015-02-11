@@ -28,8 +28,8 @@ public class ComputerDTOMapperImpl implements DTOMapper<ComputerDTO, Computer> {
 		return new ComputerDTO.Builder().withName(c.getName())
 				.withId(c.getId()).withIntroduced(c.getIntroduced())
 				.withDiscontinued(c.getDiscontinued())
-				.withCompanyId(c.getCompany().getId())
-				.withCompanyName(c.getCompany().getName()).build();
+				.withCompanyId(c.getCompanyId())
+				.withCompanyName(c.getCompanyName()).build();
 
 	}
 
@@ -45,7 +45,9 @@ public class ComputerDTOMapperImpl implements DTOMapper<ComputerDTO, Computer> {
 		return new Computer.Builder().id(x.getId()).name(x.getName())
 				.introduced(x.getIntroduced())
 				.discontinued(x.getDiscontinued())
-				.company(new Company.Builder().id(x.getCompanyId()).build())
+				.company(new Company.Builder().
+						id(x.getCompanyId()).
+						build())
 				.build();
 	}
 

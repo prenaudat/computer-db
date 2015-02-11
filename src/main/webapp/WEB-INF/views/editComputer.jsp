@@ -58,30 +58,30 @@
 							<input type="hidden" name="id" value="${computer.id}" />
 						</div>
 						<div class="form-group has-feedback">
-							<label for="name"><spring:message code="label.cptName"/></label>
+							<label for="name"><spring:message code="label.NAME"/></label>
 							<input type="text" class="form-control" id="name" name="name"
-								placeholder="<spring:message code="label.cptName"/>"
+								placeholder="<spring:message code="label.NAME"/>"
 								value="${computer.name}">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="introduced"><spring:message
-									code="label.introduced" /></label> <input type="date"
+									code="label.INTRODUCED" /></label> <input type="date"
 								class="form-control" id="introduced" name="introduced"
 								placeholder="<spring:message
-									code="label.introduced" />"
+									code="label.INTRODUCED" />"
 								value="<c:out value="${computer.introduced}"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="discontinued"><spring:message
-									code="label.discontinued" /></label> <input type="date"
+									code="label.DISCONTINUED" /></label> <input type="date"
 								class="form-control" id="discontinued" name="discontinued"
 								placeholder="<spring:message
-									code="label.discontinued" />"
+									code="label.DISCONTINUED" />"
 								value="<c:out value="${computer.discontinued}"/>" />
 						</div>
 						<div class="form-group has-feedback">
 							<label for="companyId"><spring:message
-									code="label.cmpName" /></label> <select class="form-control"
+									code="label.COMPANY" /></label> <select class="form-control"
 								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">

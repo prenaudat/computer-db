@@ -6,8 +6,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 /**
  * @author excilys Computer Data Transfer Object
  */
@@ -67,19 +65,19 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 	public void setDiscontinued(String discontinued) {
-			this.discontinued = discontinued.toString();
+		this.discontinued = discontinued.toString();
 	}
 
 	public Long getCompanyId() {
 		return companyId;
-	}
+		}
 
 	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+			this.companyId = companyId;
 	}
 
 	public void setIntroduced(String introduced) {
-			this.introduced = introduced.toString();
+		this.introduced = introduced.toString();
 	}
 
 	@Override

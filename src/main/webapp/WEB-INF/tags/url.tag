@@ -6,7 +6,6 @@
 <%@ attribute name="size" required="false" type="java.lang.Integer"%>
 <%@ attribute name="pageNumber" required="false" type="java.lang.Integer"%>
 <%@ attribute name="orderBy" required="false"%>
-<%@ attribute name="sort" required="false"%>
 <jsp:doBody var="body"/>
 
-<a href="${target}?page=${pageNumber}&query=${query}&order=${orderBy}&sort=${sort}&size=${size}">${body}</a>
+<a href="${target}?page=${pageNumber}&query=${query}&orderBy=${orderBy}&size=${size}">${body}</a>

@@ -3,7 +3,7 @@ package com.excilys.computerdatabase.dao;
 import java.sql.Connection;
 
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.pagination.ComputerPage;
 
 /**
  * Interface for ComputerDAO
@@ -44,7 +44,7 @@ public interface ComputerDAOInterface {
 	 *            Number of the page
 	 * @return return Page containing list of computers
 	 */
-	public Page getPage(int pageNumber);
+	public ComputerPage getPage(int pageNumber);
 
 	/**
 	 * Delete a computer by ID
@@ -63,7 +63,7 @@ public interface ComputerDAOInterface {
 	 * @param page
 	 * @return
 	 */
-	public Page getPage(Page page);
+	public ComputerPage getPage(ComputerPage page);
 
 	public void removeByCompany(long id);
 }

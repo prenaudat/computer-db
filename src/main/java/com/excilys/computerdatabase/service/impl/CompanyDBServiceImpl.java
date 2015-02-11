@@ -1,16 +1,20 @@
 package com.excilys.computerdatabase.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.excilys.computerdatabase.dao.impl.CompanyDAO;
 import com.excilys.computerdatabase.model.Company;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.repository.CompanyRepository;
 import com.excilys.computerdatabase.service.CompanyDBService;
 
+/**
+ * @author excilys
+ *
+ */
 /**
  * @author excilys
  *
@@ -18,38 +22,35 @@ import com.excilys.computerdatabase.service.CompanyDBService;
 @Service("companyService")
 public class CompanyDBServiceImpl implements CompanyDBService {
 	@Autowired
-	CompanyDAO companyDAO;
+	CompanyRepository companyRepository;
+
+	/* (non-Javadoc)
+	 * @see com.excilys.computerdatabase.service.CompanyDBService#get(long)
+	 */
+	public Company get(long id) {
+		return companyRepository.findOne(id);
+	}
+
 
 	/**
-	 * @param currentCompanyPageIndex
-	 * @param pageSize
-	 * @return
-	 * @throws SQLException
+	 * @return List<Company> of all companies
 	 */
-
-	public Company get(long id) {
-		return companyDAO.get(id);
-	}
-
-	public void save(String name) {
-		companyDAO.save(name);
-	}
-
-	public void update(long id, String name) {
-		companyDAO.update(id, name);
-	}
-
 	public List<Company> getAll() {
-		return companyDAO.getAll();
+		return companyRepository.findAll();
 	}
 
-	@Override
-	public void remove(long id) {
-		companyDAO.remove(id);
+	/* (non-Javadoc)
+	 * @see com.excilys.computerdatabase.service.CompanyDBService#remove(long)
+	 */
+	public void delete(long id) {
+		companyRepository.delete(id);
 	}
 
-	public List<Company> getPage(Page page) {
-		return companyDAO.getPage(page);
+	/* (non-Javadoc)
+	 * @see com.excilys.computerdatabase.service.CompanyDBService#getPage(org.springframework.data.domain.PageRequest)
+	 */
+	public Page<Company> getPage(PageRequest pageRequest) {
+		return companyRepository.findAll(pageRequest);
 	}
 
 }

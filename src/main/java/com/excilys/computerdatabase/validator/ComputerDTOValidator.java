@@ -19,8 +19,6 @@ public class ComputerDTOValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors e) {
 		ComputerDTO dto = (ComputerDTO) obj;
-		System.out.println(dto);
-		System.out.println(dto.getIntroduced());
 		if (dto.getName() != null
 				&& (dto.getName().length() == 0 || dto.getName().length() > 255)) {
 			e.rejectValue("name", "error.name");

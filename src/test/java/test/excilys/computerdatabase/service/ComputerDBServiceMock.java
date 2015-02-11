@@ -1,7 +1,7 @@
 package test.excilys.computerdatabase.service;
 
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.pagination.Page;
+import com.excilys.computerdatabase.pagination.ComputerPage;
 import com.excilys.computerdatabase.service.ComputerDBService;
 
 import test.excilys.computerdatabase.dao.ComputerDAOMock;
@@ -14,7 +14,7 @@ public class ComputerDBServiceMock implements ComputerDBService{
 	}
 
 	@Override
-	public Page getPage(int pageNumber) {
+	public ComputerPage getPage(int pageNumber) {
 		return computerDAO.getPage(pageNumber);
 	}
 

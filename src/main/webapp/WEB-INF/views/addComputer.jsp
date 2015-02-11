@@ -50,28 +50,28 @@
 				<form id="add" action="add" method="POST">
 					<fieldset>
 						<div class="form-group has-feedback">
-							<label for="name"> <spring:message code="label.cptName" />
+							<label for="name"> <spring:message code="label.NAME" />
 							</label> <input type="text" class="form-control" id="name" name="name"
 								placeholder="<spring:message
-									code="label.cptName" />">
+									code="label.NAME" />">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="introduced"><spring:message
-									code="label.introduced" /></label> <input type="date"
+									code="label.INTRODUCED" /></label> <input type="date"
 								class="form-control" name="introduced" id="introduced"
 								placeholder="<spring:message
-									code="label.introduced"/>">
+									code="label.INTRODUCED"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="discontinued"><spring:message
-									code="label.discontinued" /></label> <input type="date"
+									code="label.DISCONTINUED" /></label> <input type="date"
 								class="form-control" name="discontinued" id="discontinued"
 								placeholder="<spring:message
-									code="label.discontinued"/>">
+									code="label.DISCONTINUED"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="companyId"><spring:message
-									code="label.cmpName" /></label> <select class="form-control"
+									code="label.COMPANY" /></label> <select class="form-control"
 								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
