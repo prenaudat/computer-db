@@ -18,4 +18,6 @@ public interface ComputerRepository extends
 
 	@Query(value = SELECT_QUERY, countQuery = COUNT_QUERY)
 	public Page<Computer> findAll(@Param("search") String search, Pageable pageable);
+	
+	public void deleteByCompany_Id(Long id);
 }

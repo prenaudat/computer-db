@@ -75,7 +75,7 @@ public class Client {
 			System.out
 					.println("Enter id of computer would you like to delete?");
 			id = sc.nextLine();
-			deleteLoop = GenericValidator.isLong(id);
+			deleteLoop = !GenericValidator.isLong(id);
 		}
 		computerDBService.delete(id);
 	}

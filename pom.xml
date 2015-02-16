@@ -23,6 +23,7 @@
 		<javax-validation.version>1.1.0.Final</javax-validation.version>
 		<hibernate-entitymanager.version>4.3.8.Final</hibernate-entitymanager.version>
 		<spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
+		<spring-security.version>3.2.5.RELEASE</spring-security.version>
 	</properties>
 
 	<!-- DEPENDENCIES -->
@@ -157,6 +158,16 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate-entitymanager.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
