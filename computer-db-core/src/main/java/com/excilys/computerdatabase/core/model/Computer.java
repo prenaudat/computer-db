@@ -308,15 +308,12 @@ public class Computer {
 		public Builder introduced(final String newIntroduced, final String lang) {
 			if (newIntroduced != null && newIntroduced.length() != 0) {
 				DateTimeFormatter formatter;
-				System.out.println("Lang" + lang + newIntroduced);
 				LocalDate date = null;
 					if (lang.equals("fr")) {
-						System.out.println("parsing french");
 						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 						System.out.println(formatter.toString());
 						date = LocalDate.parse(newIntroduced, formatter);
 					} else {
-						System.out.println("parsing english");
 						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 						date = LocalDate.parse(newIntroduced, formatter);
 					}
@@ -333,15 +330,12 @@ public class Computer {
 		public Builder discontinued(final String discontinued, final String lang) {
 			if (discontinued != null && discontinued.length() != 0) {
 				DateTimeFormatter formatter;
-				System.out.println("Lang" + lang + discontinued);
 				LocalDate date = null;
 					if (lang.equals("fr")) {
-						System.out.println("parsing french");
 						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 						System.out.println(formatter.toString());
 						date = LocalDate.parse(discontinued, formatter);
 					} else {
-						System.out.println("parsing english");
 						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 						date = LocalDate.parse(discontinued, formatter);
 					}
