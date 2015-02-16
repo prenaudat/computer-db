@@ -3,7 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -39,7 +40,8 @@
 						<div class="alert alert-danger alert-error">
 							<a onClick="$(this).parent().parent().remove();" class="close"
 								data-dismiss="alert">&times;</a> <strong><spring:message
-									code="error.error"/>!</strong> <spring:message code="error.msg"/>
+									code="error.error" />!</strong>
+							<spring:message code="error.msg" />
 							<c:forEach items="${errors}" var="error">
 								<li><spring:message code="${error}" /></li>
 							</c:forEach>
@@ -57,17 +59,17 @@
 						</div>
 						<div class="form-group has-feedback">
 							<label for="introduced"><spring:message
-									code="label.INTRODUCED" /></label> <input type="date"
-								class="form-control" name="introduced" id="introduced"
+									code="label.INTRODUCED" /></label> <input class="form-control"
+								name="introduced" id="introduced"
 								placeholder="<spring:message
-									code="label.INTRODUCED"/>">
+									code="date.format"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="discontinued"><spring:message
-									code="label.DISCONTINUED" /></label> <input type="date"
-								class="form-control" name="discontinued" id="discontinued"
+									code="label.DISCONTINUED" /></label> <input class="form-control"
+								name="discontinued" id="discontinued"
 								placeholder="<spring:message
-									code="label.DISCONTINUED"/>">
+									code="date.format"/>">
 						</div>
 						<div class="form-group has-feedback">
 							<label for="companyId"><spring:message
@@ -75,7 +77,7 @@
 								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
-											<option value="${company.id}">${company.name}</option>
+									<option value="${company.id}">${company.name}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -96,17 +98,17 @@
 	</section>
 	<script type="text/javascript">
 		checkName();
-		checkDate("introduced");
-		checkDate("discontinued");
+		checkDate("introduced", "<spring:message code="locale" />");
+		checkDate("discontinued", "<spring:message code="locale" />");
 		checkCompany();
 		$("#name").on('keyup change', function() {
 			checkName();
 		});
 		$("#introduced").on('keyup change', function() {
-			checkDate("introduced");
+			checkDate("introduced", "<spring:message code="locale" />");
 		});
 		$("#discontinued").on('keyup change', function() {
-			checkDate("discontinued");
+			checkDate("discontinued", "<spring:message code="locale" />");
 		});
 		$("#companyId").on('keyup change', function() {
 			checkCompany();

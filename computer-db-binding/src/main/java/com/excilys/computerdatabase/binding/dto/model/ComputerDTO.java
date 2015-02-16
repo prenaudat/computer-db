@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.binding.dto.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -153,6 +154,28 @@ public class ComputerDTO implements java.io.Serializable {
 			return this;
 		}
 
+		public Builder withIntroduced(LocalDate introduced, String locale) {
+			if (introduced != null) {
+				if(locale.equals("fr")){
+					this.introduced = introduced.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				}
+				else{
+					this.introduced = introduced.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				}			}
+			return this;
+		}
+		
+		public Builder withDiscontinued(LocalDate discontinued, String locale) {
+			if (discontinued != null) {
+				if(locale.equals("fr")){
+					this.discontinued = discontinued.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				}
+				else{
+					this.discontinued = discontinued.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				}
+			}
+			return this;
+		}
 		public Builder withCompanyId(Long companyId) {
 			this.companyId = companyId;
 			return this;

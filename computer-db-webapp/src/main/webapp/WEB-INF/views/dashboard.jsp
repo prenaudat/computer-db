@@ -72,7 +72,8 @@
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
 							style="vertical-align: top;"> - <a id="deleteSelected"
-								onclick="$.fn.deleteSelected();"> <i
+								onclick="$.fn.deleteSelected('<spring:message
+							code="locale" />');"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>

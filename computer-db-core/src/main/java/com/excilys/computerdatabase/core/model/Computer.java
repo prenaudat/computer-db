@@ -1,8 +1,12 @@
 package com.excilys.computerdatabase.core.model;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -13,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.format.datetime.DateFormatter;
 
 import com.excilys.computerdatabase.core.common.LocalDatePersistenceConverter;
 
@@ -37,7 +43,7 @@ public class Computer {
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate discontinued;
 	@ManyToOne(targetEntity = com.excilys.computerdatabase.core.model.Company.class)
-	@JoinColumn(name = "company_id", nullable=true)
+	@JoinColumn(name = "company_id", nullable = true)
 	private Company company;
 
 	// Behavior : getters and setter
@@ -155,9 +161,9 @@ public class Computer {
 			return null;
 		}
 	}
-	
-	public String getCompanyName(){
-		if(company == null){
+
+	public String getCompanyName() {
+		if (company == null) {
 			return null;
 		}
 		return company.getName();
@@ -299,9 +305,22 @@ public class Computer {
 			return this;
 		}
 
-		public Builder introduced(final String newIntroduced) {
+		public Builder introduced(final String newIntroduced, final String lang) {
 			if (newIntroduced != null && newIntroduced.length() != 0) {
-				this.computer.setIntroduced(LocalDate.parse(newIntroduced));
+				DateTimeFormatter formatter;
+				System.out.println("Lang" + lang + newIntroduced);
+				LocalDate date = null;
+					if (lang.equals("fr")) {
+						System.out.println("parsing french");
+						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						System.out.println(formatter.toString());
+						date = LocalDate.parse(newIntroduced, formatter);
+					} else {
+						System.out.println("parsing english");
+						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						date = LocalDate.parse(newIntroduced, formatter);
+					}
+					this.computer.setIntroduced(date);
 			}
 			return this;
 		}
@@ -311,9 +330,22 @@ public class Computer {
 			return this;
 		}
 
-		public Builder discontinued(final String discontinued) {
+		public Builder discontinued(final String discontinued, final String lang) {
 			if (discontinued != null && discontinued.length() != 0) {
-				this.computer.setDiscontinued(LocalDate.parse(discontinued));
+				DateTimeFormatter formatter;
+				System.out.println("Lang" + lang + discontinued);
+				LocalDate date = null;
+					if (lang.equals("fr")) {
+						System.out.println("parsing french");
+						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						System.out.println(formatter.toString());
+						date = LocalDate.parse(discontinued, formatter);
+					} else {
+						System.out.println("parsing english");
+						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						date = LocalDate.parse(discontinued, formatter);
+					}
+					this.computer.setDiscontinued(date);
 			}
 			return this;
 		}

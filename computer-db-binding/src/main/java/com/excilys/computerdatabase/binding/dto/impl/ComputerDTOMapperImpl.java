@@ -3,6 +3,8 @@ package com.excilys.computerdatabase.binding.dto.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
 import com.excilys.computerdatabase.binding.dto.DTOMapper;
 import com.excilys.computerdatabase.core.model.Company;
@@ -26,8 +28,8 @@ public class ComputerDTOMapperImpl implements DTOMapper<ComputerDTO, Computer> {
 	@Override
 	public ComputerDTO mapToDTO(Computer c) {
 		return new ComputerDTO.Builder().withName(c.getName())
-				.withId(c.getId()).withIntroduced(c.getIntroduced())
-				.withDiscontinued(c.getDiscontinued())
+				.withId(c.getId()).withIntroduced(c.getIntroduced(), LocaleContextHolder.getLocale().toLanguageTag())
+				.withDiscontinued(c.getDiscontinued(), LocaleContextHolder.getLocale().toLanguageTag())
 				.withCompanyId(c.getCompanyId())
 				.withCompanyName(c.getCompanyName()).build();
 
@@ -43,8 +45,8 @@ public class ComputerDTOMapperImpl implements DTOMapper<ComputerDTO, Computer> {
 	@Override
 	public Computer mapFromDTO(ComputerDTO x) {
 		return new Computer.Builder().id(x.getId()).name(x.getName())
-				.introduced(x.getIntroduced())
-				.discontinued(x.getDiscontinued())
+				.introduced(x.getIntroduced(),LocaleContextHolder.getLocale().toLanguageTag())
+				.discontinued(x.getDiscontinued(), LocaleContextHolder.getLocale().toLanguageTag())
 				.company(new Company.Builder().
 						id(x.getCompanyId()).
 						build())

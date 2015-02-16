@@ -61,11 +61,18 @@ $(function() {
 
 // Function delete selected: Asks for confirmation to delete selected computers, then submits it to the deleteForm
 (function ( $ ) {
-    $.fn.deleteSelected = function() {
+    $.fn.deleteSelected = function(lang) {
+    	if(lang=="en"){
         if (confirm("Are you sure you want to delete the selected computers?")) { 
             $('#deleteForm input[name=selection]').setCheckboxValues('selection','cb');
             $('#deleteForm').submit();
         }
+    	}else{
+            if (confirm("Etes vous sur de vouloir supprimer les ordinateurs selectionnés?")) { 
+                $('#deleteForm input[name=selection]').setCheckboxValues('selection','cb');
+                $('#deleteForm').submit();
+            }
+    	}
     };
 }( jQuery ));
 

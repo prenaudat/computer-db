@@ -65,7 +65,7 @@
 						</div>
 						<div class="form-group has-feedback">
 							<label for="introduced"><spring:message
-									code="label.INTRODUCED" /></label> <input type="date"
+									code="label.INTRODUCED" /></label> <input 
 								class="form-control" id="introduced" name="introduced"
 								placeholder="<spring:message
 									code="label.INTRODUCED" />"
@@ -73,10 +73,10 @@
 						</div>
 						<div class="form-group has-feedback">
 							<label for="discontinued"><spring:message
-									code="label.DISCONTINUED" /></label> <input type="date"
+									code="label.DISCONTINUED" /></label> <input 
 								class="form-control" id="discontinued" name="discontinued"
 								placeholder="<spring:message
-									code="label.DISCONTINUED" />"
+									code="date.format" />"
 								value="<c:out value="${computer.discontinued}"/>" />
 						</div>
 						<div class="form-group has-feedback">
@@ -112,22 +112,21 @@
 	</div>
 	</section>
 	<script type="text/javascript">
+	checkName();
+	checkDate("introduced", "<spring:message code="locale" />");
+	checkDate("discontinued", "<spring:message code="locale" />");
+	checkCompany();
+	$("#name").on('keyup change', function() {
 		checkName();
-		checkDate("introduced");
-		checkDate("discontinued");
+	});
+	$("#introduced").on('keyup change', function() {
+		checkDate("introduced", "<spring:message code="locale" />");
+	});
+	$("#discontinued").on('keyup change', function() {
+		checkDate("discontinued", "<spring:message code="locale" />");
+	});
+	$("#companyId").on('keyup change', function() {
 		checkCompany();
-		$("#name").on('keyup change', function() {
-			checkName();
-		});
-		$("#introduced").on('keyup change', function() {
-			checkDate("introduced");
-		});
-		$("#discontinued").on('keyup change', function() {
-			checkDate("discontinued");
-		});
-		$("#companyId").on('keyup change', function() {
-			checkCompany();
-					});		
-	</script>
+	});	</script>
 </body>
 </html>
