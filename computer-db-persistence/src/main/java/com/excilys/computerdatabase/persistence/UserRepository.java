@@ -9,6 +9,6 @@ import com.excilys.computerdatabase.core.model.User;
 @Repository
 public interface UserRepository	 extends JpaRepository<User, Long>{
 
-	User findById(Integer id);
+	public User findByUserName(String userName);
 
 }

@@ -2,17 +2,12 @@ package com.excilys.computerdatabase.service;
 
 import java.util.List;
 
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.excilys.computerdatabase.core.model.User;
 
 
-public interface UserDBService {
-    /**
-     * Find a person.
-     */
-    public User findById(Integer id);
-
+public interface UserDBService extends UserDetailsService{
     /**
      * Find persons.
      */
@@ -27,5 +22,7 @@ public interface UserDBService {
      * Deletes person.
      */
     public void delete(User user);
+
+	public User findByUserName(String userName);
 
 }

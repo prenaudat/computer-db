@@ -6,17 +6,13 @@
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-<security:http create-session="stateless" entry-point-ref="digestEntryPoint">
-   <security:intercept-url pattern="/**" access="ROLE_USER" />
-   <security:http-basic />
+<security:http use-expressions="true" create-session="stateless" entry-point-ref="digestEntryPoint">
+   <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
    <security:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
 </security:http>
  
 	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:jdbc-user-service
-				data-source-ref="dataSource" />
-		</security:authentication-provider>
+   		<security:authentication-provider user-service-ref="userDBServiceImpl" />
 	</security:authentication-manager>
 
 	<bean id="digestFilter"
@@ -31,9 +27,8 @@
 
 	<bean id="digestEntryPoint"
 		class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
-		<property name="realmName" value="Authenticate yourself through stronk Digest HttpAuth" />
+		<property name="realmName" value="Digest Http Auth" />
 		<property name="key" value="acegi" />
-		<property name="nonceValiditySeconds" value="10" />
 	</bean>
 
 </beans>

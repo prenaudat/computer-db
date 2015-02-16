@@ -2,6 +2,9 @@ package com.excilys.computerdatabase.service.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +20,14 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService{
 	@Autowired
 	UserRepository userRepository;
 
-	@Override
-	public User findById(Integer id) {
-		return userRepository.findById(id);
+    private EntityManager entityManager;
+    @PersistenceContext
+    public void setEntityManager(EntityManager newEm){
+        this.entityManager = newEm;
+    }
+
+	public User findByUserName(String userName) {
+		return userRepository.findByUserName(userName);
 	}
 
 	@Override
@@ -38,9 +46,12 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService{
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String arg0)
+	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		return null;
+        return entityManager.createQuery("from User where username = :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
+
 	}
 
 	
