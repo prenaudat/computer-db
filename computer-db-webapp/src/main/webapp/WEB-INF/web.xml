@@ -5,6 +5,11 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>computer-database</display-name>
 	<!-- Error Pages -->
+		<error-page>
+		<error-code>401</error-code>
+		<location>/WEB-INF/views/401.jsp</location>
+	</error-page>
+	
 	<error-page>
 		<error-code>403</error-code>
 		<location>/WEB-INF/views/403.jsp</location>
@@ -75,7 +80,5 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
-
+    </filter-mapping>	
 </web-app>

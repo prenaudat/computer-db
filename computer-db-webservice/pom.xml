@@ -6,19 +6,13 @@
 		<artifactId>computer-db</artifactId>
 		<version>4.3.0</version>
 	</parent>
-	<artifactId>computer-db-persistence</artifactId>
-
+	<packaging>war</packaging>
+	<artifactId>computer-db-webservice</artifactId>
 	<dependencies>
-		<!-- Computer database modules -->
 		<dependency>
 			<groupId>cdb</groupId>
-			<artifactId>computer-db-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>cdb</groupId>
-			<artifactId>computer-db-binding</artifactId>
-			<version>${project.version}</version>
+			<artifactId>computer-db-service</artifactId>
+			<version>4.3.0</version>
 		</dependency>
 	</dependencies>
 </project>

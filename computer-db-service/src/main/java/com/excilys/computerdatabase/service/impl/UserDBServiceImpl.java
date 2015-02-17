@@ -16,15 +16,16 @@ import com.excilys.computerdatabase.persistence.UserRepository;
 import com.excilys.computerdatabase.service.UserDBService;
 
 @Service
-public class UserDBServiceImpl implements UserDBService, UserDetailsService{
+public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	@Autowired
 	UserRepository userRepository;
 
-    private EntityManager entityManager;
-    @PersistenceContext
-    public void setEntityManager(EntityManager newEm){
-        this.entityManager = newEm;
-    }
+	private EntityManager entityManager;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager newEm) {
+		this.entityManager = newEm;
+	}
 
 	public User findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
@@ -32,7 +33,7 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService{
 
 	@Override
 	public void save(User user) {
-			userRepository.save(user);
+		userRepository.save(user);
 	}
 
 	@Override
@@ -48,12 +49,10 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-        return entityManager.createQuery("from User where username = :username", User.class)
-                .setParameter("username", username)
-                .getSingleResult();
+		return entityManager
+				.createQuery("from User where username = :username", User.class)
+				.setParameter("username", username).getSingleResult();
 
 	}
-
-	
 
 }

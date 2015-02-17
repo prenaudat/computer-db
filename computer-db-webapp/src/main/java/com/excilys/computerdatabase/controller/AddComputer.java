@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
 import com.excilys.computerdatabase.binding.dto.impl.ComputerDTOMapperImpl;
-import com.excilys.computerdatabase.service.CompanyDBService;
-import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
+import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
 import com.excilys.computerdatabase.binding.dto.validation.ComputerDTOValidator;
 import com.excilys.computerdatabase.core.model.Computer;
+import com.excilys.computerdatabase.service.CompanyDBService;
+import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
 /**
  * Manage /addComputer Display and persist computer for adding

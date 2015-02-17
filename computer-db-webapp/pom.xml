@@ -9,24 +9,20 @@
 	<artifactId>computer-db-webapp</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
-		<!-- Sibling dependencies -->
-		<dependency>
-			<groupId>cdb</groupId>
-			<artifactId>computer-db-binding</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>cdb</groupId>
-			<artifactId>computer-db-service</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>cdb</groupId>
-			<artifactId>computer-db-core</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-
-		<!-- 3rd party dependencies -->
-
+	<dependency>
+		<groupId>cdb</groupId>
+		<artifactId>computer-db-binding</artifactId>
+		<version>4.3.0</version>
+	</dependency>
+	<dependency>
+		<groupId>cdb</groupId>
+		<artifactId>computer-db-service</artifactId>
+		<version>4.3.0</version>
+	</dependency>
+	<dependency>
+		<groupId>cdb</groupId>
+		<artifactId>computer-db-core</artifactId>
+		<version>4.3.0</version>
+	</dependency>
 	</dependencies>
 </project>

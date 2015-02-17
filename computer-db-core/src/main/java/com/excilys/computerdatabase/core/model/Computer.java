@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 import com.excilys.computerdatabase.core.common.LocalDatePersistenceConverter;
 
 /**
@@ -305,15 +304,15 @@ public class Computer {
 			if (newIntroduced != null && newIntroduced.length() != 0) {
 				DateTimeFormatter formatter;
 				LocalDate date = null;
-					if (lang.equals("fr")) {
-						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-						System.out.println(formatter.toString());
-						date = LocalDate.parse(newIntroduced, formatter);
-					} else {
-						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-						date = LocalDate.parse(newIntroduced, formatter);
-					}
-					this.computer.setIntroduced(date);
+				if (lang.equals("fr")) {
+					formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					System.out.println(formatter.toString());
+					date = LocalDate.parse(newIntroduced, formatter);
+				} else {
+					formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					date = LocalDate.parse(newIntroduced, formatter);
+				}
+				this.computer.setIntroduced(date);
 			}
 			return this;
 		}
@@ -327,15 +326,15 @@ public class Computer {
 			if (discontinued != null && discontinued.length() != 0) {
 				DateTimeFormatter formatter;
 				LocalDate date = null;
-					if (lang.equals("fr")) {
-						formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-						System.out.println(formatter.toString());
-						date = LocalDate.parse(discontinued, formatter);
-					} else {
-						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-						date = LocalDate.parse(discontinued, formatter);
-					}
-					this.computer.setDiscontinued(date);
+				if (lang.equals("fr")) {
+					formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					System.out.println(formatter.toString());
+					date = LocalDate.parse(discontinued, formatter);
+				} else {
+					formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					date = LocalDate.parse(discontinued, formatter);
+				}
+				this.computer.setDiscontinued(date);
 			}
 			return this;
 		}

@@ -31,11 +31,12 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 	 */
 	public Page<Computer> retrievePage(Pageable pageable, String search) {
 		Page<Computer> page = null;
-		if (search == null){
+		if (search == null) {
 			page = computerRepository.findAll(pageable);
-		}
-		else{
-			page = computerRepository.findAll(new StringBuilder("%").append(search.toLowerCase()).append("%").toString(), pageable);
+		} else {
+			page = computerRepository.findAll(
+					new StringBuilder("%").append(search.toLowerCase())
+							.append("%").toString(), pageable);
 		}
 		return page;
 	}
@@ -48,7 +49,6 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 	public Computer get(long id) {
 		return computerRepository.findOne(id);
 	}
-	
 	public void save(Computer computer) {
 		computerRepository.save(computer);
 	}
@@ -67,7 +67,9 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 
 	/**
 	 * Removes computer at specified id.
-	 * @param i id to be deleted.
+	 * 
+	 * @param i
+	 *            id to be deleted.
 	 */
 	public void delete(String id) {
 		if (GenericValidator.isLong(id)) {

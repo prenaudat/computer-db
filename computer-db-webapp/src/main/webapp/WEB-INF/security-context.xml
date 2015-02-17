@@ -6,13 +6,17 @@
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-<security:http use-expressions="true" create-session="stateless" entry-point-ref="digestEntryPoint">
-   <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
-   <security:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
-</security:http>
- 
+	<security:http use-expressions="true" create-session="stateless"
+		entry-point-ref="digestEntryPoint">
+		<security:intercept-url pattern="/computers/edit**" 	access="hasAnyRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/computers/add**" 	access="hasAnyRole('ROLE_ADMIN')" />
+		<security:custom-filter ref="digestFilter"
+			after="BASIC_AUTH_FILTER" />
+	</security:http>
+
 	<security:authentication-manager>
-   		<security:authentication-provider user-service-ref="userDBServiceImpl" />
+		<security:authentication-provider
+			user-service-ref="userDBServiceImpl" />
 	</security:authentication-manager>
 
 	<bean id="digestFilter"
