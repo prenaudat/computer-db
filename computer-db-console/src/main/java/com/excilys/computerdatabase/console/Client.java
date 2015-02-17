@@ -271,7 +271,7 @@ public class Client {
 	 * 
 	 */
 	public void getCompanyList() {
-			System.out.println(companyDBService.getAll());
+			System.out.println(companyDBService.findAll());
 	}
 
 

@@ -46,7 +46,7 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 	 * 
 	 * @see com.excilys.computerdatabase.service.ComputerDBService#get(long)
 	 */
-	public Computer get(long id) {
+	public Computer findOne(long id) {
 		return computerRepository.findOne(id);
 	}
 	public void save(Computer computer) {
@@ -75,5 +75,10 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		if (GenericValidator.isLong(id)) {
 			computerRepository.delete(Long.parseLong(id));
 		}
+	}
+
+	@Override
+	public boolean exists(long id) {
+		return computerRepository.exists(id);
 	}
 }

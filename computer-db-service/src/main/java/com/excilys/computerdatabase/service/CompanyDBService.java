@@ -10,10 +10,12 @@ import com.excilys.computerdatabase.core.model.Company;
  */
 public interface CompanyDBService {
 
-	public Company get(long id);
+	public Company findOne(long id);
 
 	public void delete(long id);
 	
-	public List<Company> getAll();
+	public List<Company> findAll();
+	
+	public boolean exists(long id);
 
 }

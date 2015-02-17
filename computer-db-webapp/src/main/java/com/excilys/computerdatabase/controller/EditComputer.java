@@ -78,7 +78,7 @@ public class EditComputer {
 			ArrayList<String> errorCodes = new ArrayList<>();
 			bindingResult.getAllErrors().forEach(
 					c -> errorCodes.add(c.getCode().toString()));
-			mav.getModel().put("companies", companyDBService.getAll());
+			mav.getModel().put("companies", companyDBService.findAll());
 			mav.getModel().put("computer", dto);
 			mav.getModel().put("errors", errorCodes);
 			return mav;
@@ -103,8 +103,8 @@ public class EditComputer {
 	private ModelAndView sendEditPage(Long id) {
 		ModelAndView editPage = new ModelAndView("editComputer");
 		editPage.addObject("computer",
-				computerDTOMapper.mapToDTO(computerDBService.get(id)));
-		editPage.addObject("companies", companyDBService.getAll());
+				computerDTOMapper.mapToDTO(computerDBService.findOne(id)));
+		editPage.addObject("companies", companyDBService.findAll());
 		return editPage;
 	}
 

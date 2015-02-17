@@ -33,17 +33,20 @@ public class CompanyDBServiceImpl implements CompanyDBService {
 	 * 
 	 * @see com.excilys.computerdatabase.service.CompanyDBService#get(long)
 	 */
-	public Company get(long id) {
+	public Company findOne(long id) {
 		return companyRepository.findOne(id);
 	}
 
 	/**
 	 * @return List<Company> of all companies
 	 */
-	public List<Company> getAll() {
+	public List<Company> findAll() {
 		return companyRepository.findAll();
 	}
-
+	
+	public boolean exists(long id){
+		return companyRepository.exists(id);
+	}
 	/*
 	 * (non-Javadoc)
 	 * 

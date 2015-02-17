@@ -9,7 +9,9 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<mvc:annotation-driven />
-	
-	<context:component-scan base-package="com.excilys.computerdatabase.webservice"/>
-	
-	</beans>
+	<import resource="classpath:service-context.xml" />
+
+	<context:component-scan base-package="com.excilys.computerdatabase.service" />
+	<context:component-scan base-package="com.excilys.computerdatabase.webservice" />
+
+</beans>

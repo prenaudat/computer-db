@@ -51,7 +51,7 @@ public class AddComputer {
 	@RequestMapping(value = "/computers/add", method = RequestMethod.GET)
 	protected ModelAndView doGet() {
 		return new ModelAndView("addComputer", "companies",
-				companyDBService.getAll());
+				companyDBService.findAll());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class AddComputer {
 			ArrayList<String> errorCodes = new ArrayList<>();
 			bindingResult.getAllErrors().forEach(
 					c -> errorCodes.add(c.getCode().toString()));
-			mav.getModel().put("companies", companyDBService.getAll());
+			mav.getModel().put("companies", companyDBService.findAll());
 			mav.getModel().put("computer", dto);
 			mav.getModel().put("errors", errorCodes);
 			return mav;

@@ -199,7 +199,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<!-- PLUGINS -->

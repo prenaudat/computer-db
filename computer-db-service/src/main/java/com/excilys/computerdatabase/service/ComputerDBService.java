@@ -15,7 +15,7 @@ public interface ComputerDBService {
 	 * @param id
 	 * @return
 	 */
-	public Computer get(final long id);
+	public Computer findOne(final long id);
 
 	/**
 	 * @param computer
@@ -39,4 +39,6 @@ public interface ComputerDBService {
 	 * @return
 	 */
 	public Page<Computer> retrievePage(Pageable pageable, String search);
+
+	public boolean exists(long id);
 }
