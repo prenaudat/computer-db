@@ -12,6 +12,11 @@ public class ComputerPage extends PageRequest {
 	private static final long serialVersionUID = 1L;
 	private OrderBy orderBy;
 
+	/**
+	 * ComputerPage constructor
+	 * @param page pageNumber
+	 * @param size pageSize
+	 */
 	public ComputerPage(int page, int size) {
 		super(page, size);
 
@@ -37,6 +42,7 @@ public class ComputerPage extends PageRequest {
 		}
 		return null;
 	}
+
 
 	@Override
 	public String toString() {

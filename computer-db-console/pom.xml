@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="Third partyhttp://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>cdb</groupId>
@@ -7,6 +7,7 @@
   </parent>
   <artifactId>computer-db-console</artifactId>
   <dependencies>
+  <!-- Sibling dependencies -->
   	<dependency>
   		<groupId>cdb</groupId>
   		<artifactId>computer-db-core</artifactId>
@@ -16,6 +17,12 @@
   		<groupId>cdb</groupId>
   		<artifactId>computer-db-service</artifactId>
   		<version>4.3.0</version>
+  		<!--  Thrid party dependencies -->
   	</dependency>
+  			<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons-validator.version}</version>
+		</dependency>
   </dependencies>
 </project>

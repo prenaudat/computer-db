@@ -3,20 +3,31 @@ package com.excilys.computerdatabase.restservice;
 import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computerdatabase.binding.dto.impl.CompanyDTOMapperImpl;
 import com.excilys.computerdatabase.binding.dto.model.CompanyDTO;
+import com.excilys.computerdatabase.core.model.Company;
 import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 
+/**
+ *  *<h1>Company Rest Service : </h1> Access computer information at:<br>
+ *		GET /company : list of companies<br>
+ *		GET /company/id : company with corresponding id<br>
+ *		DELETE /company/id : delete company with corersponding id<br>
+ * @author excilys
+ *
+ */
 @Component
 @Path("/company")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,35 +35,50 @@ public class CompanyRS {
 	@Autowired
 	CompanyDBServiceImpl companyDBService;
 	CompanyDTOMapperImpl companyDTOMapper = new CompanyDTOMapperImpl();
+	
+	/** 
+	 * Get a company by id
+	 * @param id : corresponding id
+	 * @return company at corresponding id
+	 */
 	@GET
-	@Path("{id}")
-	public Response get(@PathParam("id") long id) {
+	@Path("/{id: [0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Company get(@PathParam("id") long id) {
 		if (companyDBService.exists(id)) {
-//			String result = null;
-//			try {
-////				result = new ObjectMapper().writeValueAsString(companyDBService.findOne(id));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			return Response.ok(result, MediaType.APPLICATION_JSON).build();
-			return Response.ok("No media found", MediaType.APPLICATION_JSON)
-					.build();
+			return companyDBService.findOne(id);
 
 		} else {
-			return Response.ok("No media found", MediaType.APPLICATION_JSON)
-					.build();
+			return null;
 		}
 	}
 
+	/**
+	 * Returns a list of all companies
+	 * @return
+	 */
 	@GET
-	public Response findAll() {
-		String result=null;
-//		try {
-//			result = new ObjectMapper().writeValueAsString(companyDTOMapper.mapToDTO(companyDBService.findAll()));
-//		} catch (IOException e) {
-//			//Logger.log("DATA IS CORRUPTED pls abort");
-//		}
-		return Response.ok(result, MediaType.APPLICATION_JSON).build();
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Company> findAll() {
+		return companyDBService.findAll();
 	}
+	
+	/**
+	 * Delete a company && all its computers as well.
+	 * @param id id of company.
+	 * @return response status
+	 */
+	@DELETE
+	@Path("/{id: [0-9]+}")
+	public Response remove(@PathParam("id") long id) {
+		Status status = null;
+		if (companyDBService.exists(id)) {
+			companyDBService.delete(id);
+			status = Status.NO_CONTENT;
+		} else {
+			status = Status.BAD_REQUEST;
+		}
+		return Response.status(status).build();
+	}
+
 }

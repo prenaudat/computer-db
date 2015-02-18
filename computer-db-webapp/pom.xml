@@ -9,20 +9,35 @@
 	<artifactId>computer-db-webapp</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
-	<dependency>
-		<groupId>cdb</groupId>
-		<artifactId>computer-db-binding</artifactId>
-		<version>4.3.0</version>
-	</dependency>
-	<dependency>
-		<groupId>cdb</groupId>
-		<artifactId>computer-db-service</artifactId>
-		<version>4.3.0</version>
-	</dependency>
-	<dependency>
-		<groupId>cdb</groupId>
-		<artifactId>computer-db-core</artifactId>
-		<version>4.3.0</version>
-	</dependency>
+		<!-- Sibling dependencies -->
+		<dependency>
+			<groupId>cdb</groupId>
+			<artifactId>computer-db-binding</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cdb</groupId>
+			<artifactId>computer-db-service</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cdb</groupId>
+			<artifactId>computer-db-core</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Spring Dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 </project>

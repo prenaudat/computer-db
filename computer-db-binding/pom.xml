@@ -1,16 +1,32 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>cdb</groupId>
-    <artifactId>computer-db</artifactId>
-    <version>4.3.0</version>
-  </parent>
-  <artifactId>computer-db-binding</artifactId>
-  <dependencies>
-  	<dependency>
-  		<groupId>cdb</groupId>
-  		<artifactId>computer-db-core</artifactId>
-  		<version>4.3.0</version>
-  	</dependency>
-  </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cdb</groupId>
+		<artifactId>computer-db</artifactId>
+		<version>4.3.0</version>
+	</parent>
+	<artifactId>computer-db-binding</artifactId>
+	<dependencies>
+		<!-- Sibling dependencies -->
+		<dependency>
+			<groupId>cdb</groupId>
+			<artifactId>computer-db-core</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons-validator.version}</version>
+		</dependency>
+	<!-- Validation -->
+	<dependency>
+		<groupId>javax.validation</groupId>
+		<artifactId>validation-api</artifactId>
+		<version>${javax-validation.version}</version>
+	</dependency>
+	</dependencies>
+
+
 </project>

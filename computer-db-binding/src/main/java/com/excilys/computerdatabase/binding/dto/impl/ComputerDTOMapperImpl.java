@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
 
 import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
 import com.excilys.computerdatabase.binding.dto.DTOMapper;

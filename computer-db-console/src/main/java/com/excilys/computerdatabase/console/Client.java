@@ -29,7 +29,7 @@ public class Client {
 	private Scanner sc;
 	private Pageable pageable; 
 	private static final String FAIL = "You failed to select an available option, please try again";
-	private static final String MAIN_MENU = "A) List computers \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Delete Company+Computers";
+	private static final String MAIN_MENU = "A) List computerss \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Delete Company+Computers";
 
 	// Logger for this class
 
@@ -58,7 +58,7 @@ public class Client {
 			final String id = sc.nextLine();
 			detailedLoop = GenericValidator.isLong(id);
 			if (detailedLoop) {
-				System.out.println(computerDBService.get(Long.parseLong(id)));
+				System.out.println(computerDBService.findOne(Long.parseLong(id)));
 				detailedLoop = getComputerMenu(Integer.parseInt(id));
 			}
 		}
@@ -93,7 +93,7 @@ public class Client {
 				idValidation = GenericValidator.isLong(input);
 			}
 			Boolean nameLoop = true;
-			Computer c = computerDBService.get(Long.parseLong(input));
+			Computer c = computerDBService.findOne(Long.parseLong(input));
 			while (nameLoop) {
 				System.out.println("Current name is : " + c.getName());
 				System.out.println("New name?");
