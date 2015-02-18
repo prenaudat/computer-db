@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author excilys Computer Data Transfer Object
@@ -53,12 +54,6 @@ public class ComputerDTO implements java.io.Serializable {
 
 	public String getIntroduced() {
 		return introduced;
-	}
-
-	public void setIntroduced(LocalDate introduced) {
-		if (introduced != null) {
-			this.introduced = introduced.toString();
-		}
 	}
 
 	public String getDiscontinued() {
@@ -162,7 +157,8 @@ public class ComputerDTO implements java.io.Serializable {
 				else{
 					this.introduced = introduced.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				}			}
-			return this;
+			return this
+					;
 		}
 		
 		public Builder withDiscontinued(LocalDate discontinued, String locale) {

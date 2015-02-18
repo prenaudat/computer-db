@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.service.impl;
 
+import java.util.List;
+
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,6 +51,7 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 	public Computer findOne(long id) {
 		return computerRepository.findOne(id);
 	}
+
 	public void save(Computer computer) {
 		computerRepository.save(computer);
 	}
@@ -77,8 +80,16 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		}
 	}
 
+	public void delete(long id) {
+		computerRepository.delete(id);
+	}
+
 	@Override
 	public boolean exists(long id) {
 		return computerRepository.exists(id);
+	}
+
+	public List<Computer> findAll() {
+		return (List<Computer>) computerRepository.findAll();
 	}
 }
