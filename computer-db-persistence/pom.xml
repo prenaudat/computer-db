@@ -20,5 +20,25 @@
 			<artifactId>computer-db-binding</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${dbcp2.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
+
 </project>
