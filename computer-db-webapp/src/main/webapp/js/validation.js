@@ -85,7 +85,7 @@ function checkDate(argument, locale) {
 }
 
 function checkCompany() {
-	if ($("#companyId").val() != "null" && $("#companyId").val() != "0" ) {
+	if ($("#companyId").val() != "null" && $("#companyId").val() != "0") {
 		$("#companyId").parent().removeClass("has-warning ");
 		$("#companyId").parent().addClass("has-success");
 		$("#companyId").next().remove();
@@ -102,13 +102,41 @@ function checkCompany() {
 	}
 }
 
-function checkButton(){
+function checkButton() {
 	console.log('checked button');
-	if($("#name").parent().hasClass("has-success") && ($("#introduced").parent().hasClass("has-success") || $("#introduced").parent().hasClass("has-warning") ) &&( $("#discontinued").parent().hasClass("has-success") || $("#discontinued").parent().hasClass("has-warning"))&& ($("#companyId").parent().hasClass("has-success")|| $("#companyId").parent().hasClass("has-warning"))){
+	if ($("#name").parent().hasClass("has-success")
+			&& ($("#introduced").parent().hasClass("has-success") || $(
+					"#introduced").parent().hasClass("has-warning"))
+			&& ($("#discontinued").parent().hasClass("has-success") || $(
+					"#discontinued").parent().hasClass("has-warning"))
+			&& ($("#companyId").parent().hasClass("has-success") || $(
+					"#companyId").parent().hasClass("has-warning"))) {
 		$('#submit').prop('disabled', false);
-	}else{
+	} else {
 		$('#submit').prop('disabled', true);
 
 	}
-	
+}
+function init(locale) {
+	checkName();
+	checkDate("introduced", locale);
+	checkDate("discontinued", locale);
+	checkCompany();
+	checkButton();
+	$("#name").on('keyup change', function() {
+		checkName();
+		checkButton();
+	});
+	$("#introduced").on('keyup change', function() {
+		checkDate("introduced", locale);
+		checkButton();
+	});
+	$("#discontinued").on('keyup change', function() {
+		checkDate("discontinued", locale);
+		checkButton();
+	});
+	$("#companyId").on('keyup change', function() {
+		checkCompany();
+		checkButton();
+	});
 }
