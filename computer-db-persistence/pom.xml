@@ -4,10 +4,9 @@
 	<parent>
 		<groupId>cdb</groupId>
 		<artifactId>computer-db</artifactId>
-		<version>4.3.0</version>
+		<version>${parent.version}</version>
 	</parent>
 	<artifactId>computer-db-persistence</artifactId>
-
 	<dependencies>
 		<!-- Computer database modules -->
 		<dependency>
@@ -40,5 +39,4 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
-
 </project>

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cdb</groupId>
 		<artifactId>computer-db</artifactId>
-		<version>4.3.0</version>
+		<version>${parent.version}</version>
 	</parent>
 	<artifactId>computer-db-binding</artifactId>
 	<dependencies>
@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-core</artifactId>
-			<version>4.3.0</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<!-- Third party dependencies -->
 		<dependency>
@@ -20,12 +20,17 @@
 			<artifactId>commons-validator</artifactId>
 			<version>${commons-validator.version}</version>
 		</dependency>
-	<!-- Validation -->
-	<dependency>
-		<groupId>javax.validation</groupId>
-		<artifactId>validation-api</artifactId>
-		<version>${javax-validation.version}</version>
-	</dependency>
+		<!-- Validation -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax-validation.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jackson-jaxrs-json-provider.version}</version>
+		</dependency>
 	</dependencies>
 
 

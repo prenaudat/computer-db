@@ -6,18 +6,19 @@
 		<artifactId>computer-db</artifactId>
 		<version>${parent.version}</version>
 	</parent>
-	<artifactId>computer-db-service</artifactId>
+	<artifactId>computer-db-rest-sdk</artifactId>
 	<dependencies>
 	<!-- Sibling dependencies -->
-		<dependency>
-			<groupId>cdb</groupId>
-			<artifactId>computer-db-persistence</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
+			<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-binding</artifactId>
 			<version>${parent.version}</version>
+		</dependency>
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 	</dependencies>
 </project>

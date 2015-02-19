@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author excilys Computer Data Transfer Object
@@ -61,19 +60,23 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 	public void setDiscontinued(String discontinued) {
-		this.discontinued = discontinued.toString();
+		if (discontinued != null) {
+			this.discontinued = discontinued.toString();
+		}
 	}
 
 	public Long getCompanyId() {
 		return companyId;
-		}
+	}
 
 	public void setCompanyId(Long companyId) {
-			this.companyId = companyId;
+		this.companyId = companyId;
 	}
 
 	public void setIntroduced(String introduced) {
-		this.introduced = introduced.toString();
+		if (introduced != null) {
+			this.introduced = introduced.toString();
+		}
 	}
 
 	@Override
@@ -135,14 +138,12 @@ public class ComputerDTO implements java.io.Serializable {
 			return this;
 		}
 
-		public Builder withIntroduced(LocalDate introduced) {
-			if (introduced != null) {
-				this.introduced = introduced.toString();
-			}
+		public Builder withIntroduced(String introduced) {
+			this.introduced = introduced.toString();
 			return this;
 		}
 
-		public Builder withDiscontinued(LocalDate discontinued) {
+		public Builder withDiscontinued(String discontinued) {
 			if (discontinued != null) {
 				this.discontinued = discontinued.toString();
 			}
@@ -151,27 +152,30 @@ public class ComputerDTO implements java.io.Serializable {
 
 		public Builder withIntroduced(LocalDate introduced, String locale) {
 			if (introduced != null) {
-				if(locale.equals("fr")){
-					this.introduced = introduced.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				}
-				else{
-					this.introduced = introduced.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				}			}
-			return this
-					;
-		}
-		
-		public Builder withDiscontinued(LocalDate discontinued, String locale) {
-			if (discontinued != null) {
-				if(locale.equals("fr")){
-					this.discontinued = discontinued.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				}
-				else{
-					this.discontinued = discontinued.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				if (locale.equals("fr")) {
+					this.introduced = introduced.format(DateTimeFormatter
+							.ofPattern("dd-MM-yyyy"));
+				} else {
+					this.introduced = introduced.format(DateTimeFormatter
+							.ofPattern("yyyy-MM-dd"));
 				}
 			}
 			return this;
 		}
+
+		public Builder withDiscontinued(LocalDate discontinued, String locale) {
+			if (discontinued != null) {
+				if (locale.equals("fr")) {
+					this.discontinued = discontinued.format(DateTimeFormatter
+							.ofPattern("dd-MM-yyyy"));
+				} else {
+					this.discontinued = discontinued.format(DateTimeFormatter
+							.ofPattern("yyyy-MM-dd"));
+				}
+			}
+			return this;
+		}
+
 		public Builder withCompanyId(Long companyId) {
 			this.companyId = companyId;
 			return this;

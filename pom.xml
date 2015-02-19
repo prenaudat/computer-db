@@ -2,12 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<version>4.3.0</version>
+	<version>${parent.version}</version>
 	<groupId>cdb</groupId>
 	<artifactId>computer-db</artifactId>
 	<packaging>pom</packaging>
 	<!-- Properties -->
 	<properties>
+		<parent.version>4.4.0</parent.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<mysql-connector-java.version>5.1.34</mysql-connector-java.version>
 		<jstl.version>1.2</jstl.version>
@@ -25,7 +26,12 @@
 		<hibernate-entitymanager.version>4.3.8.Final</hibernate-entitymanager.version>
 		<spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
 		<spring-security.version>3.2.5.RELEASE</spring-security.version>
+		<spring-hateoas.version>0.16.0.RELEASE</spring-hateoas.version>
 		<jersey.version>2.16</jersey.version>
+		<jersey-media-json-jackson.version>2.16</jersey-media-json-jackson.version>
+		<jax-ws-rs.version>2.0.1</jax-ws-rs.version>
+		<apache-cxf-jaxrs.version>3.0.4</apache-cxf-jaxrs.version>
+		<jackson-jaxrs-json-provider.version>2.5.1</jackson-jaxrs-json-provider.version>
 	</properties>
 
 	<dependencyManagement>
@@ -110,6 +116,7 @@
 		<module>computer-db-webapp</module>
 		<module>computer-db-console</module>
 		<module>computer-db-restservice</module>
+		<module>computer-db-rest-sdk</module>
 	</modules>
 	<repositories>
 		<repository>

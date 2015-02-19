@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cdb</groupId>
 		<artifactId>computer-db</artifactId>
-		<version>4.3.0</version>
+		<version>${parent.version}</version>
 	</parent>
 	<packaging>war</packaging>
 	<artifactId>computer-db-webservice</artifactId>
@@ -13,20 +13,20 @@
 		<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-service</artifactId>
-			<version>4.3.0</version>
+			<version>${parent.version}</version>
 		</dependency>
 
 		<!-- Third Party dependencies -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
-			<version>2.0.1</version>
+			<version>${jax-ws-rs.version}</version>
 		</dependency>
 		<!-- Jersey Spring dependency -->
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>2.16</version>
+			<version>${jersey-media-json-jackson.version}</version>
 		</dependency>
 		<!-- Jersey Spring dependency excluding spring(v<4) -->
 		<dependency>

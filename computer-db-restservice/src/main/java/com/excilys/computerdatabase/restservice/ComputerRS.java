@@ -29,13 +29,15 @@ import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
 /**
- *<h1>Computer Rest Service : </h1> Access computer information at:<br>
- *		GET /computer : list of computers<br>
- *		GET /computer/id : computer with corresponding id<br>
- *		GET /computer/page/id  : returns page with page number corresponding to id. 0-based<br>
- *		POST /computer : add a computer (requires Content-Type: json/application)<br>
- *		PUT /computer : update a computer<br>
- *		DELETE /computer/id<br>
+ * <h1>Computer Rest Service :</h1> Access computer information at:<br>
+ * GET /computer : list of computers<br>
+ * GET /computer/id : computer with corresponding id<br>
+ * GET /computer/page/id : returns page with page number corresponding to id.
+ * 0-based<br>
+ * POST /computer : add a computer (requires Content-Type: json/application)<br>
+ * PUT /computer : update a computer<br>
+ * DELETE /computer/id<br>
+ * 
  * @author excilys
  */
 @Service
@@ -49,7 +51,9 @@ public class ComputerRS {
 
 	/**
 	 * Finds a computer with corresponding ID path variable.
-	 * @param id id corresponding to a computer in database.
+	 * 
+	 * @param id
+	 *            id corresponding to a computer in database.
 	 * @return Computer with corresponding id or null if not exists
 	 */
 	@GET
@@ -65,7 +69,8 @@ public class ComputerRS {
 
 	/**
 	 * Returns list of all computers in database.
-	 * @return List<\ComputerDTO\>  of all computers in database
+	 * 
+	 * @return List<\ComputerDTO\> of all computers in database
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +81,9 @@ public class ComputerRS {
 
 	/**
 	 * Post a computer to be saved.
-	 * @param computer extracted from JSON
+	 * 
+	 * @param computer
+	 *            extracted from JSON
 	 * @return Response object
 	 */
 	@POST
@@ -90,7 +97,9 @@ public class ComputerRS {
 
 	/**
 	 * PUT a computer to be upserted (updated or inserted)
-	 * @param computer ComputerDTO extracted from JSON
+	 * 
+	 * @param computer
+	 *            ComputerDTO extracted from JSON
 	 * @return Response object
 	 */
 	@PUT
@@ -104,7 +113,9 @@ public class ComputerRS {
 
 	/**
 	 * Remove computer by id;
-	 * @param id Id of computer to be deleted
+	 * 
+	 * @param id
+	 *            Id of computer to be deleted
 	 * @return Response object
 	 */
 	@DELETE
@@ -123,15 +134,21 @@ public class ComputerRS {
 
 	/**
 	 * Returns page at index 'id'
-	 * @param page page number
-	 * @return PageImpl<\ComputerDTO\> 
+	 * 
+	 * @param page
+	 *            page number
+	 * @return PageImpl<\ComputerDTO\>
 	 */
 	@GET
-		@Path("/page/{page: [0-9]+}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public Page<ComputerDTO> getPage(@PathParam("page") int page) {
-				computerDTOMapper = new ComputerDTOMapperImpl();
-				Pageable pageable = new ComputerPage(page, 10);
-				Page<Computer> retrievedPage = computerDBService.retrievePage(pageable, "");
-				return new PageImpl<ComputerDTO>(computerDTOMapper.mapToDTO(retrievedPage.getContent()), pageable, retrievedPage.getTotalElements());
-			}}
+	@Path("/page/{page: [0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Page<ComputerDTO> getPage(@PathParam("page") int page) {
+		computerDTOMapper = new ComputerDTOMapperImpl();
+		Pageable pageable = new ComputerPage(page, 10);
+		Page<Computer> retrievedPage = computerDBService.retrievePage(pageable,
+				"");
+		return new PageImpl<ComputerDTO>(
+				computerDTOMapper.mapToDTO(retrievedPage.getContent()),
+				pageable, retrievedPage.getTotalElements());
+	}
+}

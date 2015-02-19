@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cdb</groupId>
 		<artifactId>computer-db</artifactId>
-		<version>4.3.0</version>
+		<version>${parent.version}</version>
 	</parent>
 	<artifactId>computer-db-webapp</artifactId>
 	<packaging>war</packaging>
@@ -13,17 +13,17 @@
 		<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-binding</artifactId>
-			<version>4.3.0</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-service</artifactId>
-			<version>4.3.0</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>cdb</groupId>
 			<artifactId>computer-db-core</artifactId>
-			<version>4.3.0</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<!-- Third party dependencies -->
 		<dependency>
