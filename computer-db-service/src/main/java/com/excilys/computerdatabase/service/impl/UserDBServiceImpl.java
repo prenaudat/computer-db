@@ -15,6 +15,11 @@ import com.excilys.computerdatabase.core.model.User;
 import com.excilys.computerdatabase.persistence.UserRepository;
 import com.excilys.computerdatabase.service.UserDBService;
 
+/**
+ * UserDBService 
+ * @author excilys
+ *
+ */
 @Service
 public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	@Autowired

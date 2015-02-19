@@ -9,7 +9,6 @@ function checkName() {
 		$("#name")
 				.after(
 						'<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-		$('#submit').prop('disabled', false);
 	} else {
 		$("#name").parent().removeClass("has-success");
 		$("#name").parent().addClass("has-error");
@@ -17,7 +16,6 @@ function checkName() {
 		$("#name")
 				.after(
 						'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-		$('#submit').prop('disabled', true);
 	}
 }
 
@@ -33,7 +31,6 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
-			$('#submit').prop('disabled', false);
 		} else if (reg.test($("#" + argument).val())
 				&& parseInt($("#" + argument).val().split("-")[2]) > 1970
 				&& parseInt($("#" + argument).val().split("-")[2]) < 2038
@@ -45,7 +42,6 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-			$('#submit').prop('disabled', false);
 		} else {
 			$("#" + argument).parent().removeClass("has-warning");
 			$("#" + argument).parent().removeClass("has-success");
@@ -54,8 +50,6 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-			$('#submit').prop('disabled', true);
-
 		}
 	} else {
 		var reg = new RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$");
@@ -67,7 +61,6 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
-			$('#submit').prop('disabled', false);
 		} else if (reg.test($("#" + argument).val())
 				&& parseInt($("#" + argument).val().split("-")[0]) > 1970
 				&& parseInt($("#" + argument).val().split("-")[0]) < 2038
@@ -79,7 +72,6 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-			$('#submit').prop('disabled', false);
 		} else {
 			$("#" + argument).parent().removeClass("has-warning");
 			$("#" + argument).parent().removeClass("has-success");
@@ -88,13 +80,12 @@ function checkDate(argument, locale) {
 			$("#" + argument)
 					.after(
 							'<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-			$('#submit').prop('disabled', true);
 		}
 	}
 }
 
 function checkCompany() {
-	if ($("#companyId").val() != "null") {
+	if ($("#companyId").val() != "null" && $("#companyId").val() != "0" ) {
 		$("#companyId").parent().removeClass("has-warning ");
 		$("#companyId").parent().addClass("has-success");
 		$("#companyId").next().remove();
@@ -109,4 +100,15 @@ function checkCompany() {
 				.after(
 						'<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
 	}
+}
+
+function checkButton(){
+	console.log('checked button');
+	if($("#name").parent().hasClass("has-success") && ($("#introduced").parent().hasClass("has-success") || $("#introduced").parent().hasClass("has-warning") ) &&( $("#discontinued").parent().hasClass("has-success") || $("#discontinued").parent().hasClass("has-warning"))&& ($("#companyId").parent().hasClass("has-success")|| $("#companyId").parent().hasClass("has-warning"))){
+		$('#submit').prop('disabled', false);
+	}else{
+		$('#submit').prop('disabled', true);
+
+	}
+	
 }

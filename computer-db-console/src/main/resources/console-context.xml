@@ -20,7 +20,7 @@
 	<context:component-scan
 		base-package="com.excilys.computerdatabase.restinterface, com.excilys.computerdatabase.console" />
 	<jaxrs-client:client id="computerRESTUtils"
-		address="http://localhost:8080/computer-db-restservice/computer"
+		address="http://localhost:8080/computer-db-rest-service/computer"
 		serviceClass="com.excilys.computerdatabase.restinterface.IComputerRestService"
 		inheritHeaders="true">
 		<jaxrs-client:providers>
@@ -28,7 +28,7 @@
 		</jaxrs-client:providers>
 	</jaxrs-client:client>
 	<jaxrs-client:client id="companyRESTUtils"
-		address="http://localhost:8080/computer-db-restservice/company"
+		address="http://localhost:8080/computer-db-rest-service/company"
 		serviceClass="com.excilys.computerdatabase.restinterface.ICompanyRestService"
 		inheritHeaders="true">
 		<jaxrs-client:providers>

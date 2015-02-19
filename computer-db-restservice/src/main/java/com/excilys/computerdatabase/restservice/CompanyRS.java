@@ -19,10 +19,11 @@ import com.excilys.computerdatabase.core.model.Company;
 import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 
 /**
- * <h1>Company Rest Service : </h1> Access computer information at:<br>
- *		GET /company : list of companies<br>
- *		GET /company/id : company with corresponding id<br>
- *		DELETE /company/id : delete company with corresponding id<br>
+ * <h1>Company Rest Service :</h1> Access computer information at:<br>
+ * GET /company : list of companies<br>
+ * GET /company/id : company with corresponding id<br>
+ * DELETE /company/id : delete company with corresponding id<br>
+ * 
  * @author excilys
  *
  */
@@ -33,10 +34,12 @@ public class CompanyRS {
 	@Autowired
 	CompanyDBServiceImpl companyDBService;
 	CompanyDTOMapperImpl companyDTOMapper = new CompanyDTOMapperImpl();
-	
-	/** 
+
+	/**
 	 * Get a company by id
-	 * @param id : corresponding id
+	 * 
+	 * @param id
+	 *            : corresponding id
 	 * @return company at corresponding id
 	 */
 	@GET
@@ -45,14 +48,13 @@ public class CompanyRS {
 	public Company get(@PathParam("id") long id) {
 		if (companyDBService.exists(id)) {
 			return companyDBService.findOne(id);
-
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
 	 * Returns a list of all companies
+	 * 
 	 * @return
 	 */
 	@GET
@@ -60,10 +62,12 @@ public class CompanyRS {
 	public List<Company> findAll() {
 		return companyDBService.findAll();
 	}
-	
+
 	/**
 	 * Delete a company && all its computers as well.
-	 * @param id id of company.
+	 * 
+	 * @param id
+	 *            id of company.
 	 * @return response status
 	 */
 	@DELETE

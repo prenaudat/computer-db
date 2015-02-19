@@ -116,17 +116,23 @@
 	checkDate("introduced", "<spring:message code="locale" />");
 	checkDate("discontinued", "<spring:message code="locale" />");
 	checkCompany();
+	checkButton();
 	$("#name").on('keyup change', function() {
 		checkName();
+		checkButton();
 	});
 	$("#introduced").on('keyup change', function() {
 		checkDate("introduced", "<spring:message code="locale" />");
+		checkButton();
 	});
 	$("#discontinued").on('keyup change', function() {
 		checkDate("discontinued", "<spring:message code="locale" />");
+		checkButton();
 	});
 	$("#companyId").on('keyup change', function() {
 		checkCompany();
-	});	</script>
+		checkButton();
+	});
+	</script>
 </body>
 </html>

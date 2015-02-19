@@ -88,6 +88,11 @@ public class DashBoard {
 		return mav;
 	}
 
+	/**
+	 * Generate a ComputerPage from request parameters
+	 * @param allRequestParams Map<K,V> with page parameters
+	 * @return
+	 */
 	protected ComputerPage generatePage(Map<String, String> allRequestParams) {
 		int page = 0;
 		int size = 10;

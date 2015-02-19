@@ -54,13 +54,12 @@ public class AddComputer {
 				companyDBService.findAll());
 	}
 
+	
 	/**
-	 * Map PSOT requests on /computer/add
-	 * 
-	 * @param req
-	 * @param resp
-	 * @throws ServletException
-	 * @throws IOException
+	 * Map POST requests to create computers
+	 * @param dto
+	 * @param bindingResult
+	 * @return ModelAndView of dashboard in case of success. Else return page w/errors
 	 */
 	@RequestMapping(value = "/computers/add", method = RequestMethod.POST)
 	protected ModelAndView doPost(@Valid ComputerDTO dto,
