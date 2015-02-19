@@ -68,7 +68,7 @@
 									code="label.INTRODUCED" /></label> <input 
 								class="form-control" id="introduced" name="introduced"
 								placeholder="<spring:message
-									code="label.INTRODUCED" />"
+									code="date.format" />"
 								value="<c:out value="${computer.introduced}"/>">
 						</div>
 						<div class="form-group has-feedback">

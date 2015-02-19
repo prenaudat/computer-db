@@ -4,7 +4,8 @@
 <%@ attribute name="target" required="true"%>
 <%@ attribute name="query" required="false"%>
 <%@ attribute name="size" required="true" type="java.lang.Integer"%>
-<%@ attribute name="pageNumber" required="false" type="java.lang.Integer"%>
+<%@ attribute name="pageNumber" required="false"
+	type="java.lang.Integer"%>
 <%@ attribute name="orderBy" required="true"%>
 <%@ attribute name="pageCount" required="true" type="java.lang.Integer"%>
 
@@ -14,7 +15,8 @@
 			<c:if test="${pageNumber>0}">
 				<li><a
 					href="${target}?page=0&query=${query}&orderBy=${orderBy}&size=${size}"
-					aria-label="Next"> <span aria-hidden="true"><spring:message code="dashboard.first" /></span>
+					aria-label="Next"> <span aria-hidden="true"><spring:message
+								code="dashboard.first" /></span>
 				</a></li>
 				<li><a
 					href="${target}?page=${pageNumber-1}&query=${query}&orderBy=${orderBy}&size=${size}"
@@ -52,14 +54,14 @@
 				</a></li>
 				<li><a
 					href="${target}?page=${pageCount}&query=${query}&orderBy=${orderBy}&size=${size}"
-					aria-label="Next"> <span aria-hidden="true"><spring:message code="dashboard.last" /></span>
+					aria-label="Next"> <span aria-hidden="true"><spring:message
+								code="dashboard.last" /></span>
 				</a></li>
 			</c:if>
 		</ul>
 
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<a
-				href="${target}?size=10&query=${query}&orderBy=${orderBy}"
+			<a href="${target}?size=10&query=${query}&orderBy=${orderBy}"
 				type="button" class="btn btn-default">10</a> <a
 				href="${target}?size=50&query=${query}&orderBy=${orderBy}"
 				type="button" class="btn btn-default">50</a> <a
