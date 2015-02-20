@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,10 +32,11 @@ import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 @Controller
 public class AddComputer {
 	@Autowired
-	ComputerDBServiceImpl computerDBService;
+	private ComputerDBServiceImpl computerDBService;
 	@Autowired
-	CompanyDBService companyDBService;
-	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
+	private CompanyDBService companyDBService;
+	private ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
 	/**
 	 * ComputerDTOValidator binding
@@ -69,6 +72,7 @@ public class AddComputer {
 	protected ModelAndView doPost(@Valid ComputerDTO dto,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
+			LOGGER.info("Erros detected : {}", bindingResult.getAllErrors());
 			ModelAndView mav = new ModelAndView("addComputer", "computer", dto);
 			ArrayList<String> errorCodes = new ArrayList<>();
 			bindingResult.getAllErrors().forEach(

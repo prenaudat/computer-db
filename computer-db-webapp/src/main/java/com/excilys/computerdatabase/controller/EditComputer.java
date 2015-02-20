@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,10 +33,12 @@ import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 @Controller
 public class EditComputer {
 	@Autowired
-	ComputerDBServiceImpl computerDBService;
+	private ComputerDBServiceImpl computerDBService;
 	@Autowired
-	CompanyDBServiceImpl companyDBService;
-	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
+	private CompanyDBServiceImpl companyDBService;
+	private ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(EditComputer.class);
 
 	/**
 	 * Initialize and bind ComputerDTOValidator
@@ -73,6 +77,7 @@ public class EditComputer {
 	protected ModelAndView doPost(@Valid ComputerDTO dto,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
+			LOGGER.debug("Errors found on page : {}", bindingResult);
 			ModelAndView mav = new ModelAndView("editComputer", "computer", dto);
 			mav.addObject("id", dto.getId());
 			ArrayList<String> errorCodes = new ArrayList<>();
@@ -90,7 +95,6 @@ public class EditComputer {
 		computerDBService.save(c);
 		ModelAndView home = new ModelAndView(new RedirectView("/computers",
 				true));
-		// home.addObject("page", computerDBService.getPage(0));
 		return home;
 	}
 

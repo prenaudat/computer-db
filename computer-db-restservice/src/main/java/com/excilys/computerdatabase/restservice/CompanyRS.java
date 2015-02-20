@@ -11,6 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +36,7 @@ public class CompanyRS {
 	@Autowired
 	CompanyDBServiceImpl companyDBService;
 	CompanyDTOMapperImpl companyDTOMapper = new CompanyDTOMapperImpl();
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyRS.class);
 
 	/**
 	 * Get a company by id
@@ -47,6 +50,7 @@ public class CompanyRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Company get(@PathParam("id") long id) {
 		if (companyDBService.exists(id)) {
+			LOGGER.debug("Queried Company for id {} successfully", id);
 			return companyDBService.findOne(id);
 		}
 		return null;
@@ -55,11 +59,12 @@ public class CompanyRS {
 	/**
 	 * Returns a list of all companies
 	 * 
-	 * @return
+	 * @return List of companies
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Company> findAll() {
+		LOGGER.debug("Queried Company for all companies");
 		return companyDBService.findAll();
 	}
 
@@ -76,8 +81,10 @@ public class CompanyRS {
 		Status status = null;
 		if (companyDBService.exists(id)) {
 			companyDBService.delete(id);
+			LOGGER.debug("Company deleted successfully : {}", id);
 			status = Status.NO_CONTENT;
 		} else {
+			LOGGER.debug("There was no company to be deleted at id : {}",id);
 			status = Status.BAD_REQUEST;
 		}
 		return Response.status(status).build();

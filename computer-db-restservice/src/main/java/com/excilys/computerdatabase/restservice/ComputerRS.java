@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -48,6 +50,7 @@ public class ComputerRS {
 	@Autowired
 	CompanyDBServiceImpl companyDBService;
 	ComputerDTOMapperImpl computerDTOMapper;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerRS.class);
 
 	/**
 	 * Finds a computer with corresponding ID path variable.
@@ -62,8 +65,10 @@ public class ComputerRS {
 	public ComputerDTO findOne(@PathParam("id") long id) {
 		if (computerDBService.exists(id)) {
 			computerDTOMapper = new ComputerDTOMapperImpl();
+			LOGGER.info("Computer found successfully at ID : {} ", id);
 			return computerDTOMapper.mapToDTO(computerDBService.findOne(id));
 		}
+		LOGGER.info("No computer found at ID : {} ", id);
 		return null;
 	}
 
@@ -75,6 +80,7 @@ public class ComputerRS {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComputerDTO> findAll() {
+		LOGGER.info("All computers queried");
 		computerDTOMapper = new ComputerDTOMapperImpl();
 		return computerDTOMapper.mapToDTO(computerDBService.findAll());
 	}
@@ -90,6 +96,7 @@ public class ComputerRS {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response save(@Valid ComputerDTO computer) {
+		LOGGER.info("Saved computer {}", computer);
 		computerDTOMapper = new ComputerDTOMapperImpl();
 		computerDBService.save(computerDTOMapper.mapFromDTO(computer));
 		return Response.status(201).entity(computer).build();
@@ -106,6 +113,7 @@ public class ComputerRS {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(ComputerDTO computer) {
+		LOGGER.info("Updated ComputerDTO : {} ", computer);
 		computerDTOMapper = new ComputerDTOMapperImpl();
 		computerDBService.save(computerDTOMapper.mapFromDTO(computer));
 		return Response.status(201).entity(computer).build();
@@ -123,9 +131,11 @@ public class ComputerRS {
 	public Response remove(@PathParam("id") long id) {
 		Status status = null;
 		if (computerDBService.exists(id)) {
+			LOGGER.info("Deleted computer at id : {}", id);
 			computerDBService.delete(id);
 			status = Status.NO_CONTENT;
 		} else {
+			LOGGER.error("Failed to delete computer (Didn't exist) at id : {}", id);
 			status = Status.BAD_REQUEST;
 		}
 
@@ -147,6 +157,7 @@ public class ComputerRS {
 		Pageable pageable = new RequestPage(page, 10);
 		Page<Computer> retrievedPage = computerDBService.retrievePage(pageable,
 				"");
+		LOGGER.info("Retrieved page number {}", page);
 		return new PageImpl<ComputerDTO>(
 				computerDTOMapper.mapToDTO(retrievedPage.getContent()),
 				pageable, retrievedPage.getTotalElements());

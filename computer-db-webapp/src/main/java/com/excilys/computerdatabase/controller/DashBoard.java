@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.commons.validator.GenericValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
 import com.excilys.computerdatabase.binding.dto.impl.ComputerDTOMapperImpl;
-import com.excilys.computerdatabase.core.common.RequestPage;
 import com.excilys.computerdatabase.core.common.OrderBy;
+import com.excilys.computerdatabase.core.common.RequestPage;
 import com.excilys.computerdatabase.core.model.Computer;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
@@ -29,6 +31,7 @@ public class DashBoard {
 	@Autowired
 	ComputerDBServiceImpl computerDBService;
 	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
+	private static final Logger LOGGER = LoggerFactory.getLogger(DashBoard.class);
 
 	/**
 	 * Map GET requests to /computers.
@@ -40,6 +43,7 @@ public class DashBoard {
 	@RequestMapping(value = "/computers", method = RequestMethod.GET)
 	protected ModelAndView get(
 			@RequestParam Map<String, String> allRequestParams) {
+		LOGGER.info("Dashboard queried with request parameters : {}", Arrays.toString((allRequestParams.entrySet().toArray())));
 		return sendHomePage(allRequestParams);
 	}
 
@@ -54,6 +58,7 @@ public class DashBoard {
 	@RequestMapping(value = "/computers", method = RequestMethod.POST)
 	protected ModelAndView post(
 			@RequestParam Map<String, String> allRequestParams) {
+		LOGGER.info("Dashboard deletion feature queried for values : {}", Arrays.toString((allRequestParams.entrySet().toArray())));
 		Arrays.asList(allRequestParams.get("selection").split(",")).forEach(
 				i -> computerDBService.delete(i));
 		return sendHomePage(allRequestParams);

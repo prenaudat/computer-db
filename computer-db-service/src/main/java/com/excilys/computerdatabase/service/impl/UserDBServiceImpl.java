@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,6 +26,7 @@ import com.excilys.computerdatabase.service.UserDBService;
  */
 @Service
 public class UserDBServiceImpl implements UserDBService, UserDetailsService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDBServiceImpl.class);
 	// Autowired component
 	@Autowired
 	UserRepository userRepository;
@@ -49,6 +52,7 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	 * .lang.String)
 	 */
 	public User findByUserName(String userName) {
+		LOGGER.info("Queried user repository for user name : {}", userName);
 		return userRepository.findByUserName(userName);
 	}
 
@@ -61,6 +65,7 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	@Override
 	public void save(User user) {
 		userRepository.save(user);
+		LOGGER.info("Persisted user  : {}", user);
 	}
 
 	/*
@@ -72,7 +77,9 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	 */
 	@Override
 	public void delete(User user) {
+		LOGGER.info("Attempting to delete user  : {}", user);
 		userRepository.delete(user);
+		LOGGER.info("Successfully deleted user : {}", user);
 	}
 
 	/*
@@ -82,6 +89,7 @@ public class UserDBServiceImpl implements UserDBService, UserDetailsService {
 	 */
 	@Override
 	public List<User> find() {
+		LOGGER.info("Querying user repository for all users");
 		return userRepository.findAll();
 	}
 
