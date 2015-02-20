@@ -1,9 +1,7 @@
 package com.excilys.computerdatabase.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.ServletException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ import com.excilys.computerdatabase.service.CompanyDBService;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
 
 /**
- * Manage /addComputer Display and persist computer for adding
+ * Servlet managing /addComputer Display and persistign computers for adding
  * 
  * @author excilys
  *
@@ -37,6 +35,11 @@ public class AddComputer {
 	CompanyDBService companyDBService;
 	ComputerDTOMapperImpl computerDTOMapper = new ComputerDTOMapperImpl();
 
+	/**
+	 * ComputerDTOValidator binding
+	 * 
+	 * @param binder
+	 */
 	@InitBinder("computerDTO")
 	protected void initComputerDTOBinder(WebDataBinder binder) {
 		binder.setValidator(new ComputerDTOValidator());
@@ -54,12 +57,13 @@ public class AddComputer {
 				companyDBService.findAll());
 	}
 
-	
 	/**
 	 * Map POST requests to create computers
+	 * 
 	 * @param dto
 	 * @param bindingResult
-	 * @return ModelAndView of dashboard in case of success. Else return page w/errors
+	 * @return ModelAndView of dashboard in case of success. Else return page
+	 *         w/errors
 	 */
 	@RequestMapping(value = "/computers/add", method = RequestMethod.POST)
 	protected ModelAndView doPost(@Valid ComputerDTO dto,
@@ -75,7 +79,7 @@ public class AddComputer {
 			return mav;
 		}
 		Computer c = computerDTOMapper.mapFromDTO(dto);
-		if(c.getCompany().getId()==0){
+		if (c.getCompany().getId() == 0) {
 			c.setCompany(null);
 		}
 		computerDBService.save(c);

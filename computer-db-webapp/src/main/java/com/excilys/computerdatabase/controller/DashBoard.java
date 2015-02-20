@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import com.excilys.computerdatabase.binding.dto.impl.ComputerDTOMapperImpl;
-import com.excilys.computerdatabase.core.common.ComputerPage;
+import com.excilys.computerdatabase.core.common.RequestPage;
 import com.excilys.computerdatabase.core.common.OrderBy;
 import com.excilys.computerdatabase.core.model.Computer;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
@@ -67,14 +68,14 @@ public class DashBoard {
 	 * @return ModelAndView of dashboard.
 	 */
 	protected ModelAndView sendHomePage(Map<String, String> allRequestParams) {
-		ComputerPage page = generatePage(allRequestParams);
+		RequestPage page = generatePage(allRequestParams);
 		ModelAndView mav = new ModelAndView("dashboard");
 		String query = null;
 		if (allRequestParams.containsKey("query")) {
 			query = allRequestParams.get("query");
 		}
 		Page<Computer> p = computerDBService.retrievePage(page, query);
-		mav.addObject("query", query);
+		mav.addObject("query", HtmlUtils.htmlEscape(query, "UTF-8"));
 		mav.addObject("target", "computers");
 		mav.addObject("list", computerDTOMapper.mapToDTO(p.getContent()));
 		mav.addObject("size", p.getSize());
@@ -93,7 +94,7 @@ public class DashBoard {
 	 * @param allRequestParams Map<K,V> with page parameters
 	 * @return
 	 */
-	protected ComputerPage generatePage(Map<String, String> allRequestParams) {
+	protected RequestPage generatePage(Map<String, String> allRequestParams) {
 		int page = 0;
 		int size = 10;
 		OrderBy orderBy;
@@ -105,7 +106,7 @@ public class DashBoard {
 				&& GenericValidator.isInt(allRequestParams.get("page"))) {
 			page = Integer.parseInt(allRequestParams.get("page"));
 		}
-		ComputerPage p = new ComputerPage(page, size);
+		RequestPage p = new RequestPage(page, size);
 
 		if (allRequestParams.containsKey("orderBy")) {
 			try {

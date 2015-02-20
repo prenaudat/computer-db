@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 import com.excilys.computerdatabase.binding.common.resources.PageResponse;
 import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
 
+/**
+ * Computer RestService interface
+ * @author excilys
+ *
+ */
 @Service
 public interface IComputerRestService {
 	@GET

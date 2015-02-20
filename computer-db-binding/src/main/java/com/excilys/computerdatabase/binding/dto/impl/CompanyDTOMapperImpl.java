@@ -3,8 +3,8 @@ package com.excilys.computerdatabase.binding.dto.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.computerdatabase.binding.dto.model.CompanyDTO;
 import com.excilys.computerdatabase.binding.dto.DTOMapper;
+import com.excilys.computerdatabase.binding.dto.model.CompanyDTO;
 import com.excilys.computerdatabase.core.model.Company;
 
 /**

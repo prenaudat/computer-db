@@ -14,6 +14,7 @@ import com.excilys.computerdatabase.restinterface.ICompanyRestService;
 import com.excilys.computerdatabase.restinterface.IComputerRestService;
 
 /**
+ * Client for remote CRUD via REST API
  * @author excilys
  *
  */
@@ -26,8 +27,6 @@ public class Client {
 	private Pageable pageable;
 	private static final String FAIL = "You failed to select an available option, please try again";
 	private static final String MAIN_MENU = "A) List computerss \nB) List companies \nC) Detailed computer view \nD) Create a computer \nE) Update a computer \nF) Delete a computer \nG) Delete Company+Computers";
-
-	// Logger for this class
 
 	/**
 	 * Display page of Computers and calls Computer Menu

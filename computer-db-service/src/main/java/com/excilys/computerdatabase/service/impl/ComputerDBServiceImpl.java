@@ -16,11 +16,17 @@ import com.excilys.computerdatabase.service.ComputerDBService;
 
 /**
  * ComputerDBService Imlpementation with the ComputerRepository
+ * 
+ * @author excilys
+ *
+ */
+/**
  * @author excilys
  *
  */
 @Service("computerService")
 public class ComputerDBServiceImpl implements ComputerDBService {
+	// Autowired components
 	@Autowired
 	ComputerRepository computerRepository;
 	@Autowired
@@ -53,8 +59,12 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		return computerRepository.findOne(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.computerdatabase.service.ComputerDBService#save(com.excilys.computerdatabase.core.model.Computer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.computerdatabase.service.ComputerDBService#save(com.excilys
+	 * .computerdatabase.core.model.Computer)
 	 */
 	public void save(Computer computer) {
 		computerRepository.save(computer);
@@ -72,10 +82,12 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		companyRepository.delete(id);
 	}
 
-	/**
-	 * Removes computer at specified id.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param id to be deleted.
+	 * @see
+	 * com.excilys.computerdatabase.service.ComputerDBService#delete(java.lang
+	 * .String)
 	 */
 	public void delete(String id) {
 		if (GenericValidator.isLong(id)) {
@@ -83,15 +95,18 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		}
 	}
 
-	/**
-	 * delete by long id 
-	 * @param id : Corresponding id
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.computerdatabase.service.ComputerDBService#delete(long)
 	 */
 	public void delete(long id) {
 		computerRepository.delete(id);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.excilys.computerdatabase.service.ComputerDBService#exists(long)
 	 */
 	@Override
@@ -99,9 +114,10 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 		return computerRepository.exists(id);
 	}
 
-	/**
-	 * Find all computers in computer repository
-	 * @return List<\Computer\> of computers
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.computerdatabase.service.ComputerDBService#findAll()
 	 */
 	public List<Computer> findAll() {
 		return (List<Computer>) computerRepository.findAll();

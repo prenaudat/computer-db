@@ -7,10 +7,18 @@ import org.junit.Test;
 
 import com.excilys.computerdatabase.core.model.Company;
 
+/**
+ * Company Test
+ * @author excilys
+ *
+ */
 public class TestCompany {
 
 	Company company;
 
+	/**
+	 * Build a company
+	 */
 	@Before
 	public void initialize() {
 
@@ -18,6 +26,9 @@ public class TestCompany {
 
 	}
 
+	/**
+	 * Testing id getter
+	 */
 	@Test
 	public void testGetId() {
 
@@ -27,6 +38,9 @@ public class TestCompany {
 
 	}
 
+	/**
+	 * Testing name getter
+	 */
 	@Test
 	public void testGetName() {
 

@@ -9,12 +9,15 @@
 		http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/data/jpa
 		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-		
-	<context:annotation-config/>
+	<!-- Spring annotation configs -->
+	<context:annotation-config />
+	<!-- Spring package to scan -->
+
 	<context:component-scan base-package="com.excilys.computerdatabase.persistence" />
+	<!-- Load properties from properties file -->
 
 	<context:property-placeholder location="classpath:/database.properties" />
-
+	<!-- DataSource bean -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${database.driver}" />
@@ -22,7 +25,7 @@
 		<property name="username" value="${database.username}" />
 		<property name="password" value="${database.password}" />
 	</bean>
-	
+	<!-- JPA EMF Bean -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.excilys.computerdatabase.core.model" />
@@ -30,18 +33,17 @@
 		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
 		<property name="jpaDialect" ref="jpaDialect" />
 	</bean>
-
+	<!-- JPA package to scan -->
 	<jpa:repositories base-package="com.excilys.computerdatabase.persistence"
 		entity-manager-factory-ref="entityManagerFactory"
 		transaction-manager-ref="txManager" />
+	<!-- JPA Hibernate Vendor adaptor bean -->
 
 	<bean id="jpaVendorAdapter"
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
 	</bean>
-
+	<!-- JPA dialect bean -->
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-
-
 </beans>
 		

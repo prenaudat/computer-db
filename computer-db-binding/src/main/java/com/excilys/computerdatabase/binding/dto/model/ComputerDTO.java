@@ -8,11 +8,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * @author excilys Computer Data Transfer Object
+ * Computer Data Transfer Object
+ * @author excilys 
  */
 public class ComputerDTO implements java.io.Serializable {
 
-	private static final Long serialVersionUID = 5760780429754830864L;
+	/**
+	 * Serializable
+	 */
+	private static final long serialVersionUID = 1L;
 	@NotNull
 	@Min(0)
 	@Size(max = 20)
@@ -27,58 +31,108 @@ public class ComputerDTO implements java.io.Serializable {
 	private Long companyId;
 	private String companyName;
 
+	/**
+	 * Get company name
+	 * @return  Name of company
+	 */
 	public String getCompanyName() {
 		return companyName;
 	}
 
+	/**
+	 * Set company name
+	 * @param  Name of company
+	 */
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
 
+	/**
+	 * Get id
+	 * @return id The id of ComputerDTO
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Set id 
+	 * @param id Id of computerDTO
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * get the ComputerDTO name
+	 * @return String name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get introduction date 
+	 * @return String representation of introduction date
+	 */
 	public String getIntroduced() {
 		return introduced;
 	}
 
+	/**
+	 * Get discontinuation date
+	 * @return String representation of discontinuation date
+	 */
 	public String getDiscontinued() {
 		return discontinued;
 	}
 
+	/**
+	 * Set discontinuation date
+	 * @param discontinued String representation of discontinuation date
+	 */
 	public void setDiscontinued(String discontinued) {
 		if (discontinued != null) {
 			this.discontinued = discontinued.toString();
 		}
 	}
 
+	/**
+	 * Get company Id
+	 * @return company id
+	 */
 	public Long getCompanyId() {
 		return companyId;
 	}
 
+	/**
+	 * Set Company Id
+	 * @param companyId Long company Id
+	 */
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
+	/**
+	 * Set introduction date
+	 * @param introduced String introduction date
+	 */
 	public void setIntroduced(String introduced) {
 		if (introduced != null) {
 			this.introduced = introduced.toString();
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder2 = new StringBuilder();
@@ -90,6 +144,15 @@ public class ComputerDTO implements java.io.Serializable {
 		return builder2.toString();
 	}
 
+	/**
+	 * Constructor from all parameters
+	 * @param id Id of computer
+	 * @param name Name of computer
+	 * @param introduced Introduction date of ComputerDTO (String)
+	 * @param discontinued Discontinuation date of computerDTO(String)
+	 * @param company_Name Company name of ComupterDTO
+	 * @param company_Id Company Id of ComputerDTO
+	 */
 	public ComputerDTO(Long id, String name, String introduced,
 			String discontinued, String company_Name, Long company_Id) {
 		super();
@@ -101,6 +164,9 @@ public class ComputerDTO implements java.io.Serializable {
 		this.companyName = company_Name;
 	}
 
+	/**
+	 * Null default constructor
+	 */
 	public ComputerDTO() {
 		this.id = null;
 		this.name = null;
@@ -110,6 +176,10 @@ public class ComputerDTO implements java.io.Serializable {
 		this.companyName = null;
 	}
 
+	/**
+	 * Constructor from ComputerDTO builder
+	 * @param builder ComputerDTO.Builder
+	 */
 	private ComputerDTO(Builder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
@@ -119,6 +189,11 @@ public class ComputerDTO implements java.io.Serializable {
 		this.companyName = builder.companyName;
 	}
 
+	/**
+	 * Nested Builder class
+	 * @author excilys
+	 *
+	 */
 	public static class Builder {
 
 		private Long id;
@@ -128,21 +203,41 @@ public class ComputerDTO implements java.io.Serializable {
 		private Long companyId;
 		private String companyName;
 
+		/**
+		 * Add id to builder
+		 * @param id Long id of ComputerDTO
+		 * @return current builder
+		 */
 		public Builder withId(Long id) {
 			this.id = id;
 			return this;
 		}
 
+		/** 
+		 * Add name to builder
+		 * @param name String name
+		 * @return current builder
+		 */
 		public Builder withName(String name) {
 			this.name = name;
 			return this;
 		}
 
+		/**
+		 * Add string introduced to builder
+		 * @param introduced String introduction date
+		 * @return current builder
+		 */
 		public Builder withIntroduced(String introduced) {
 			this.introduced = introduced.toString();
 			return this;
 		}
 
+		/**
+		 * Add string discontinued to builder
+		 * @param discontinued String date
+		 * @return current builder
+		 */
 		public Builder withDiscontinued(String discontinued) {
 			if (discontinued != null) {
 				this.discontinued = discontinued.toString();
@@ -150,6 +245,12 @@ public class ComputerDTO implements java.io.Serializable {
 			return this;
 		}
 
+		/**
+		 * Adds Introduced date with locale to DTO
+		 * @param introduced LocalDate introduction
+		 * @param locale en or fr supported
+		 * @return current builder
+		 */
 		public Builder withIntroduced(LocalDate introduced, String locale) {
 			if (introduced != null) {
 				if (locale.equals("fr")) {
@@ -163,6 +264,12 @@ public class ComputerDTO implements java.io.Serializable {
 			return this;
 		}
 
+		/**
+		 * Adds Discontinued date with locale to DTO
+		 * @param discontinued LocalDate discontinuation
+		 * @param locale en or fr supported
+		 * @return current builder
+		 */
 		public Builder withDiscontinued(LocalDate discontinued, String locale) {
 			if (discontinued != null) {
 				if (locale.equals("fr")) {
@@ -176,16 +283,30 @@ public class ComputerDTO implements java.io.Serializable {
 			return this;
 		}
 
+		/**
+		 * Add company Id to builder
+		 * @param companyId Id of company
+		 * @return current builder
+		 */
 		public Builder withCompanyId(Long companyId) {
 			this.companyId = companyId;
 			return this;
 		}
 
+		/**
+		 * Add companyName to ComputerDTO
+		 * @param companyName Company name for ComputerDTO
+		 * @return this current builder
+		 */
 		public Builder withCompanyName(String companyName) {
 			this.companyName = companyName;
 			return this;
 		}
 
+		/**
+		 * Returns build computerDTO
+		 * @return ComputerDTO
+		 */
 		public ComputerDTO build() {
 			return new ComputerDTO(this);
 		}

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.computerdatabase.binding.dto.impl.ComputerDTOMapperImpl;
 import com.excilys.computerdatabase.binding.dto.model.ComputerDTO;
-import com.excilys.computerdatabase.core.common.ComputerPage;
+import com.excilys.computerdatabase.core.common.RequestPage;
 import com.excilys.computerdatabase.core.model.Computer;
 import com.excilys.computerdatabase.service.impl.CompanyDBServiceImpl;
 import com.excilys.computerdatabase.service.impl.ComputerDBServiceImpl;
@@ -144,7 +144,7 @@ public class ComputerRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Page<ComputerDTO> getPage(@PathParam("page") int page) {
 		computerDTOMapper = new ComputerDTOMapperImpl();
-		Pageable pageable = new ComputerPage(page, 10);
+		Pageable pageable = new RequestPage(page, 10);
 		Page<Computer> retrievedPage = computerDBService.retrievePage(pageable,
 				"");
 		return new PageImpl<ComputerDTO>(

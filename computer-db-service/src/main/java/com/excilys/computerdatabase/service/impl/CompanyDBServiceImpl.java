@@ -3,8 +3,6 @@ package com.excilys.computerdatabase.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +12,14 @@ import com.excilys.computerdatabase.persistence.ComputerRepository;
 import com.excilys.computerdatabase.service.CompanyDBService;
 
 /**
- * @author excilys
- *
- */
-/**
+ * CompanyDBService Implementation
+ * 
  * @author excilys
  *
  */
 @Service("companyService")
 public class CompanyDBServiceImpl implements CompanyDBService {
+	// autowired components
 	@Autowired
 	CompanyRepository companyRepository;
 	@Autowired
@@ -37,16 +34,24 @@ public class CompanyDBServiceImpl implements CompanyDBService {
 		return companyRepository.findOne(id);
 	}
 
-	/**
-	 * @return List<Company> of all companies
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.computerdatabase.service.CompanyDBService#findAll()
 	 */
 	public List<Company> findAll() {
 		return companyRepository.findAll();
 	}
-	
-	public boolean exists(long id){
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.computerdatabase.service.CompanyDBService#exists(long)
+	 */
+	public boolean exists(long id) {
 		return companyRepository.exists(id);
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -56,16 +61,6 @@ public class CompanyDBServiceImpl implements CompanyDBService {
 	public void delete(long id) {
 		computerRepository.deleteByCompany_Id(id);
 		companyRepository.delete(id);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.computerdatabase.service.CompanyDBService#getPage(org.
-	 * springframework.data.domain.PageRequest)
-	 */
-	public Page<Company> getPage(PageRequest pageRequest) {
-		return companyRepository.findAll(pageRequest);
 	}
 
 }

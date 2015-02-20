@@ -14,11 +14,13 @@
 						http://cxf.apache.org/jaxrs-client
 						http://cxf.apache.org/schemas/jaxrs-client.xsd">
 
-
+<!--  Spring annotations -->
 	<context:annotation-config />
-	<!-- Scan of the service packages -->
+	
+	<!-- Spring instantiate beans for restInterfaces and console -->
 	<context:component-scan
 		base-package="com.excilys.computerdatabase.restinterface, com.excilys.computerdatabase.console" />
+			<!-- Spring instantiate beans for Jax-RS -->
 	<jaxrs-client:client id="computerRESTUtils"
 		address="http://localhost:8080/computer-db-rest-service/computer"
 		serviceClass="com.excilys.computerdatabase.restinterface.IComputerRestService"

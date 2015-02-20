@@ -8,34 +8,59 @@ import org.springframework.data.domain.Sort;
  * 
  * @author excilys
  */
-public class ComputerPage extends PageRequest {
+public class RequestPage extends PageRequest {
 	private static final long serialVersionUID = 1L;
 	private OrderBy orderBy;
 
 	/**
 	 * ComputerPage constructor
-	 * @param page pageNumber
-	 * @param size pageSize
+	 * 
+	 * @param page
+	 *            pageNumber
+	 * @param size
+	 *            pageSize
 	 */
-	public ComputerPage(int page, int size) {
+	public RequestPage(int page, int size) {
 		super(page, size);
 
 	}
 
-	public ComputerPage(int page, int size, OrderBy orderBy) {
+	/**
+	 * Constructor
+	 * 
+	 * @param page
+	 *            pageNumber
+	 * @param size
+	 *            size of page
+	 * @param orderBy
+	 *            OrderBy
+	 */
+	public RequestPage(int page, int size, OrderBy orderBy) {
 		super(page, size);
 		this.setOrderBy(orderBy);
-		System.out.println(orderBy);
 	}
 
+	/**
+	 * Get order by
+	 * @return OrderBy 
+	 */
 	public OrderBy getOrderBy() {
 		return orderBy;
 	}
 
+	/**
+	 * Set OrderBy
+	 * @param orderBy Sorting parameter for the page
+	 */
 	public void setOrderBy(OrderBy orderBy) {
 		this.orderBy = orderBy;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.data.domain.PageRequest#getSort()
+	 */
 	public Sort getSort() {
 		if (orderBy != null) {
 			return orderBy.getValue();
@@ -43,13 +68,18 @@ public class ComputerPage extends PageRequest {
 		return null;
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.data.domain.PageRequest#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Page [sort=").append(orderBy.getValue())
-		.append(" size=").append(this.getPageSize())
-		.append(" pageNumber=").append(this.getPageNumber()).append("]");
+				.append(" size=").append(this.getPageSize())
+				.append(" pageNumber=").append(this.getPageNumber())
+				.append("]");
 		return builder.toString();
 	}
 

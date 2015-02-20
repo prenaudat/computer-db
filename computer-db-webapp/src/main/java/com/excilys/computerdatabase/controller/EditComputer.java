@@ -84,7 +84,7 @@ public class EditComputer {
 			return mav;
 		}
 		Computer c = computerDTOMapper.mapFromDTO(dto);
-		if(c.getCompany().getId()==0){
+		if (c.getCompany().getId() == 0) {
 			c.setCompany(null);
 		}
 		computerDBService.save(c);

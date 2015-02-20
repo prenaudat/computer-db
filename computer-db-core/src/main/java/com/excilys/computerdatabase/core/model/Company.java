@@ -26,6 +26,7 @@ public class Company {
 	@Column(name = "name")
 	@NotNull
 	private String name;
+
 	// Default Constructor
 	protected Company() {
 	}

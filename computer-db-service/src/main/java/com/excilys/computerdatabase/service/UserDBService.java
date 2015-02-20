@@ -6,23 +6,43 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.excilys.computerdatabase.core.model.User;
 
+/**
+ * User Service for Crud
+ * 
+ * @author excilys
+ *
+ */
+public interface UserDBService extends UserDetailsService {
 
-public interface UserDBService extends UserDetailsService{
-    /**
-     * Find persons.
-     */
-    public List<User> find();
+	/**
+	 * Find users
+	 * 
+	 * @return List of users
+	 */
+	public List<User> find();
 
-    /**
-     * Saves person.
-     */
-    public void save(User user);
+	/**
+	 * Persist a user
+	 * 
+	 * @param user
+	 *            to be persisted
+	 */
+	public void save(User user);
 
-    /**
-     * Deletes person.
-     */
-    public void delete(User user);
+	/**
+	 * Delete a user
+	 * 
+	 * @param user
+	 *            to be deleted
+	 */
+	public void delete(User user);
 
+	/**
+	 * Find user by name
+	 * 
+	 * @param userName
+	 * @return User with userName
+	 */
 	public User findByUserName(String userName);
 
 }
