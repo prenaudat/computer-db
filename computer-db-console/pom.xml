@@ -41,17 +41,15 @@
 			<artifactId>cxf-rt-rs-client</artifactId>
 			<version>${apache-cxf-jaxrs.version}</version>
 		</dependency>
-		        <dependency>
+		<dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson-jaxrs-json-provider.version}</version>
         </dependency>
-        <dependencies>
-    <dependency>
-        <groupId>org.springframework.hateoas</groupId>
-        <artifactId>spring-hateoas</artifactId>
-        <version>${spring-hateoas.version}</version>
-    </dependency>
+    	<dependency>
+        	<groupId>org.springframework.hateoas</groupId>
+       		<artifactId>spring-hateoas</artifactId>
+        	<version>${spring-hateoas.version}</version>
+    	</dependency>
 </dependencies>
-	</dependencies>
 </project>

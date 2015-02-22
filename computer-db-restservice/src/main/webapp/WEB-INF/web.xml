@@ -4,14 +4,12 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-    <!-- Inject spring webservice context --> 
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
             classpath:webservice-context.xml
         </param-value>
   </context-param>
-  <!-- Servlet for requestMapping -->
   <servlet>
     <servlet-name>Jersey Web Application</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

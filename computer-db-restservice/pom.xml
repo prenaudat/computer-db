@@ -7,7 +7,7 @@
 		<version>${parent.version}</version>
 	</parent>
 	<packaging>war</packaging>
-	<artifactId>computer-db-webservice</artifactId>
+	<artifactId>computer-db-restservice</artifactId>
 	<dependencies>
 		<!-- Sibling dependency -->
 		<dependency>
