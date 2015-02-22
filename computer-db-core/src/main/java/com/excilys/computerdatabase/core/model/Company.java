@@ -55,7 +55,7 @@ public class Company {
 	}
 
 	/**
-	 * @param name
+	 * @param name the name
 	 */
 	public void setName(String name) {
 		this.name = name;

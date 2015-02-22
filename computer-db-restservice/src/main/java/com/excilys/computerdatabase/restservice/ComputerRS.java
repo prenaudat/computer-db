@@ -55,8 +55,7 @@ public class ComputerRS {
 	/**
 	 * Finds a computer with corresponding ID path variable.
 	 * 
-	 * @param id
-	 *            id corresponding to a computer in database.
+	 * @param id id corresponding to a computer in database.
 	 * @return Computer with corresponding id or null if not exists
 	 */
 	@GET
@@ -75,7 +74,7 @@ public class ComputerRS {
 	/**
 	 * Returns list of all computers in database.
 	 * 
-	 * @return List<\ComputerDTO\> of all computers in database
+	 * @return List of ComputerDTO  of all computers in database
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,8 +87,7 @@ public class ComputerRS {
 	/**
 	 * Post a computer to be saved.
 	 * 
-	 * @param computer
-	 *            extracted from JSON
+	 * @param computer extracted from JSON
 	 * @return Response object
 	 */
 	@POST
@@ -105,8 +103,7 @@ public class ComputerRS {
 	/**
 	 * PUT a computer to be upserted (updated or inserted)
 	 * 
-	 * @param computer
-	 *            ComputerDTO extracted from JSON
+	 * @param computer ComputerDTO extracted from JSON
 	 * @return Response object
 	 */
 	@PUT
@@ -122,8 +119,7 @@ public class ComputerRS {
 	/**
 	 * Remove computer by id;
 	 * 
-	 * @param id
-	 *            Id of computer to be deleted
+	 * @param id  Id of computer to be deleted
 	 * @return Response object
 	 */
 	@DELETE
@@ -145,9 +141,8 @@ public class ComputerRS {
 	/**
 	 * Returns page at index 'id'
 	 * 
-	 * @param page
-	 *            page number
-	 * @return PageImpl<\ComputerDTO\>
+	 * @param page page number
+	 * @return PageImpl of ComputerDTO
 	 */
 	@GET
 	@Path("/page/{page: [0-9]+}")

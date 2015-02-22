@@ -22,7 +22,7 @@
 		base-package="com.excilys.computerdatabase.restinterface, com.excilys.computerdatabase.console" />
 			<!-- Spring instantiate beans for Jax-RS -->
 	<jaxrs-client:client id="computerRESTUtils"
-		address="http://localhost:8080/computer-db-rest-service/computer"
+		address="http://localhost:8080/computer-db-restservice/computer"
 		serviceClass="com.excilys.computerdatabase.restinterface.IComputerRestService"
 		inheritHeaders="true">
 		<jaxrs-client:providers>
@@ -30,7 +30,7 @@
 		</jaxrs-client:providers>
 	</jaxrs-client:client>
 	<jaxrs-client:client id="companyRESTUtils"
-		address="http://localhost:8080/computer-db-rest-service/company"
+		address="http://localhost:8080/computer-db-restservice/company"
 		serviceClass="com.excilys.computerdatabase.restinterface.ICompanyRestService"
 		inheritHeaders="true">
 		<jaxrs-client:providers>

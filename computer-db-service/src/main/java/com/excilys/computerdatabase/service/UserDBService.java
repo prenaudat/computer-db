@@ -24,23 +24,21 @@ public interface UserDBService extends UserDetailsService {
 	/**
 	 * Persist a user
 	 * 
-	 * @param user
-	 *            to be persisted
+	 * @param user to be persisted
 	 */
 	public void save(User user);
 
 	/**
 	 * Delete a user
 	 * 
-	 * @param user
-	 *            to be deleted
+	 * @param user to be deleted
 	 */
 	public void delete(User user);
 
 	/**
 	 * Find user by name
 	 * 
-	 * @param userName
+	 * @param userName User name
 	 * @return User with userName
 	 */
 	public User findByUserName(String userName);

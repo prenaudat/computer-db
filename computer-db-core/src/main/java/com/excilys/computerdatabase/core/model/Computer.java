@@ -50,8 +50,7 @@ public class Computer {
 	}
 
 	/**
-	 * @param id
-	 *            Id to be set
+	 * @param id  Id to be set
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -65,8 +64,7 @@ public class Computer {
 	}
 
 	/**
-	 * @param name
-	 *            Name to be set
+	 * @param name  Name to be set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -80,8 +78,7 @@ public class Computer {
 	}
 
 	/**
-	 * @param introduced
-	 *            set Introduction date
+	 * @param introduced  set Introduction date
 	 */
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
@@ -167,16 +164,11 @@ public class Computer {
 	/**
 	 * Constructor from all fields
 	 * 
-	 * @param id
-	 *            id of computer
-	 * @param name
-	 *            name of computer
-	 * @param introduced
-	 *            introducation date of computer
-	 * @param discontinued
-	 *            discontinuation date of computer
-	 * @param companyId
-	 *            ID for company of computer
+	 * @param id   id of computer
+	 * @param name    name of computer
+	 * @param introduced introducation date of computer
+	 * @param discontinued  discontinuation date of computer
+	 * @param company   company of computer
 	 */
 	public Computer(Long id, String name, LocalDate introduced,
 			LocalDate discontinued, Company company) {

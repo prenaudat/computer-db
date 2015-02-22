@@ -15,8 +15,7 @@ public interface CompanyDBService {
 	/**
 	 * Find company by id
 	 * 
-	 * @param id
-	 *            Computer id
+	 * @param id Company id
 	 * @return COmpany
 	 */
 	public Company findOne(long id);
@@ -24,12 +23,12 @@ public interface CompanyDBService {
 	/**
 	 * Delete a company by id. Transactional for computer deletions delete by id
 	 * 
-	 * @param id
+	 * @param id Company id
 	 */
 	public void delete(long id);
 
 	/**
-	 * @return List<Company> of all companies
+	 * @return List Company of all companies
 	 */
 	public List<Company> findAll();
 

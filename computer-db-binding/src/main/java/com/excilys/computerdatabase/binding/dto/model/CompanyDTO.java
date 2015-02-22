@@ -28,7 +28,7 @@ public class CompanyDTO {
 	/**
 	 * Set id of the companyDTO
 	 * 
-	 * @param id
+	 * @param id id of the computerDTO
 	 */
 	public void setId(long id) {
 		this.id = id;
@@ -46,8 +46,7 @@ public class CompanyDTO {
 	/**
 	 * Set name of computer
 	 * 
-	 * @param name
-	 *            Computer name
+	 * @param name  Computer name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -56,10 +55,8 @@ public class CompanyDTO {
 	/**
 	 * Public constructor
 	 * 
-	 * @param id
-	 *            Computer id
-	 * @param name
-	 *            Computer name
+	 * @param id  Computer id
+	 * @param name   Computer name
 	 */
 	public CompanyDTO(long id, String name) {
 		super();

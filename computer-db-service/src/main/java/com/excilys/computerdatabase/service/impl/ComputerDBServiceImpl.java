@@ -21,10 +21,6 @@ import com.excilys.computerdatabase.service.ComputerDBService;
  * @author excilys
  *
  */
-/**
- * @author excilys
- *
- */
 @Service("computerService")
 public class ComputerDBServiceImpl implements ComputerDBService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDBServiceImpl.class);

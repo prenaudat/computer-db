@@ -104,11 +104,12 @@ public class Client {
 					+ c.getIntroduced());
 			System.out.println("New introduction year? Format : YYYY-MM-DD");
 			String introduced = sc.nextLine();
-			introducedLoop = !(GenericValidator.isDate(introduced, "yyyy-mm-dd",
-					true) || introduced != null);
-			if (!introducedLoop) {
+			boolean resultIsGood= GenericValidator.isDate(introduced, "yyyy-mm-dd",
+					true) || introduced.equals("");
+			if (resultIsGood) {
 				c.setIntroduced(introduced);
 			}
+			introducedLoop = !resultIsGood; 
 		}
 		Boolean discontinuedLoop = true;
 		while (discontinuedLoop) {
@@ -116,20 +117,22 @@ public class Client {
 					+ c.getDiscontinued());
 			System.out.println("New discontinuation year? Format : YYYY-MM-DD");
 			String discontinued = sc.nextLine();
-			discontinuedLoop = !(GenericValidator.isDate(discontinued,
-					"yyyy-mm-dd", true)|| discontinued != null) ;
-			if (!discontinuedLoop) {
+			Boolean resultIsGood = GenericValidator.isDate(discontinued,
+					"yyyy-mm-dd", true)|| discontinued.equals("");
+			if (resultIsGood) {
 				c.setDiscontinued(discontinued);
 			}
+			discontinuedLoop=!resultIsGood;
 		}
 		Boolean companyLoop = true;
 		while (companyLoop) {
 			System.out.println("new company ID?");
 			String id = sc.nextLine();
-			companyLoop = !GenericValidator.isLong(id);
-			if (!companyLoop) {
+			Boolean resultIsGood = GenericValidator.isLong(id) || companyLoop==null;
+			if (resultIsGood) {
 				c.setCompanyId(Long.parseLong(id));
 			}
+			companyLoop=resultIsGood;
 		}
 		computerWS.save(c);
 
@@ -154,30 +157,34 @@ public class Client {
 		while (introducedLoop) {
 			System.out.println("Introduction year? Format : YYYY-MM-DD");
 			String introduced = sc.nextLine();
-			introducedLoop = !(GenericValidator.isDate(introduced, "yyyy-mm-dd",
-					true) || introduced != null);
-			if (!introducedLoop) {
+			Boolean resultIsGood = GenericValidator.isDate(introduced, "yyyy-mm-dd",
+					true) || introduced.equals("");
+			if (resultIsGood) {
 				c.withIntroduced(introduced);
 			}
+			introducedLoop=!resultIsGood;
 		}
 		Boolean discontinuedLoop = true;
 		while (discontinuedLoop) {
 			System.out.println("Discontinuation year? Format : YYYY-MM-DD");
 			String discontinued = sc.nextLine();
-			discontinuedLoop = !(GenericValidator.isDate(discontinued,
-					"yyyy-mm-dd", true)|| discontinued != null);
-			if (!discontinuedLoop) {
+			Boolean resultIsGood = GenericValidator.isDate(discontinued,
+					"yyyy-mm-dd", true)|| discontinued.equals("");
+			if (resultIsGood) {
 				c.withDiscontinued(discontinued);
 			}
+			discontinuedLoop=!resultIsGood;
+
 		}
 		Boolean companyLoop = true;
 		while (companyLoop) {
 			System.out.println("Company ID?");
 			String id = sc.nextLine();
-			companyLoop = !GenericValidator.isLong(id);
-			if (!companyLoop) {
+			Boolean resultIsGood = GenericValidator.isLong(id) || id==null;
+			if (resultIsGood) {
 				c.withCompanyId(Long.parseLong(id));
 			}
+			companyLoop=resultIsGood;
 		}
 		computerWS.save(c.build());
 	}

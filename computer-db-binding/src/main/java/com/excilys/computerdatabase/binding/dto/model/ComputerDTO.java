@@ -33,7 +33,7 @@ public class ComputerDTO implements java.io.Serializable {
 
 	/**
 	 * Get company name
-	 * @return  Name of company
+	 * @return  companyName Name of company
 	 */
 	public String getCompanyName() {
 		return companyName;
@@ -41,7 +41,7 @@ public class ComputerDTO implements java.io.Serializable {
 
 	/**
 	 * Set company name
-	 * @param  Name of company
+	 * @param companyName Name of company
 	 */
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
@@ -72,7 +72,7 @@ public class ComputerDTO implements java.io.Serializable {
 	}
 
 	/**
-	 * @param name
+	 * @param name Name of the computer
 	 */
 	public void setName(String name) {
 		this.name = name;

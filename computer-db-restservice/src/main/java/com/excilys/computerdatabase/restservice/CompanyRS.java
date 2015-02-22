@@ -41,8 +41,7 @@ public class CompanyRS {
 	/**
 	 * Get a company by id
 	 * 
-	 * @param id
-	 *            : corresponding id
+	 * @param id  : corresponding id
 	 * @return company at corresponding id
 	 */
 	@GET
@@ -69,10 +68,9 @@ public class CompanyRS {
 	}
 
 	/**
-	 * Delete a company && all its computers as well.
+	 * Delete a company and all its computers as well.
 	 * 
-	 * @param id
-	 *            id of company.
+	 * @param id  id of company.
 	 * @return response status
 	 */
 	@DELETE
