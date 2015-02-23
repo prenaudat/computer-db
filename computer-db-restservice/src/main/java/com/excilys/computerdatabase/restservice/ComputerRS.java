@@ -1,5 +1,6 @@
 package com.excilys.computerdatabase.restservice;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -89,13 +90,16 @@ public class ComputerRS {
 	 * 
 	 * @param computer extracted from JSON
 	 * @return Response object
+	 * @throws IOException 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response save(@Valid ComputerDTO computer) {
+	public Response save(ComputerDTO computer) {
+
 		LOGGER.info("Saved computer {}", computer);
 		computerDTOMapper = new ComputerDTOMapperImpl();
+		computerDTOMapper.mapFromDTO(computer);
 		computerDBService.save(computerDTOMapper.mapFromDTO(computer));
 		return Response.status(201).entity(computer).build();
 	}

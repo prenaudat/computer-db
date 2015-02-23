@@ -22,7 +22,7 @@ public class TestCompany {
 	@Before
 	public void initialize() {
 
-		company = new Company.Builder().id(15).name("Test").build();
+		company = new Company.Builder().id(15l).name("Test").build();
 
 	}
 

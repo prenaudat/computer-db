@@ -15,6 +15,7 @@ import com.excilys.computerdatabase.restinterface.IComputerRestService;
 
 /**
  * Client for remote CRUD via REST API
+ * 
  * @author excilys
  *
  */
@@ -35,7 +36,8 @@ public class Client {
 	public void getComputerList() {
 		Boolean innerLoop = true;
 		while (innerLoop) {
-			PageResponse<ComputerDTO> page = computerWS.getPage(pageable.getPageNumber());
+			PageResponse<ComputerDTO> page = computerWS.getPage(pageable
+					.getPageNumber());
 			System.out.println(page.getContent());
 			innerLoop = getComputerListMenu(page);
 		}
@@ -52,8 +54,7 @@ public class Client {
 			final String id = sc.nextLine();
 			detailedLoop = GenericValidator.isLong(id);
 			if (detailedLoop) {
-				System.out
-						.println(computerWS.findOne(Long.parseLong(id)));
+				System.out.println(computerWS.findOne(Long.parseLong(id)));
 				detailedLoop = getComputerMenu(Integer.parseInt(id));
 			}
 		}
@@ -104,12 +105,12 @@ public class Client {
 					+ c.getIntroduced());
 			System.out.println("New introduction year? Format : YYYY-MM-DD");
 			String introduced = sc.nextLine();
-			boolean resultIsGood= GenericValidator.isDate(introduced, "yyyy-mm-dd",
-					true) || introduced.equals("");
+			boolean resultIsGood = GenericValidator.isDate(introduced,
+					"yyyy-mm-dd", true) || introduced.equals("");
 			if (resultIsGood) {
 				c.setIntroduced(introduced);
 			}
-			introducedLoop = !resultIsGood; 
+			introducedLoop = !resultIsGood;
 		}
 		Boolean discontinuedLoop = true;
 		while (discontinuedLoop) {
@@ -118,21 +119,21 @@ public class Client {
 			System.out.println("New discontinuation year? Format : YYYY-MM-DD");
 			String discontinued = sc.nextLine();
 			Boolean resultIsGood = GenericValidator.isDate(discontinued,
-					"yyyy-mm-dd", true)|| discontinued.equals("");
+					"yyyy-mm-dd", true) || discontinued.equals("");
 			if (resultIsGood) {
 				c.setDiscontinued(discontinued);
 			}
-			discontinuedLoop=!resultIsGood;
+			discontinuedLoop = !resultIsGood;
 		}
 		Boolean companyLoop = true;
 		while (companyLoop) {
-			System.out.println("new company ID?");
+			System.out.println("Company ID?");
 			String id = sc.nextLine();
-			Boolean resultIsGood = GenericValidator.isLong(id) || companyLoop==null;
-			if (resultIsGood) {
-				c.setCompanyId(Long.parseLong(id));
-			}
-			companyLoop=resultIsGood;
+			Boolean resultIsGood = GenericValidator.isLong(id) || id.equals("");
+			if (resultIsGood && !id.equals("")) {
+					c.setCompanyId(Long.parseLong(id));
+				}
+			companyLoop = !resultIsGood;
 		}
 		computerWS.save(c);
 
@@ -157,34 +158,34 @@ public class Client {
 		while (introducedLoop) {
 			System.out.println("Introduction year? Format : YYYY-MM-DD");
 			String introduced = sc.nextLine();
-			Boolean resultIsGood = GenericValidator.isDate(introduced, "yyyy-mm-dd",
-					true) || introduced.equals("");
+			Boolean resultIsGood = GenericValidator.isDate(introduced,
+					"yyyy-mm-dd", true) || introduced.equals("");
 			if (resultIsGood) {
 				c.withIntroduced(introduced);
 			}
-			introducedLoop=!resultIsGood;
+			introducedLoop = !resultIsGood;
 		}
 		Boolean discontinuedLoop = true;
 		while (discontinuedLoop) {
 			System.out.println("Discontinuation year? Format : YYYY-MM-DD");
 			String discontinued = sc.nextLine();
 			Boolean resultIsGood = GenericValidator.isDate(discontinued,
-					"yyyy-mm-dd", true)|| discontinued.equals("");
+					"yyyy-mm-dd", true) || discontinued.equals("");
 			if (resultIsGood) {
 				c.withDiscontinued(discontinued);
 			}
-			discontinuedLoop=!resultIsGood;
+			discontinuedLoop = !resultIsGood;
 
 		}
 		Boolean companyLoop = true;
 		while (companyLoop) {
 			System.out.println("Company ID?");
 			String id = sc.nextLine();
-			Boolean resultIsGood = GenericValidator.isLong(id) || id==null;
-			if (resultIsGood) {
-				c.withCompanyId(Long.parseLong(id));
-			}
-			companyLoop=resultIsGood;
+			Boolean resultIsGood = GenericValidator.isLong(id) || id.equals("");
+			if (resultIsGood && !id.equals("")) {
+					c.withCompanyId(Long.parseLong(id));
+				}
+			companyLoop = !resultIsGood;
 		}
 		computerWS.save(c.build());
 	}
@@ -265,7 +266,7 @@ public class Client {
 	 * 
 	 */
 	public void getCompanyList() {
-		companyWS.findAll().forEach(c->System.out.println(c));
+		companyWS.findAll().forEach(c -> System.out.println(c));
 	}
 
 	/**
@@ -291,8 +292,7 @@ public class Client {
 				"console-context.xml");
 		computerWS = (IComputerRestService) context
 				.getBean("computerRESTUtils");
-		companyWS = (ICompanyRestService) context
-				.getBean("companyRESTUtils");
+		companyWS = (ICompanyRestService) context.getBean("companyRESTUtils");
 		sc = new Scanner(System.in);
 		loop = true;
 		pageable = new PageRequest(0, 20);

@@ -332,9 +332,12 @@ public class Computer {
 		}
 
 		public Builder company(final Company company) {
+			if(company.getId()!= null){
 			this.computer.company.setId(company.getId());
 			this.computer.company.setName(company.getName());
+			}
 			return this;
+			
 		}
 
 		public Computer build() {

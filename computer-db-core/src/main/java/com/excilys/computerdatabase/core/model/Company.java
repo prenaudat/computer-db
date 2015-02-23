@@ -35,7 +35,7 @@ public class Company {
 	/**
 	 * @return return ID of company
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -68,7 +68,7 @@ public class Company {
 	 * @param name
 	 *            Name of company
 	 */
-	public Company(long id, String name) {
+	public Company(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -133,7 +133,7 @@ public class Company {
 			company.name = null;
 		}
 
-		public Builder id(final long id) {
+		public Builder id(final Long id) {
 			company.id = id;
 			return this;
 		}
