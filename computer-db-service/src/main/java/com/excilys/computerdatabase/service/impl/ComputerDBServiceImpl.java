@@ -37,9 +37,8 @@ public class ComputerDBServiceImpl implements ComputerDBService {
 	 * springframework.data.domain.PageRequest)
 	 */
 	public Page<Computer> retrievePage(Pageable pageable, String search) {
-		LOGGER.info("retrieving page {} with query : {}", pageable, search);
 		Page<Computer> page = null;
-		if (search == null) {
+		if (search == null && pageable !=null) {
 			page = computerRepository.findAll(pageable);
 		} else {
 			page = computerRepository.findAll(
