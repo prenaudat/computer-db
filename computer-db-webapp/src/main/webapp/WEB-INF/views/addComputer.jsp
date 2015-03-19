@@ -48,7 +48,12 @@
 						</div>
 					</div>
 				</c:if>
-
+				<c:if test="${empty computer}">
+				<c:set var="computer.name" value=""/>
+				<c:set var="computer.introduced" value=""/>
+				<c:set var="computer.discontinued" value=""/>
+				<c:set var="computer.companyId" value=""/>
+				</c:if>
 				<form id="add" action="add" method="POST">
 					<fieldset>
 						<div class="form-group has-feedback">
@@ -77,7 +82,16 @@
 								id="companyId" name="companyId">
 								<option value="0">--</option>
 								<c:forEach items="${companies}" var="company">
-									<option value="${company.id}">${company.name}</option>
+									<c:choose>
+										<c:when test="${company.id!=computer.companyId}">
+											<option value="<c:out value="${company.id}"/>"><c:out
+													value="${company.name}" /></option>
+										</c:when>
+										<c:otherwise>
+											<option selected value="<c:out value="${company.id}"/>"><c:out
+													value="${company.name}" /></option>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 							</select>
 						</div>

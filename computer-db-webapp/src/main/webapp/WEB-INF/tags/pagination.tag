@@ -47,13 +47,13 @@
 					href="${target}?page=${pageNumber+2}&query=${query}&orderBy=${orderBy}&size=${size}">${pageNumber+2}</a></li>
 
 			</c:if>
-			<c:if test="${pageNumber<pageCount}">
+			<c:if test="${pageNumber<pageCount-1}">
 				<li><a
 					href="${target}?page=${pageNumber+1}&query=${query}&orderBy=${orderBy}&size=${size}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 				<li><a
-					href="${target}?page=${pageCount}&query=${query}&orderBy=${orderBy}&size=${size}"
+					href="${target}?page=${pageCount-1}&query=${query}&orderBy=${orderBy}&size=${size}"
 					aria-label="Next"> <span aria-hidden="true"><spring:message
 								code="dashboard.last" /></span>
 				</a></li>

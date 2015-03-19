@@ -31,8 +31,12 @@
 	<header class="navbar navbar-inverse navbar-fixed-top">
 
 		<div class="container">
-			<a class="navbar-brand" href="" onclick='location.reload(true)'>
+			<a class="navbar-brand" href="/computer-db-webapp/computers">
 				Application - Computer Database </a>
+            <ul role="menu" id="menu">
+            	<li><a href="?lang=fr"> <spring:message code="lang.french" /></a></li>
+                <li><a href="?lang=en"><spring:message code="lang.english" /></a></li>
+            </ul>
 		</div>
 	</header>
 	<section id="main">
@@ -44,7 +48,7 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
-						action="computers?page=0&orderBy=<c:out value="${orderBy}"/>&size=<c:out value="${size}"/>"
+						action="/computer-db-webapp/computers?page=0&orderBy=<c:out value="${orderBy}"/>&size=<c:out value="${size}"/>"
 						method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="query"
 							class="form-control" placeholder="Search name" /> <input
@@ -54,7 +58,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="computers/add"><spring:message
+					<a class="btn btn-success" id="addComputer" href="/computer-db-webapp/computers/add"><spring:message
 							code="label.add" /> </a> <a class="btn btn-default"
 						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
 							code="label.edit" /></a>
@@ -99,7 +103,7 @@
 								<td class="editMode"><input type="checkbox" name="cb"
 									class="cb" value="<c:out value="${computer.id}" />"></td>
 									<td><a
-										href="computers/edit?id=<c:out value="${computer.id}"/>"><c:out
+										href="/computer-db-webapp/computers/edit?id=<c:out value="${computer.id}"/>"><c:out
 												value="${computer.name}"></c:out></a></td>
 									<td><c:out value="${computer.introduced}"></c:out></td>
 									<td><c:out value="${computer.discontinued}"></c:out></td>

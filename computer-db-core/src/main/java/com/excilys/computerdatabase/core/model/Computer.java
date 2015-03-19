@@ -294,8 +294,9 @@ public class Computer {
 
 		public Builder introduced(final String newIntroduced, final String lang) {
 			if (newIntroduced != null && newIntroduced.length() != 0) {
-				DateTimeFormatter formatter;
 				LocalDate date = null;
+				try{
+				DateTimeFormatter formatter;
 				if (lang.equals("fr")) {
 					formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 					System.out.println(formatter.toString());
@@ -304,6 +305,9 @@ public class Computer {
 					formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					date = LocalDate.parse(newIntroduced, formatter);
 				}
+			}catch (Exception e) {
+				date = null;
+			}
 				this.computer.setIntroduced(date);
 			}
 			return this;
@@ -316,8 +320,9 @@ public class Computer {
 
 		public Builder discontinued(final String discontinued, final String lang) {
 			if (discontinued != null && discontinued.length() != 0) {
-				DateTimeFormatter formatter;
 				LocalDate date = null;
+				try {
+				DateTimeFormatter formatter;
 				if (lang.equals("fr")) {
 					formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 					System.out.println(formatter.toString());
@@ -325,6 +330,9 @@ public class Computer {
 				} else {
 					formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					date = LocalDate.parse(discontinued, formatter);
+				}
+				} catch (Exception e) {
+					date = null;
 				}
 				this.computer.setDiscontinued(date);
 			}

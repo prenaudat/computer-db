@@ -34,7 +34,7 @@ public class DashBoard {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DashBoard.class);
 
 	/**
-	 * Map GET requests to /computers.
+	 * Map GET requests to /*.
 	 * 
 	 * @param allRequestParams
 	 *            : URL parameters concerning the page
