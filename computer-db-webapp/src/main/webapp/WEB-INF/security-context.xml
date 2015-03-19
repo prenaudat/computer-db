@@ -8,8 +8,7 @@
 
 	<security:http use-expressions="true" create-session="stateless"
 		entry-point-ref="digestEntryPoint">
-		<security:intercept-url pattern="/computers/edit**" 	access="hasAnyRole('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/computers/add**" 	access="hasAnyRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/**" 	access="hasAnyRole('ROLE_ADMIN')" />
 		<security:custom-filter ref="digestFilter"
 			after="BASIC_AUTH_FILTER" />
 	</security:http>
